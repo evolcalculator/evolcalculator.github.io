@@ -1,0 +1,70 @@
+.mycontainer {
+	/*position: relative;*/
+	overflow: hidden;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: rgba(242, 246, 255, 0.6);
+	z-index: 10;
+	text-align: center;
+	/*width: 80%;*/
+}
+
+
+.header {
+	margin-left: auto;
+	margin-right: auto;
+	width: 90%;
+}
+
+
+.item_body {
+	width: 100%;
+	float: left;
+	overflow: auto;
+}
+
+
+.footer {
+	width: 400px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	/*color: darkslategray;*/
+}
+
+.mycard {
+	margin-left: auto;
+	margin-right: auto;
+	width: 96%;
+	overflow: auto;
+	background-color: rgba(256, 256, 256, 0.8);
+	/*background-color: rgba(230, 241, 235, 0.8);*/
+	border: 1px solid #dddddd;
+	/*border: 1px solid darkslategray;*/
+	-webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+    box-shadow:1px 1px 2px #aaaaaa;
+    text-align: center;
+    /*color: darkslategray;*/
+}
+
+#section2 th{
+	text-align: center;
+	vertical-align: middle;
+}
+
+#section2 td{
+	text-align: center;
+	vertical-align: middle;
+}
+
+#section3 th{
+	text-align: center;
+	vertical-align: middle;
+}
+
+.import-form {
+	text-align: left;
+	margin:0 auto;
+}
