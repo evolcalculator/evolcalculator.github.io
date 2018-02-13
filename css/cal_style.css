@@ -13,7 +13,6 @@
 .header {
 	margin-left: auto;
 	margin-right: auto;
-	width: 90%;
 }
 
 
@@ -21,6 +20,8 @@
 	width: 100%;
 	float: left;
 	overflow: auto;
+	margin-top: 70px;
+	/*padding-top: 70px;*/
 }
 
 
@@ -54,9 +55,11 @@
 	vertical-align: middle;
 }
 
-#section2 td{
+td{
+	color: #353535;
 	text-align: center;
 	vertical-align: middle;
+	word-break: break-all;
 }
 
 #section3 th{
@@ -64,7 +67,70 @@
 	vertical-align: middle;
 }
 
+#section4 th{
+	text-align: center;
+	vertical-align: middle;
+}
+
 .import-form {
 	text-align: left;
 	margin:0 auto;
+}
+
+*{
+	margin:0;
+	padding:0;
+}
+/*.nav-title{
+   font-family: 'Abril Fatface', cursive; 
+}*/
+.navbar-header .nav-title:hover,
+.navbar-header .nav-title:focus{
+  background:#fff;
+  color:#000;
+  padding-top: auto;
+  padding-bottom: auto;
+/*  background: rgba(256, 256, 256);
+  color: rgba(125, 86, 154, 1);*/
+}
+
+/*.cative{
+  font-family:'Comfortaa', cursive;
+}*/
+.navbar-collapse .navbar-nav li a:hover,
+.navbar-collapse .navbar-nav li a:focus{
+  color:#000;
+  background:#fff;
+/*  background: rgba(256, 256, 256);
+  color: rgba(125, 86, 154, 1);*/
+}
+
+#point1 {
+	padding-top: 70px;
+	margin-top: -70px;
+}
+
+#point2 {
+	padding-top: 70px;
+	margin-top: -70px;
+}
+
+#point3 {
+	padding-top: 70px;
+	margin-top: -70px;
+}
+
+#point4 {
+	padding-top: 70px;
+	margin-top: -70px;
+}
+
+#point5 {
+	padding-top: 70px;
+	margin-top: -70px;
+}
+
+#point6 {
+	padding-top: 70px;
+	margin-top: -70px;
 }

@@ -4289,7 +4289,11 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-brand {
   float: left;
   height: 50px;
-  padding: 15px 15px;
+  padding: 10px 15px;
+/*  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: auto;
+  margin-bottom: auto;*/
   font-size: 18px;
   line-height: 20px;
 }
@@ -4508,7 +4512,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-default {
-  background-color: #f8f8f8;
+  /*background-color: #f8f8f8;*/
+  background-color: rgb(255, 255, 255);
+  /*background-color: rgb(125, 86, 154);;*/
   border-color: #e7e7e7;
 }
 .navbar-default .navbar-brand {
