@@ -111,7 +111,7 @@ function requestData(){
     $.ajax({
         type: "GET",
         url: "http://39.107.72.254/lyzz/card/sort/",
-        headers: {'Referrer Policy': 'origin-when-cross-origin'},
+        // headers: {'Referrer Policy': 'origin-when-cross-origin'},
         data: {type: tmp_category, name: encodeURI(tmp_name), person: encodeURI(tmp_character), star: star_num},
         dataType: "json",
         success: function(data){
