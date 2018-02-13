@@ -112,7 +112,7 @@ function requestData(){
         type: "GET",
         url: "http://39.107.72.254/lyzz/card/sort/",
         data: {type: tmp_category, name: encodeURI(tmp_name), person: encodeURI(tmp_character), star: star_num},
-        dataType: "jsonp",
+        dataType: "json",
         success: function(data){
             if ( data == null || data.length == 0 || data == "" || data.length == 1) {
                 document.getElementById('result').innerHTML = "<div style='padding-left: 20px'>未找到该关卡：" + name + " " + "/" + person + "</div>";

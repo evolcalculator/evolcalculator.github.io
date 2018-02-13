@@ -47,7 +47,6 @@ $('#select-character').change(function(){
     showBonds();
 })
 
-
 window.onload = function(){
     checkCookie();
     loadName("normal");
