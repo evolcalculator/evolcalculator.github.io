@@ -1095,9 +1095,9 @@ body {
   line-height: 20px;
   color: rgba(125, 86, 154, 1);
   /*background-color: #ffffff;*/
-  background-color: rgba(230, 241, 235, 1);
+  background-color: rgba(242, 246, 255, 1);
   text-align: center;
-  background-image: url(../img/toppage_bg_01.jpg);
+  /*background-image: url(../img/toppage_bg_01.jpg);*/
   background-size: 100%;
   background-attachment: fixed;
   width: 100%;
