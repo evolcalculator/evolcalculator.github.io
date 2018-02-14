@@ -1,7 +1,8 @@
 var w_decision = 0, w_creativity = 0, w_appetency = 0, w_action = 0;
 var tmp_character = "李泽言";
 var star_num = 3;
-var tmp_category = 0, category_dict = {"normal": 1, "hard": 2, "instance": 3, "arena": 4};
+// var tmp_category = 0, category_dict = {"normal": 1, "hard": 2, "instance": 3, "arena": 4};
+var tmp_category = "normal";
 var tmp_name = "";
 var score_list = [];
 
@@ -67,20 +68,28 @@ function calScore() {
     for (var i in mycards["user-defined"]) {
         card_list[i] = mycards["user-defined"][i];
         card_list[i]["score"] = w_decision*card_list[i]["decision"]+w_creativity*card_list[i]["creativity"]+w_appetency*card_list[i]["appetency"]+w_action*card_list[i]["action"];
-        if (tmp_category == 4 && card_list[i]["character"] == tmp_character)
+        if (tmp_category == "arena" && card_list[i]["character"] == tmp_character) {
             card_list[i]["score"] *= 1 + (star_num - 2) * 0.1;
-        if (tmp_category == 3 && card_list[i]["character"] != tmp_character)
+        }
+        if (tmp_category == "instance" && card_list[i]["character"] != tmp_character){
             card_list[i]["score"] = 0;
+        }
     }
-    for (var i in allcards) {
-        if (isInArray(mycards["pre-defined"], allcards[i]["name"])) {
+    for (var i in bonds) {
+        if (isInArray(mycards["pre-defined"], bonds[i]["name"])) {
             var temp = new Object();
-            temp["name"] = allcards[i]["name"];
-            temp["character"] = allcards[i]["person"];
-            temp["rarity"] = allcards[i]["degree"];
-            temp["way"] = allcards[i]["achieving"];
-            temp["score"] = allcards[i]["scores"];
-            temp["id"] = allcards[i]["name"];
+            temp["name"] = bonds[i]["name"];
+            temp["character"] = bonds[i]["character"];
+            temp["rarity"] = bonds[i]["rarity"];
+            temp["way"] = bonds[i]["way"];
+            temp["id"] = bonds[i]["name"];
+            temp["score"] = w_decision*bonds[i]["decision"]+w_creativity*bonds[i]["creativity"]+w_appetency*bonds[i]["appetency"]+w_action*bonds[i]["action"];
+            if (tmp_category == "arena" && bonds[i]["character"] == tmp_character){
+                temp["score"] *= 1 + (star_num - 2) * 0.1;
+            }
+            if (tmp_category == "instance" && bonds[i]["character"] != tmp_character){
+                temp["score"] = 0;
+            }
             card_list.push(temp);
         }
     }
@@ -95,38 +104,65 @@ function calScore() {
     // $('#recommendation').append(str);
 }
 
-function requestData(){
-    $.ajax({
-        type: "GET",
-        url: "https://39.107.72.254:8443/lyzz/card/sort/",
-        data: {type: tmp_category, name: encodeURI(tmp_name), person: encodeURI(tmp_character), star: star_num},
-        dataType: "jsonp",
-        error: function () {
-            alert("抱歉！服务器出错了QAQ");
-            return;
-        },
-        success: function(data){
-            if (data == null || data.length == 0 || data == "" || data.length == 1) {
-                alert("抱歉！服务器出错了QAQ");
-                return;
-            }
-            w_decision = data["decision"];
-            w_creativity = data["creativity"];
-            w_appetency = data["affinity"];
-            w_action = data["proactiveness"];
-            $('#stage-goods').empty();
-            $('#stage-goods').append(data["goods"]);
-            $('#div-request').empty();
-            var str2 = "";
-            for (var i in data["requests"]) {
-                str2 += "<tr><td>"+data["requests"][i]["request"]+"</td><td>"+data["requests"][i]["content"]+"</td></tr>"
-            }
-            $('#div-request').append(str2);
-            allcards = data["cards"];
-            calScore();
+function requestData() {
+    var data;
+    // alert(tmp_category + ", " + tmp_name + ", " + tmp_character);
+    for (var i in weights[tmp_category]) {
+        if (tmp_name == weights[tmp_category][i]["name"]) {
+            // alert(weights[tmp_category][i]["decision"])
+            if (tmp_category == "instance" && tmp_character != weights[tmp_category][i]["character"])
+                continue;
+            data = weights[tmp_category][i];
+            break;
         }
-    });
+    }
+    w_decision = data["decision"];
+    w_creativity = data["creativity"];
+    w_appetency = data["appetency"];
+    w_action = data["action"];
+    $('#stage-goods').empty();
+    $('#stage-goods').append(data["goods"]);
+    $('#div-request').empty();
+    var str2 = "";
+    for (var i in data["requests"]) {
+        str2 += "<tr><td>"+data["requests"][i]["request"]+"</td><td>"+data["requests"][i]["content"]+"</td></tr>"
+    }
+    $('#div-request').append(str2);
+    calScore();
 }
+
+// function requestData(){
+//     $.ajax({
+//         type: "GET",
+//         url: "https://39.107.72.254:8443/lyzz/card/sort/",
+//         data: {type: tmp_category, name: encodeURI(tmp_name), person: encodeURI(tmp_character), star: star_num},
+//         dataType: "jsonp",
+//         error: function () {
+//             alert("抱歉！服务器出错了QAQ");
+//             return;
+//         },
+//         success: function(data){
+//             if (data == null || data.length == 0 || data == "" || data.length == 1) {
+//                 alert("抱歉！服务器出错了QAQ");
+//                 return;
+//             }
+//             w_decision = data["decision"];
+//             w_creativity = data["creativity"];
+//             w_appetency = data["affinity"];
+//             w_action = data["proactiveness"];
+//             $('#stage-goods').empty();
+//             $('#stage-goods').append(data["goods"]);
+//             $('#div-request').empty();
+//             var str2 = "";
+//             for (var i in data["requests"]) {
+//                 str2 += "<tr><td>"+data["requests"][i]["request"]+"</td><td>"+data["requests"][i]["content"]+"</td></tr>"
+//             }
+//             $('#div-request').append(str2);
+//             allcards = data["cards"];
+//             calScore();
+//         }
+//     });
+// }
 
 
 // function setMaxNum(num) {

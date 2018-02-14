@@ -8,6 +8,7 @@ data["normal"] = []
 data["hard"] = []
 data["instance"] = []
 data["arena"] = []
+person = {0: "李泽言", 1: "许墨", 2: "白起", 3: "周棋洛"}
 lines = open("weight.txt").readlines()
 for line in lines:
     tmp = line.replace('\n', '').split(' ')
@@ -17,26 +18,65 @@ for line in lines:
             continue
         else:
             tmpdict.append(a)
-    item = {}
-    item["name"] = tmpdict[0]
-    # item["decision"] = tmpdict[1]
-    # item["creativity"] = tmpdict[2]
-    # item["appetency"] = tmpdict[3]
-    # item["action"] = tmpdict[4]
-    # item["prof"] = tmpdict[5]
-    item["goods"] = tmpdict[6]
-    if tmpdict[0].find('普通') >= 0:
-        item["name"] = tmpdict[0].replace('普通', '')
-        data["normal"].append(item)
-    if tmpdict[0].find('精英') >= 0:
-        item["name"] = tmpdict[0].replace('精英', '')
-        data["hard"].append(item)
+    print tmpdict[0]
+
     if tmpdict[0].find('拍摄副本') >= 0:
-        item["name"] = tmpdict[0].replace('拍摄副本', '')
-        data["instance"].append(item)
-    if tmpdict[0].find('竞技场·') >= 0:
-        item["name"] = tmpdict[0].replace('竞技场·', '')
-        data["arena"].append(item)
+        for i in range(4):
+            item = {}
+            item["name"] = tmpdict[0]
+            item["decision"] = tmpdict[1]
+            item["creativity"] = tmpdict[2]
+            item["appetency"] = tmpdict[3]
+            item["action"] = tmpdict[4]
+            item["prof"] = tmpdict[5]
+            item["name"] = tmpdict[0].replace('拍摄副本', '')
+            item["goods"] = tmpdict[i*5+6]
+            item["character"] = person[i]
+            item["requests"] = []
+            for j in range(2):
+                request = {}
+                request["request"] = tmpdict[i*5+6+2*j+1]
+                request["content"] = tmpdict[i*5+6+2*j+2]
+                item["requests"].append(request)
+            data["instance"].append(item)
+    else:
+        item = {}
+        item["name"] = tmpdict[0]
+        item["decision"] = tmpdict[1]
+        item["creativity"] = tmpdict[2]
+        item["appetency"] = tmpdict[3]
+        item["action"] = tmpdict[4]
+        item["prof"] = tmpdict[5]
+
+        if tmpdict[0].find('普通') >= 0:
+            item["name"] = tmpdict[0].replace('普通', '')
+            item["goods"] = tmpdict[6]
+            item["requests"] = []
+            for i in range(7, len(tmpdict), 2):
+                request = {}
+                request["request"] = tmpdict[i]
+                request["content"] = tmpdict[i+1]
+                if request["content"] != "-":
+                    item["requests"].append(request)
+            data["normal"].append(item)
+
+        if tmpdict[0].find('精英') >= 0:
+            item["name"] = tmpdict[0].replace('精英', '')
+            item["goods"] = tmpdict[6]
+            item["requests"] = []
+            for i in range(7, len(tmpdict), 2):
+                request = {}
+                request["request"] = tmpdict[i]
+                request["content"] = tmpdict[i+1]
+                if request["content"] != "-":
+                    item["requests"].append(request)
+            data["hard"].append(item)
+
+        if tmpdict[0].find('竞技场·') >= 0:
+            item["name"] = tmpdict[0].replace('竞技场·', '')
+            item["goods"] = "-"
+            item["requests"] = []
+            data["arena"].append(item)
         
 with open("weight.json", "w") as fout:
     fout.write(json.dumps(data, indent=4))
@@ -51,17 +91,17 @@ for line in lines:
         if a == "":
             continue
         else:
-            print a
+            # print a
             tmpdict.append(a)
     item = {}
     item["rarity"] = tmpdict[0]
     item["character"] = tmpdict[1]
     item["name"] = tmpdict[2]
     item["way"] = tmpdict[3]
-    # item["decision"] = tmpdict[4]
-    # item["creativity"] = tmpdict[5]
-    # item["appetency"] = tmpdict[6]
-    # item["action"] = tmpdict[7]
+    item["decision"] = tmpdict[4]
+    item["creativity"] = tmpdict[5]
+    item["appetency"] = tmpdict[6]
+    item["action"] = tmpdict[7]
     data.append(item)
         
 with open("card.json", "w") as fout:

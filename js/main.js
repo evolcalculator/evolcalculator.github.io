@@ -4,7 +4,7 @@
 
 $('#stage-category').change(function(){
     var p1 = $(this).children('option:selected').val();
-    tmp_category = category_dict[p1];
+    tmp_category = p1;
     loadName(p1);
     // var p2 = $('#stage-name').children('option:selected').val();
     // tmp_name = p2;
@@ -61,7 +61,7 @@ window.onload = function(){
     checkCookie();
     loadName("normal");
     // loadWeight("normal", "1-2");
-    tmp_category = 1;
+    tmp_category = "normal";
     tmp_name = "1-2";
     showBonds();
     // cards = new Object();
