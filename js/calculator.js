@@ -98,7 +98,7 @@ function calScore() {
 function requestData(){
     $.ajax({
         type: "GET",
-        url: "http://39.107.72.254/lyzz/card/sort/",
+        url: "https://39.107.72.254:8443/lyzz/card/sort/",
         data: {type: tmp_category, name: encodeURI(tmp_name), person: encodeURI(tmp_character), star: star_num},
         dataType: "jsonp",
         error: function () {
