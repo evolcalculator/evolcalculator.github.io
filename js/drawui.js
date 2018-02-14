@@ -119,7 +119,7 @@ function showScore() {
     var str = "";
     for (var i in score_list) {
         if (max_cards == -1 || i < max_cards) {
-            str += "<tr id=\""+score_list[i]["id"]+"\"><td>"+score_list[i]["name"]+"</td><td>"+score_list[i]["rarity"]+"</td><td>"+score_list[i]["character"]+"</td><td>"+score_list[i]["way"]+"</td><td><b>"+Math.round(score_list[i]["score"])+"</b></td></tr>";
+            str += "<tr id=\""+score_list[i]["id"]+"\"><td>"+score_list[i]["name"]+"</td><td>"+score_list[i]["rarity"]+"</td><td>"+score_list[i]["character"]+"</td><td>"+score_list[i]["way"]+"</td><td><b>"+Math.floor(score_list[i]["score"])+"</b></td></tr>";
         }
     }
     $('#recommendation').append(str);
