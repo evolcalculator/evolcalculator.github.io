@@ -48,20 +48,27 @@ function importCard() {
     var data = $('#import-text').val();
     try {
         mycards = JSON.parse(data);
-        alert("导入成功!");
-        $('#import-text').val('');
-        setCookie('cardData', data, 100);
-        showCards();
+        if (mycards.hasOwnProperty("user-defined") && mycards.hasOwnProperty("pre-defined")) {
+            alert("导入成功!");
+            $('#import-text').val('');
+            setCookie('cardData', data, 100);
+            showCards();
+        }
+        else {
+            alert("请确认导入数据和之前导出时的格式一致哦!");
+            $('#import-text').val('');
+        }
     }
     catch(err) {
         alert("请输入符合JSON格式的数据!");
+        $('#import-text').val('');
     }
 }
 
 function exportCard() {
+    $('#import-text').val('');
     var str = JSON.stringify(mycards);
-    $('#import-text').empty();
-    $('#import-text').append(str);
+    $('#import-text').val(str);
 }
 
 function deleteCard(id) {
