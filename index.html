@@ -22,6 +22,8 @@
     <script type='text/javascript' charset="UTF-8" src='data/bonds.js'></script>
     <script type='text/javascript' charset="UTF-8" src='js/calculator.js'></script>
     <script type='text/javascript' charset="UTF-8" src='js/cardsAndBonds.js'></script>
+    <script type='text/javascript' charset="UTF-8" src='js/drawui.js'></script>
+
 </head>
 
 <body>
@@ -198,16 +200,29 @@
             <div id="point3"></div>
             <div class="mycard" id="section3">
                 <h4>我的羁绊信息</h4>
+                <p><a href="javascript:void(0);" onclick="deleteAll()">删除全部</a></p>
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
                             <th>羁绊名</th>
-                            <th>稀有度</th>
-                            <th>人物</th>
-                            <th>决策力</th>
-                            <th>创造力</th>
-                            <th>亲和力</th>
-                            <th>行动力</th>
+                            <th>稀有度 &nbsp;&nbsp;
+                                <select id="mycard-rarity">
+                                    <option value ="all">全部</option>
+                                    <option value ="SSR">SSR</option>
+                                    <option value="SR">SR</option>
+                                    <option value="R">R</option>
+                                </select>
+                            </th>
+                            <th>人物 &nbsp;&nbsp;
+                                <select id="mycard-character">
+                                    <option value ="all">全部</option>
+                                    <option value ="李泽言">李泽言</option>
+                                    <option value="许墨">许墨</option>
+                                    <option value="周棋洛">周棋洛</option>
+                                    <option value="白起">白起</option>
+                                </select>
+                            </th>
+                            <th>四维</th>
                             <th>操作</th>
                         </tr>
                     </thead>
@@ -218,8 +233,9 @@
             <br/>
             <div id="point4"></div>
             <div class="mycard" id="section4">
-                <h4>添加羁绊 </h4>
+                <h4>添加羁绊</h4>
                 <p>(以下属性均为满星满级，未满星满级请移步<a href="#point5">自定义羁绊</a>)</p>
+                <p><a href="javascript:void(0);" onclick="addAll()">添加全部</a></p>
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
@@ -242,7 +258,8 @@
                                 </select>
                             </th>
                             <th>获取途径</th>
-                            <th>操作</th>
+                            <th>操作</button>
+                            </th>
                         </tr>
                     </thead>
                     <tbody id="bonds-table">

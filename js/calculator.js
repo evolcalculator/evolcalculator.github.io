@@ -1,5 +1,4 @@
 var w_decision = 0, w_creativity = 0, w_appetency = 0, w_action = 0;
-var max_cards = -1;
 var tmp_character = "李泽言";
 var star_num = 3;
 var tmp_category = 0, category_dict = {"normal": 1, "hard": 2, "instance": 3, "arena": 4};
@@ -94,17 +93,6 @@ function calScore() {
     //     }
     // }
     // $('#recommendation').append(str);
-}
-
-function showScore() {
-    $('#recommendation').empty();
-    var str = "";
-    for (var i in score_list) {
-        if (max_cards == -1 || i < max_cards) {
-            str += "<tr id=\""+score_list[i]["id"]+"\"><td>"+score_list[i]["name"]+"</td><td>"+score_list[i]["rarity"]+"</td><td>"+score_list[i]["character"]+"</td><td>"+score_list[i]["way"]+"</td><td><b>"+Math.round(score_list[i]["score"])+"</b></td></tr>";
-        }
-    }
-    $('#recommendation').append(str);
 }
 
 function requestData(){

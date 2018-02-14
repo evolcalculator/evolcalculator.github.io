@@ -1,6 +1,5 @@
 var mycards;
 var allcards = [];
-var filter_rarity = "all", filter_character = "all";
 
 function setCookie(c_name, value, expiredays)
 {
@@ -65,20 +64,6 @@ function exportCard() {
     $('#import-text').append(str);
 }
 
-function showCards() {
-    $('#card-table').empty();
-    var str = "";
-    var card_list = mycards["user-defined"];
-    for (var i in card_list) {
-        str += "<tr id=\""+card_list[i]["id"]+"\"><td>"+card_list[i]["name"]+"</td><td>"+card_list[i]["rarity"]+"</td><td>"+card_list[i]["character"]+"</td><td>"+card_list[i]["decision"]+"</td><td>"+card_list[i]["creativity"]+"</td><td>"+card_list[i]["appetency"]+"</td><td>"+card_list[i]["action"]+"</td><td><a href=\"javascript:void(0);\" onclick=\"deleteCard('"+card_list[i]["id"]+"')\">删除</a></td></tr>";
-    }
-    for (var i in bonds) {
-        if (isInArray(mycards["pre-defined"], bonds[i]["name"]))
-            str += "<tr id=\""+bonds[i]["name"]+"\"><td>"+bonds[i]["name"]+"</td><td>"+bonds[i]["rarity"]+"</td><td>"+bonds[i]["character"]+"</td><td>full</td><td>full</td><td>full</td><td>full</td><td><a href=\"javascript:void(0);\" onclick=\"deleteBond('"+bonds[i]["name"]+"')\">删除</a></td></tr>";
-    }
-    $('#card-table').append(str);
-}
-
 function deleteCard(id) {
     for (var i in mycards["user-defined"]) {
         if (mycards["user-defined"][i]["id"] == id) {
@@ -131,45 +116,6 @@ function isInArray(arr,value){
     return false;
 }
 
-function bondFilter(bond) {
-    if (isInArray(mycards["pre-defined"], bond["name"]))
-        return false;
-    if (filter_character != 'all' && bond["character"] != filter_character)
-        return false;
-    if (filter_rarity != 'all' && bond["rarity"] != filter_rarity)
-        return false;
-    return true;
-}
-
-function showBonds() {
-    $('#bonds-table').empty();
-    var str = "";
-    var cnt = 0;
-    for (var i in bonds) {
-        if (cnt < 10) {
-            if (bondFilter(bonds[i])) {
-                str += "<tr id=\""+bonds[i]["name"]+"\"><td>"+bonds[i]["name"]+"</td><td>"+bonds[i]["rarity"]+"</td><td>"+bonds[i]["character"]+"</td><td>"+bonds[i]["way"]+"</td><td><a href=\"javascript:void(0);\" onclick=\"addBond('"+bonds[i]["name"]+"')\">添加</a></td></tr>";
-                cnt ++;
-            }
-        }
-        else
-            break;
-    }
-    str += "<tr><td colspan=\"9\"><a href=\"javascript:void(0);\" onclick=\"expandBonds()\">展开▼</a></td></tr>";
-    $('#bonds-table').append(str);
-}
-
-function expandBonds() {
-    $('#bonds-table').empty();
-    var str = "";
-    for (var i in bonds) {
-        if (bondFilter(bonds[i]))
-            str += "<tr id=\""+bonds[i]["name"]+"\"><td>"+bonds[i]["name"]+"</td><td>"+bonds[i]["rarity"]+"</td><td>"+bonds[i]["character"]+"</td><td>"+bonds[i]["way"]+"</td><td><a href=\"javascript:void(0);\" onclick=\"addBond('"+bonds[i]["name"]+"')\">添加</a></td></tr>";
-    }
-    str += "<tr><td colspan=\"9\"><a href=\"javascript:void(0);\" onclick=\"showBonds()\">收起▲</a></td></tr>";
-    $('#bonds-table').append(str);
-}
-
 function addBond(name) {
     mycards["pre-defined"].push(name);
     setCookie('cardData', JSON.stringify(mycards), 100);
@@ -182,5 +128,25 @@ function deleteBond(name) {
     setCookie('cardData', JSON.stringify(mycards), 100);
     showBonds();
     showCards();
+}
+
+function addAll() {
+    for (var i in bonds) {
+        if (!isInArray(mycards["pre-defined"], bonds[i]["name"])) {
+            mycards["pre-defined"].push(bonds[i]["name"]);
+        }
+    }
+    setCookie('cardData', JSON.stringify(mycards), 100);
+    showBonds();
+    showCards();
+}
+
+function deleteAll() {
+    mycards = new Object();
+    mycards["user-defined"] = new Array();
+    mycards["pre-defined"] = new Array();
+    setCookie('cardData', JSON.stringify(mycards), 100);
+    showCards();
+    showBonds();
 }
 

@@ -38,13 +38,23 @@ $('#num-cards').change(function(){
 })
 
 $('#select-rarity').change(function(){
-    filter_rarity = $(this).children('option:selected').val();
+    bond_rarity = $(this).children('option:selected').val();
     showBonds();
 })
 
 $('#select-character').change(function(){
-    filter_character = $(this).children('option:selected').val();
+    bond_character = $(this).children('option:selected').val();
     showBonds();
+})
+
+$('#mycard-rarity').change(function(){
+    mycard_rarity = $(this).children('option:selected').val();
+    showCards();
+})
+
+$('#mycard-character').change(function(){
+    mycard_character = $(this).children('option:selected').val();
+    showCards();
 })
 
 window.onload = function(){

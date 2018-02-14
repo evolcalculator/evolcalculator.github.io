@@ -19,11 +19,11 @@ for line in lines:
             tmpdict.append(a)
     item = {}
     item["name"] = tmpdict[0]
-    item["decision"] = tmpdict[1]
-    item["creativity"] = tmpdict[2]
-    item["appetency"] = tmpdict[3]
-    item["action"] = tmpdict[4]
-    item["prof"] = tmpdict[5]
+    # item["decision"] = tmpdict[1]
+    # item["creativity"] = tmpdict[2]
+    # item["appetency"] = tmpdict[3]
+    # item["action"] = tmpdict[4]
+    # item["prof"] = tmpdict[5]
     item["goods"] = tmpdict[6]
     if tmpdict[0].find('普通') >= 0:
         item["name"] = tmpdict[0].replace('普通', '')
@@ -58,10 +58,10 @@ for line in lines:
     item["character"] = tmpdict[1]
     item["name"] = tmpdict[2]
     item["way"] = tmpdict[3]
-    item["decision"] = tmpdict[4]
-    item["creativity"] = tmpdict[5]
-    item["appetency"] = tmpdict[6]
-    item["action"] = tmpdict[7]
+    # item["decision"] = tmpdict[4]
+    # item["creativity"] = tmpdict[5]
+    # item["appetency"] = tmpdict[6]
+    # item["action"] = tmpdict[7]
     data.append(item)
         
 with open("card.json", "w") as fout:
