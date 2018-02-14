@@ -20,64 +20,61 @@ for line in lines:
             tmpdict.append(a)
     print tmpdict[0]
 
+    item = {}
+    item["name"] = tmpdict[0]
+    item["decision"] = tmpdict[1]
+    item["creativity"] = tmpdict[2]
+    item["appetency"] = tmpdict[3]
+    item["action"] = tmpdict[4]
+    item["prof"] = tmpdict[5]
+
+
     if tmpdict[0].find('拍摄副本') >= 0:
+        item["name"] = tmpdict[0].replace('拍摄副本', '')
+        item["list"] = {}
         for i in range(4):
-            item = {}
-            item["name"] = tmpdict[0]
-            item["decision"] = tmpdict[1]
-            item["creativity"] = tmpdict[2]
-            item["appetency"] = tmpdict[3]
-            item["action"] = tmpdict[4]
-            item["prof"] = tmpdict[5]
-            item["name"] = tmpdict[0].replace('拍摄副本', '')
-            item["goods"] = tmpdict[i*5+6]
-            item["character"] = person[i]
-            item["requests"] = []
+            a = {}
+            a["goods"] = tmpdict[i*5+6]
+            # a["character"] = person[i]
+            a["requests"] = []
             for j in range(2):
                 request = {}
                 request["request"] = tmpdict[i*5+6+2*j+1]
                 request["content"] = tmpdict[i*5+6+2*j+2]
+                a["requests"].append(request)
+            item["list"][person[i]] = a
+        data["instance"].append(item)
+
+    if tmpdict[0].find('普通') >= 0:
+        item["name"] = tmpdict[0].replace('普通', '')
+        item["goods"] = tmpdict[6]
+        item["requests"] = []
+        for i in range(7, len(tmpdict), 2):
+            request = {}
+            request["request"] = tmpdict[i]
+            request["content"] = tmpdict[i+1]
+            if request["content"] != "-":
                 item["requests"].append(request)
-            data["instance"].append(item)
-    else:
-        item = {}
-        item["name"] = tmpdict[0]
-        item["decision"] = tmpdict[1]
-        item["creativity"] = tmpdict[2]
-        item["appetency"] = tmpdict[3]
-        item["action"] = tmpdict[4]
-        item["prof"] = tmpdict[5]
+        data["normal"].append(item)
 
-        if tmpdict[0].find('普通') >= 0:
-            item["name"] = tmpdict[0].replace('普通', '')
-            item["goods"] = tmpdict[6]
-            item["requests"] = []
-            for i in range(7, len(tmpdict), 2):
-                request = {}
-                request["request"] = tmpdict[i]
-                request["content"] = tmpdict[i+1]
-                if request["content"] != "-":
-                    item["requests"].append(request)
-            data["normal"].append(item)
+    if tmpdict[0].find('精英') >= 0:
+        item["name"] = tmpdict[0].replace('精英', '')
+        item["goods"] = tmpdict[6]
+        item["requests"] = []
+        for i in range(7, len(tmpdict), 2):
+            request = {}
+            request["request"] = tmpdict[i]
+            request["content"] = tmpdict[i+1]
+            if request["content"] != "-":
+                item["requests"].append(request)
+        data["hard"].append(item)
 
-        if tmpdict[0].find('精英') >= 0:
-            item["name"] = tmpdict[0].replace('精英', '')
-            item["goods"] = tmpdict[6]
-            item["requests"] = []
-            for i in range(7, len(tmpdict), 2):
-                request = {}
-                request["request"] = tmpdict[i]
-                request["content"] = tmpdict[i+1]
-                if request["content"] != "-":
-                    item["requests"].append(request)
-            data["hard"].append(item)
-
-        if tmpdict[0].find('竞技场·') >= 0:
-            item["name"] = tmpdict[0].replace('竞技场·', '')
-            item["goods"] = "-"
-            item["requests"] = []
-            data["arena"].append(item)
-        
+    if tmpdict[0].find('竞技场·') >= 0:
+        item["name"] = tmpdict[0].replace('竞技场·', '')
+        item["goods"] = "-"
+        item["requests"] = []
+        data["arena"].append(item)
+    
 with open("weight.json", "w") as fout:
     fout.write(json.dumps(data, indent=4))
 

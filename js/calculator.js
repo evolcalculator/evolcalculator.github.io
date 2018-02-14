@@ -109,17 +109,19 @@ function requestData() {
     // alert(tmp_category + ", " + tmp_name + ", " + tmp_character);
     for (var i in weights[tmp_category]) {
         if (tmp_name == weights[tmp_category][i]["name"]) {
-            // alert(weights[tmp_category][i]["decision"])
-            if (tmp_category == "instance" && tmp_character != weights[tmp_category][i]["character"])
-                continue;
-            data = weights[tmp_category][i];
+            w_decision = weights[tmp_category][i]["decision"];
+            w_creativity = weights[tmp_category][i]["creativity"];
+            w_appetency = weights[tmp_category][i]["appetency"];
+            w_action = weights[tmp_category][i]["action"];
+            if (tmp_category == "instance"){
+                data = weights[tmp_category][i]["list"][tmp_character];
+            }
+            else {
+                data = weights[tmp_category][i];
+            }
             break;
         }
     }
-    w_decision = data["decision"];
-    w_creativity = data["creativity"];
-    w_appetency = data["appetency"];
-    w_action = data["action"];
     $('#stage-goods').empty();
     $('#stage-goods').append(data["goods"]);
     $('#div-request').empty();

@@ -103,2404 +103,1864 @@ var weights = {
     ], 
     "instance": [
         {
-            "goods": "R\u00b7\u6613\u5982\u53cd\u638c", 
             "name": "1-2", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a", 
+                            "request": "\u7eaa\u5f55\u7247/\u77e5\u8bc6"
+                        }, 
+                        {
+                            "content": "\u90ed\u5b9d\u513f/\u6797\u840c\u840c/\u9a6c\u82f1\u4fca/\u725b\u9c9c\u82b1/\u5357\u67ab/\u5b59\u5c0f\u8499/\u745f\u897f/\u8131\u5154/\u9b4f\u5b85\u751f/\u8d75\u575a\u5f3a/\u5361\u68ee", 
+                            "request": "\u7ec6\u5fc3"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6613\u5982\u53cd\u638c"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a", 
+                            "request": "\u7eaa\u5f55\u7247/\u77e5\u8bc6"
+                        }, 
+                        {
+                            "content": "sr\u90a3\u65f6\u79cb\u6df1/sr\u7ae5\u8da3\u65f6\u5149/r\u51ac\u65e5\u82b1\u706b/r\u773c\u524d\u4e00\u4eae/r\u4efb\u6027\u9080\u7ea6", 
+                            "request": "\u767d\u8d77/\u7eaf\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u8e0c\u8e87"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a/\u8d3e\u4e09\u9646/\u4f69\u59ec/\u8131\u5154/\u5434\u56fd\u5f3a/\u5361\u68ee", 
+                            "request": "\u7efc\u827a/\u77e5\u8bc6"
+                        }, 
+                        {
+                            "content": "\u91d1\u65f6\u8d6b/\u6797\u840c\u840c/\u9b4f\u5b85\u751f", 
+                            "request": "\u7efc\u827a/\u7f8e\u98df"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u5b8c\u7f8e\u793c\u670d"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u5c71\u53e3\u8d24/\u8131\u5154/\u6cf0\u68ee\u5a1c", 
+                            "request": "\u7efc\u827a/\u8fd0\u52a8"
+                        }, 
+                        {
+                            "content": "\u8d3a\u5c0a/\u91d1\u65f6\u8d6b/\u8d3e\u4e09\u9646/\u5eb7\u6587/\u4f69\u59ec/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u5434\u56fd\u5f3a/\u5f20\u5c0f\u9f99/\u8d75\u5c0f\u70e6", 
+                            "request": "\u7efc\u827a/\u7406\u6027"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u9759\u9759\u7b49\u5f85"
+                }
+            }, 
             "decision": "0.47", 
             "creativity": "0.45", 
             "appetency": "0.55", 
             "action": "0.53", 
-            "prof": "0.8", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a", 
-                    "request": "\u7eaa\u5f55\u7247/\u77e5\u8bc6"
-                }, 
-                {
-                    "content": "\u90ed\u5b9d\u513f/\u6797\u840c\u840c/\u9a6c\u82f1\u4fca/\u725b\u9c9c\u82b1/\u5357\u67ab/\u5b59\u5c0f\u8499/\u745f\u897f/\u8131\u5154/\u9b4f\u5b85\u751f/\u8d75\u575a\u5f3a/\u5361\u68ee", 
-                    "request": "\u7ec6\u5fc3"
-                }
-            ]
+            "prof": "0.8"
         }, 
         {
-            "goods": "R\u00b7\u9759\u9759\u7b49\u5f85", 
-            "name": "1-2", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.47", 
-            "creativity": "0.45", 
-            "appetency": "0.55", 
-            "action": "0.53", 
-            "prof": "0.8", 
-            "requests": [
-                {
-                    "content": "\u5c71\u53e3\u8d24/\u8131\u5154/\u6cf0\u68ee\u5a1c", 
-                    "request": "\u7efc\u827a/\u8fd0\u52a8"
-                }, 
-                {
-                    "content": "\u8d3a\u5c0a/\u91d1\u65f6\u8d6b/\u8d3e\u4e09\u9646/\u5eb7\u6587/\u4f69\u59ec/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u5434\u56fd\u5f3a/\u5f20\u5c0f\u9f99/\u8d75\u5c0f\u70e6", 
-                    "request": "\u7efc\u827a/\u7406\u6027"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u8e0c\u8e87", 
-            "name": "1-2", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.47", 
-            "creativity": "0.45", 
-            "appetency": "0.55", 
-            "action": "0.53", 
-            "prof": "0.8", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a", 
-                    "request": "\u7eaa\u5f55\u7247/\u77e5\u8bc6"
-                }, 
-                {
-                    "content": "sr\u90a3\u65f6\u79cb\u6df1/sr\u7ae5\u8da3\u65f6\u5149/r\u51ac\u65e5\u82b1\u706b/r\u773c\u524d\u4e00\u4eae/r\u4efb\u6027\u9080\u7ea6", 
-                    "request": "\u767d\u8d77/\u7eaf\u771f"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u5b8c\u7f8e\u793c\u670d", 
-            "name": "1-2", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.47", 
-            "creativity": "0.45", 
-            "appetency": "0.55", 
-            "action": "0.53", 
-            "prof": "0.8", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a/\u8d3e\u4e09\u9646/\u4f69\u59ec/\u8131\u5154/\u5434\u56fd\u5f3a/\u5361\u68ee", 
-                    "request": "\u7efc\u827a/\u77e5\u8bc6"
-                }, 
-                {
-                    "content": "\u91d1\u65f6\u8d6b/\u6797\u840c\u840c/\u9b4f\u5b85\u751f", 
-                    "request": "\u7efc\u827a/\u7f8e\u98df"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u53f3\u624b\u8fb9\u7684\u4f60", 
             "name": "1-3", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a", 
+                            "request": "\u7eaa\u5f55\u7247/\u77e5\u8bc6"
+                        }, 
+                        {
+                            "content": "r\u5fc3\u7075\u535a\u5f08/r\u51b0\u5c71\u6c14\u573a", 
+                            "request": "\u674e\u6cfd\u8a00/\u7f9e\u6da9"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u53f3\u624b\u8fb9\u7684\u4f60"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u5357\u67ab/\u5c71\u53e3\u8d24/\u6cf0\u68ee\u5a1c/\u6768\u5a55", 
+                            "request": "\u7eaa\u5f55\u7247/\u8fd0\u52a8"
+                        }, 
+                        {
+                            "content": "ssr\u661f\u4e0e\u7738/sr\u661f\u7a7a\u4e4b\u543b/sr\u707c\u707c\u5149\u8292/sr\u7480\u74a8\u7684\u5fc3/sr\u5728\u4f60\u8eab\u540e/r\u7825\u783a/r\u70e6\u607c/r\u81f4\u656c\u5403\u8d27", 
+                            "request": "\u767d\u8d77/\u6d6a\u6f2b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u4e00\u5bf9\u4e00\u5ba1\u8baf"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u963f\u8bfa\u5fb7/\u5eb7\u6587/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u8d75\u5c0f\u70e6", 
+                            "request": "\u7efc\u827a/\u9020\u578b"
+                        }, 
+                        {
+                            "content": "ssr\u661f\u4e4b\u6d77/sr\u5f77\u5fa8\u4e4b\u7738/r\u5feb\u4e50\u6839\u6e90/r\u4f60\u7684\u5b58\u5728/r\u614c\u4e71", 
+                            "request": "\u5468\u68cb\u6d1b/\u7eaf\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7535\u53f0\u8ff7\u8e2a"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u963f\u8bfa\u5fb7/\u5eb7\u6587/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u8d75\u5c0f\u70e6", 
+                            "request": "\u7efc\u827a/\u9020\u578b"
+                        }, 
+                        {
+                            "content": "ssr\u6a31\u843d\u65e0\u58f0/sr\u70b9\u70b9\u8424\u5149/sr\u6697\u591c\u5149\u8292/sr\u96ea\u5df2\u6df1/r\u7406\u667a\u4e0e\u60c5\u611f", 
+                            "request": "\u8bb8\u58a8/\u6d6a\u6f2b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6211\u7684\u6674\u5929"
+                }
+            }, 
             "decision": "0.45", 
             "creativity": "0.55", 
             "appetency": "0.53", 
             "action": "0.47", 
-            "prof": "0.75", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a", 
-                    "request": "\u7eaa\u5f55\u7247/\u77e5\u8bc6"
-                }, 
-                {
-                    "content": "r\u5fc3\u7075\u535a\u5f08/r\u51b0\u5c71\u6c14\u573a", 
-                    "request": "\u674e\u6cfd\u8a00/\u7f9e\u6da9"
-                }
-            ]
+            "prof": "0.75"
         }, 
         {
-            "goods": "R\u00b7\u6211\u7684\u6674\u5929", 
-            "name": "1-3", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.45", 
-            "creativity": "0.55", 
-            "appetency": "0.53", 
-            "action": "0.47", 
-            "prof": "0.75", 
-            "requests": [
-                {
-                    "content": "\u963f\u8bfa\u5fb7/\u5eb7\u6587/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u8d75\u5c0f\u70e6", 
-                    "request": "\u7efc\u827a/\u9020\u578b"
-                }, 
-                {
-                    "content": "ssr\u6a31\u843d\u65e0\u58f0/sr\u70b9\u70b9\u8424\u5149/sr\u6697\u591c\u5149\u8292/sr\u96ea\u5df2\u6df1/r\u7406\u667a\u4e0e\u60c5\u611f", 
-                    "request": "\u8bb8\u58a8/\u6d6a\u6f2b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u4e00\u5bf9\u4e00\u5ba1\u8baf", 
-            "name": "1-3", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.45", 
-            "creativity": "0.55", 
-            "appetency": "0.53", 
-            "action": "0.47", 
-            "prof": "0.75", 
-            "requests": [
-                {
-                    "content": "\u5357\u67ab/\u5c71\u53e3\u8d24/\u6cf0\u68ee\u5a1c/\u6768\u5a55", 
-                    "request": "\u7eaa\u5f55\u7247/\u8fd0\u52a8"
-                }, 
-                {
-                    "content": "ssr\u661f\u4e0e\u7738/sr\u661f\u7a7a\u4e4b\u543b/sr\u707c\u707c\u5149\u8292/sr\u7480\u74a8\u7684\u5fc3/sr\u5728\u4f60\u8eab\u540e/r\u7825\u783a/r\u70e6\u607c/r\u81f4\u656c\u5403\u8d27", 
-                    "request": "\u767d\u8d77/\u6d6a\u6f2b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u7535\u53f0\u8ff7\u8e2a", 
-            "name": "1-3", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.45", 
-            "creativity": "0.55", 
-            "appetency": "0.53", 
-            "action": "0.47", 
-            "prof": "0.75", 
-            "requests": [
-                {
-                    "content": "\u963f\u8bfa\u5fb7/\u5eb7\u6587/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u8d75\u5c0f\u70e6", 
-                    "request": "\u7efc\u827a/\u9020\u578b"
-                }, 
-                {
-                    "content": "ssr\u661f\u4e4b\u6d77/sr\u5f77\u5fa8\u4e4b\u7738/r\u5feb\u4e50\u6839\u6e90/r\u4f60\u7684\u5b58\u5728/r\u614c\u4e71", 
-                    "request": "\u5468\u68cb\u6d1b/\u7eaf\u771f"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u6613\u5982\u53cd\u638c", 
             "name": "1-4", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a/\u5eb7\u6587/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u677e\u4e0b\u656c\u52a9", 
+                            "request": "\u7eaa\u5f55\u7247/\u7406\u6027"
+                        }, 
+                        {
+                            "content": "r\u5fc3\u7075\u535a\u5f08/r\u51b0\u5c71\u6c14\u573a", 
+                            "request": "\u674e\u6cfd\u8a00/\u7f9e\u6da9"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6613\u5982\u53cd\u638c"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u963f\u8bfa\u5fb7/\u6f6e\u9738\u5929/\u5f17\u5170\u80af\u65af\u5766/\u725b\u5927\u4f1f/\u4e54\u5e03\u65af/\u5c71\u53e3\u8d24", 
+                            "request": "\u53db\u9006"
+                        }, 
+                        {
+                            "content": "ssr\u5360\u6709/sr\u4f60\u662f\u6211\u7684/sr\u8bda\u610f\u6559\u5b66/sr\u6fc0\u6218/r\u9006\u98ce/r\u63e1\u7d27\u7684\u62f3/r\u70ed\u8eab", 
+                            "request": "\u767d\u8d77/\u52c7\u6c14"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u8e0c\u8e87"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u963f\u8bfa\u5fb7/\u5eb7\u6587/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u8d75\u5c0f\u70e6", 
+                            "request": "\u7efc\u827a/\u9020\u578b"
+                        }, 
+                        {
+                            "content": "sr\u7275\u7eca/sr\u843d\u96ea\u65f6\u5149/r\u5b8c\u7f8e\u7ebf\u6761/r\u707c\u590f/r\u4e50\u5929\u6d3e/r\u5b8c\u7f8e\u793c\u670d", 
+                            "request": "\u5468\u68cb\u6d1b/\u6d3b\u529b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u5b8c\u7f8e\u793c\u670d"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a/\u91d1\u65f6\u8d6b/\u8d3e\u4e09\u9646/\u5eb7\u6587/\u4f69\u59ec/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u5434\u56fd\u5f3a/\u5f20\u5c0f\u9f99/\u8d75\u5c0f\u70e6", 
+                            "request": "\u7efc\u827a/\u7406\u6027"
+                        }, 
+                        {
+                            "content": "ssr\u6a31\u843d\u65e0\u58f0/sr\u70b9\u70b9\u8424\u5149/sr\u6697\u591c\u5149\u8292/sr\u96ea\u5df2\u6df1/r\u7406\u667a\u4e0e\u60c5\u611f", 
+                            "request": "\u8bb8\u58a8/\u6d6a\u6f2b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u9759\u9759\u7b49\u5f85"
+                }
+            }, 
             "decision": "0.55", 
             "creativity": "0.53", 
             "appetency": "0.47", 
             "action": "0.45", 
-            "prof": "0.7", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a/\u5eb7\u6587/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u677e\u4e0b\u656c\u52a9", 
-                    "request": "\u7eaa\u5f55\u7247/\u7406\u6027"
-                }, 
-                {
-                    "content": "r\u5fc3\u7075\u535a\u5f08/r\u51b0\u5c71\u6c14\u573a", 
-                    "request": "\u674e\u6cfd\u8a00/\u7f9e\u6da9"
-                }
-            ]
+            "prof": "0.7"
         }, 
         {
-            "goods": "R\u00b7\u9759\u9759\u7b49\u5f85", 
-            "name": "1-4", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.55", 
-            "creativity": "0.53", 
-            "appetency": "0.47", 
-            "action": "0.45", 
-            "prof": "0.7", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a/\u91d1\u65f6\u8d6b/\u8d3e\u4e09\u9646/\u5eb7\u6587/\u4f69\u59ec/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u5434\u56fd\u5f3a/\u5f20\u5c0f\u9f99/\u8d75\u5c0f\u70e6", 
-                    "request": "\u7efc\u827a/\u7406\u6027"
-                }, 
-                {
-                    "content": "ssr\u6a31\u843d\u65e0\u58f0/sr\u70b9\u70b9\u8424\u5149/sr\u6697\u591c\u5149\u8292/sr\u96ea\u5df2\u6df1/r\u7406\u667a\u4e0e\u60c5\u611f", 
-                    "request": "\u8bb8\u58a8/\u6d6a\u6f2b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u8e0c\u8e87", 
-            "name": "1-4", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.55", 
-            "creativity": "0.53", 
-            "appetency": "0.47", 
-            "action": "0.45", 
-            "prof": "0.7", 
-            "requests": [
-                {
-                    "content": "\u963f\u8bfa\u5fb7/\u6f6e\u9738\u5929/\u5f17\u5170\u80af\u65af\u5766/\u725b\u5927\u4f1f/\u4e54\u5e03\u65af/\u5c71\u53e3\u8d24", 
-                    "request": "\u53db\u9006"
-                }, 
-                {
-                    "content": "ssr\u5360\u6709/sr\u4f60\u662f\u6211\u7684/sr\u8bda\u610f\u6559\u5b66/sr\u6fc0\u6218/r\u9006\u98ce/r\u63e1\u7d27\u7684\u62f3/r\u70ed\u8eab", 
-                    "request": "\u767d\u8d77/\u52c7\u6c14"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u5b8c\u7f8e\u793c\u670d", 
-            "name": "1-4", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.55", 
-            "creativity": "0.53", 
-            "appetency": "0.47", 
-            "action": "0.45", 
-            "prof": "0.7", 
-            "requests": [
-                {
-                    "content": "\u963f\u8bfa\u5fb7/\u5eb7\u6587/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u8d75\u5c0f\u70e6", 
-                    "request": "\u7efc\u827a/\u9020\u578b"
-                }, 
-                {
-                    "content": "sr\u7275\u7eca/sr\u843d\u96ea\u65f6\u5149/r\u5b8c\u7f8e\u7ebf\u6761/r\u707c\u590f/r\u4e50\u5929\u6d3e/r\u5b8c\u7f8e\u793c\u670d", 
-                    "request": "\u5468\u68cb\u6d1b/\u6d3b\u529b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u5ba1\u89c6", 
             "name": "1-5", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u90ed\u5b9d\u513f/\u6797\u840c\u840c/\u9a6c\u82f1\u4fca/\u725b\u9c9c\u82b1/\u5357\u67ab/\u5b59\u5c0f\u8499/\u745f\u897f/\u8131\u5154/\u9b4f\u5b85\u751f/\u8d75\u575a\u5f3a/\u5361\u68ee", 
+                            "request": "\u7ec6\u5fc3"
+                        }, 
+                        {
+                            "content": "\u8d3a\u5c0a", 
+                            "request": "\u7eaa\u5f55\u7247/\u6587\u6848"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u5ba1\u89c6"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a", 
+                            "request": "\u7eaa\u5f55\u7247/\u77e5\u8bc6"
+                        }, 
+                        {
+                            "content": "ssr\u5360\u6709/sr\u4f60\u662f\u6211\u7684/sr\u8bda\u610f\u6559\u5b66/sr\u6fc0\u6218/r\u9006\u98ce/r\u63e1\u7d27\u7684\u62f3/r\u70ed\u8eab", 
+                            "request": "\u767d\u8d77/\u52c7\u6c14"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u601d\u8003\u8005"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a/\u8d3e\u4e09\u9646/\u4f69\u59ec/\u8131\u5154/\u5434\u56fd\u5f3a/\u5361\u68ee", 
+                            "request": "\u7efc\u827a/\u77e5\u8bc6"
+                        }, 
+                        {
+                            "content": "ssr\u5e26\u4f60\u79bb\u5f00/sr\u9163\u68a6/sr\u4e0e\u4f60\u6bd4\u80a9/sr\u6674\u591c/sr\u95ea\u4eae\u6ce8\u89c6/r\u7535\u53f0\u8ff7\u8e2a/r\u4f60\u7684\u6837\u5b50", 
+                            "request": "\u5468\u68cb\u6d1b/\u6e29\u60c5"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u627f\u8bfa"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u90ed\u5b9d\u513f/\u6797\u840c\u840c/\u9a6c\u82f1\u4fca/\u725b\u9c9c\u82b1/\u5b59\u5c0f\u8499/\u745f\u897f/\u8131\u5154/\u9b4f\u5b85\u751f/\u8d75\u575a\u5f3a/\u5361\u68ee", 
+                            "request": "\u7efc\u827a/\u7ec6\u5fc3"
+                        }, 
+                        {
+                            "content": "\u8d3a\u5c0a/\u91d1\u65f6\u8d6b/\u8d3e\u4e09\u9646/\u5eb7\u6587/\u4f69\u59ec/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u5434\u56fd\u5f3a/\u5f20\u5c0f\u9f99/\u8d75\u5c0f\u70e6", 
+                            "request": "\u7efc\u827a/\u7406\u6027"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u548c\u6211\u7ea6\u4f1a"
+                }
+            }, 
             "decision": "0.55", 
             "creativity": "0.45", 
             "appetency": "0.53", 
             "action": "0.47", 
-            "prof": "0.65", 
-            "requests": [
-                {
-                    "content": "\u90ed\u5b9d\u513f/\u6797\u840c\u840c/\u9a6c\u82f1\u4fca/\u725b\u9c9c\u82b1/\u5357\u67ab/\u5b59\u5c0f\u8499/\u745f\u897f/\u8131\u5154/\u9b4f\u5b85\u751f/\u8d75\u575a\u5f3a/\u5361\u68ee", 
-                    "request": "\u7ec6\u5fc3"
-                }, 
-                {
-                    "content": "\u8d3a\u5c0a", 
-                    "request": "\u7eaa\u5f55\u7247/\u6587\u6848"
-                }
-            ]
+            "prof": "0.65"
         }, 
         {
-            "goods": "R\u00b7\u548c\u6211\u7ea6\u4f1a", 
-            "name": "1-5", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.55", 
-            "creativity": "0.45", 
-            "appetency": "0.53", 
-            "action": "0.47", 
-            "prof": "0.65", 
-            "requests": [
-                {
-                    "content": "\u90ed\u5b9d\u513f/\u6797\u840c\u840c/\u9a6c\u82f1\u4fca/\u725b\u9c9c\u82b1/\u5b59\u5c0f\u8499/\u745f\u897f/\u8131\u5154/\u9b4f\u5b85\u751f/\u8d75\u575a\u5f3a/\u5361\u68ee", 
-                    "request": "\u7efc\u827a/\u7ec6\u5fc3"
-                }, 
-                {
-                    "content": "\u8d3a\u5c0a/\u91d1\u65f6\u8d6b/\u8d3e\u4e09\u9646/\u5eb7\u6587/\u4f69\u59ec/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u5434\u56fd\u5f3a/\u5f20\u5c0f\u9f99/\u8d75\u5c0f\u70e6", 
-                    "request": "\u7efc\u827a/\u7406\u6027"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u601d\u8003\u8005", 
-            "name": "1-5", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.55", 
-            "creativity": "0.45", 
-            "appetency": "0.53", 
-            "action": "0.47", 
-            "prof": "0.65", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a", 
-                    "request": "\u7eaa\u5f55\u7247/\u77e5\u8bc6"
-                }, 
-                {
-                    "content": "ssr\u5360\u6709/sr\u4f60\u662f\u6211\u7684/sr\u8bda\u610f\u6559\u5b66/sr\u6fc0\u6218/r\u9006\u98ce/r\u63e1\u7d27\u7684\u62f3/r\u70ed\u8eab", 
-                    "request": "\u767d\u8d77/\u52c7\u6c14"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u627f\u8bfa", 
-            "name": "1-5", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.55", 
-            "creativity": "0.45", 
-            "appetency": "0.53", 
-            "action": "0.47", 
-            "prof": "0.65", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a/\u8d3e\u4e09\u9646/\u4f69\u59ec/\u8131\u5154/\u5434\u56fd\u5f3a/\u5361\u68ee", 
-                    "request": "\u7efc\u827a/\u77e5\u8bc6"
-                }, 
-                {
-                    "content": "ssr\u5e26\u4f60\u79bb\u5f00/sr\u9163\u68a6/sr\u4e0e\u4f60\u6bd4\u80a9/sr\u6674\u591c/sr\u95ea\u4eae\u6ce8\u89c6/r\u7535\u53f0\u8ff7\u8e2a/r\u4f60\u7684\u6837\u5b50", 
-                    "request": "\u5468\u68cb\u6d1b/\u6e29\u60c5"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u53f3\u624b\u8fb9\u7684\u4f60", 
             "name": "1-6", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u963f\u8bfa\u5fb7/\u5eb7\u6587/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u8d75\u5c0f\u70e6", 
+                            "request": "\u9020\u578b"
+                        }, 
+                        {
+                            "content": "r\u5fc3\u7075\u535a\u5f08/r\u51b0\u5c71\u6c14\u573a", 
+                            "request": "\u674e\u6cfd\u8a00/\u7f9e\u6da9"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u53f3\u624b\u8fb9\u7684\u4f60"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u5357\u67ab/\u6cf0\u68ee\u5a1c/\u5f20\u5c0f\u9f99/\u8d75\u5c0f\u70e6", 
+                            "request": "\u640f\u51fb"
+                        }, 
+                        {
+                            "content": "ssr\u661f\u4e0e\u7738/sr\u661f\u7a7a\u4e4b\u543b/sr\u707c\u707c\u5149\u8292/sr\u7480\u74a8\u7684\u5fc3/sr\u5728\u4f60\u8eab\u540e/r\u7825\u783a/r\u70e6\u607c/r\u81f4\u656c\u5403\u8d27", 
+                            "request": "\u767d\u8d77/\u6d6a\u6f2b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u4e00\u5bf9\u4e00\u5ba1\u8baf"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u6cf0\u68ee\u5a1c/\u5f20\u5c0f\u9f99", 
+                            "request": "\u7efc\u827a/\u640f\u51fb"
+                        }, 
+                        {
+                            "content": "sr\u7275\u7eca/sr\u843d\u96ea\u65f6\u5149/r\u5b8c\u7f8e\u7ebf\u6761/r\u707c\u590f/r\u4e50\u5929\u6d3e/r\u5b8c\u7f8e\u793c\u670d", 
+                            "request": "\u5468\u68cb\u6d1b/\u6d3b\u529b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7535\u53f0\u8ff7\u8e2a"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u90ed\u5b9d\u513f/\u6797\u840c\u840c/\u9a6c\u82f1\u4fca/\u725b\u9c9c\u82b1/\u5b59\u5c0f\u8499/\u745f\u897f/\u8131\u5154/\u9b4f\u5b85\u751f/\u8d75\u575a\u5f3a/\u5361\u68ee", 
+                            "request": "\u7efc\u827a/\u7ec6\u5fc3"
+                        }, 
+                        {
+                            "content": "sr\u4e13\u6ce8/r\u9759\u9759\u7b49\u5f85/r\u4e56\u4e56\u5403\u836f", 
+                            "request": "\u8bb8\u58a8/\u8ba4\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6211\u7684\u6674\u5929"
+                }
+            }, 
             "decision": "0.53", 
             "creativity": "0.47", 
             "appetency": "0.55", 
             "action": "0.45", 
-            "prof": "0.6", 
-            "requests": [
-                {
-                    "content": "\u963f\u8bfa\u5fb7/\u5eb7\u6587/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u8d75\u5c0f\u70e6", 
-                    "request": "\u9020\u578b"
-                }, 
-                {
-                    "content": "r\u5fc3\u7075\u535a\u5f08/r\u51b0\u5c71\u6c14\u573a", 
-                    "request": "\u674e\u6cfd\u8a00/\u7f9e\u6da9"
-                }
-            ]
+            "prof": "0.6"
         }, 
         {
-            "goods": "R\u00b7\u6211\u7684\u6674\u5929", 
-            "name": "1-6", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.53", 
-            "creativity": "0.47", 
-            "appetency": "0.55", 
-            "action": "0.45", 
-            "prof": "0.6", 
-            "requests": [
-                {
-                    "content": "\u90ed\u5b9d\u513f/\u6797\u840c\u840c/\u9a6c\u82f1\u4fca/\u725b\u9c9c\u82b1/\u5b59\u5c0f\u8499/\u745f\u897f/\u8131\u5154/\u9b4f\u5b85\u751f/\u8d75\u575a\u5f3a/\u5361\u68ee", 
-                    "request": "\u7efc\u827a/\u7ec6\u5fc3"
-                }, 
-                {
-                    "content": "sr\u4e13\u6ce8/r\u9759\u9759\u7b49\u5f85/r\u4e56\u4e56\u5403\u836f", 
-                    "request": "\u8bb8\u58a8/\u8ba4\u771f"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u4e00\u5bf9\u4e00\u5ba1\u8baf", 
-            "name": "1-6", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.53", 
-            "creativity": "0.47", 
-            "appetency": "0.55", 
-            "action": "0.45", 
-            "prof": "0.6", 
-            "requests": [
-                {
-                    "content": "\u5357\u67ab/\u6cf0\u68ee\u5a1c/\u5f20\u5c0f\u9f99/\u8d75\u5c0f\u70e6", 
-                    "request": "\u640f\u51fb"
-                }, 
-                {
-                    "content": "ssr\u661f\u4e0e\u7738/sr\u661f\u7a7a\u4e4b\u543b/sr\u707c\u707c\u5149\u8292/sr\u7480\u74a8\u7684\u5fc3/sr\u5728\u4f60\u8eab\u540e/r\u7825\u783a/r\u70e6\u607c/r\u81f4\u656c\u5403\u8d27", 
-                    "request": "\u767d\u8d77/\u6d6a\u6f2b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u7535\u53f0\u8ff7\u8e2a", 
-            "name": "1-6", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.53", 
-            "creativity": "0.47", 
-            "appetency": "0.55", 
-            "action": "0.45", 
-            "prof": "0.6", 
-            "requests": [
-                {
-                    "content": "\u6cf0\u68ee\u5a1c/\u5f20\u5c0f\u9f99", 
-                    "request": "\u7efc\u827a/\u640f\u51fb"
-                }, 
-                {
-                    "content": "sr\u7275\u7eca/sr\u843d\u96ea\u65f6\u5149/r\u5b8c\u7f8e\u7ebf\u6761/r\u707c\u590f/r\u4e50\u5929\u6d3e/r\u5b8c\u7f8e\u793c\u670d", 
-                    "request": "\u5468\u68cb\u6d1b/\u6d3b\u529b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u601d\u7d22", 
             "name": "2-2", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u9a6c\u82f1\u4fca/\u4e54\u6cbb/\u745e\u514b/\u5434\u56fd\u5f3a/\u5361\u68ee", 
+                            "request": "\u7efc\u827a/\u516c\u5173"
+                        }, 
+                        {
+                            "content": "\u90ed\u5b9d\u513f/\u6797\u840c\u840c/\u9a6c\u82f1\u4fca/\u725b\u9c9c\u82b1/\u5b59\u5c0f\u8499/\u745f\u897f/\u8131\u5154/\u9b4f\u5b85\u751f/\u8d75\u575a\u5f3a/\u5361\u68ee", 
+                            "request": "\u7efc\u827a/\u7ec6\u5fc3"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u601d\u7d22"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a/\u5f20\u5c0f\u9f99/\u5361\u68ee", 
+                            "request": "\u7efc\u827a/\u540e\u52e4"
+                        }, 
+                        {
+                            "content": "\u6f6e\u9738\u5929/\u5f17\u5170\u80af\u65af\u5766/\u90dd\u7f8e\u4e3d", 
+                            "request": "\u7efc\u827a/\u706f\u5149"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7387\u6027"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u963f\u8bfa\u5fb7/\u8d75\u5c0f\u70e6", 
+                            "request": "\u7535\u89c6\u5267/\u9020\u578b"
+                        }, 
+                        {
+                            "content": "\u9b4f\u5b85\u751f", 
+                            "request": "\u7535\u89c6\u5267/\u6444\u5f71"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u707c\u590f"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a", 
+                            "request": "\u7eaa\u5f55\u7247/\u6587\u6848"
+                        }, 
+                        {
+                            "content": "\u745e\u514b", 
+                            "request": "\u7eaa\u5f55\u7247/\u8425\u9500"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6076\u4f5c\u5267"
+                }
+            }, 
             "decision": "0.55", 
             "creativity": "0.45", 
             "appetency": "0.53", 
             "action": "0.47", 
-            "prof": "0.55", 
-            "requests": [
-                {
-                    "content": "\u9a6c\u82f1\u4fca/\u4e54\u6cbb/\u745e\u514b/\u5434\u56fd\u5f3a/\u5361\u68ee", 
-                    "request": "\u7efc\u827a/\u516c\u5173"
-                }, 
-                {
-                    "content": "\u90ed\u5b9d\u513f/\u6797\u840c\u840c/\u9a6c\u82f1\u4fca/\u725b\u9c9c\u82b1/\u5b59\u5c0f\u8499/\u745f\u897f/\u8131\u5154/\u9b4f\u5b85\u751f/\u8d75\u575a\u5f3a/\u5361\u68ee", 
-                    "request": "\u7efc\u827a/\u7ec6\u5fc3"
-                }
-            ]
+            "prof": "0.55"
         }, 
         {
-            "goods": "R\u00b7\u6076\u4f5c\u5267", 
-            "name": "2-2", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.55", 
-            "creativity": "0.45", 
-            "appetency": "0.53", 
-            "action": "0.47", 
-            "prof": "0.55", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a", 
-                    "request": "\u7eaa\u5f55\u7247/\u6587\u6848"
-                }, 
-                {
-                    "content": "\u745e\u514b", 
-                    "request": "\u7eaa\u5f55\u7247/\u8425\u9500"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u7387\u6027", 
-            "name": "2-2", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.55", 
-            "creativity": "0.45", 
-            "appetency": "0.53", 
-            "action": "0.47", 
-            "prof": "0.55", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a/\u5f20\u5c0f\u9f99/\u5361\u68ee", 
-                    "request": "\u7efc\u827a/\u540e\u52e4"
-                }, 
-                {
-                    "content": "\u6f6e\u9738\u5929/\u5f17\u5170\u80af\u65af\u5766/\u90dd\u7f8e\u4e3d", 
-                    "request": "\u7efc\u827a/\u706f\u5149"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u707c\u590f", 
-            "name": "2-2", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.55", 
-            "creativity": "0.45", 
-            "appetency": "0.53", 
-            "action": "0.47", 
-            "prof": "0.55", 
-            "requests": [
-                {
-                    "content": "\u963f\u8bfa\u5fb7/\u8d75\u5c0f\u70e6", 
-                    "request": "\u7535\u89c6\u5267/\u9020\u578b"
-                }, 
-                {
-                    "content": "\u9b4f\u5b85\u751f", 
-                    "request": "\u7535\u89c6\u5267/\u6444\u5f71"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u5ba1\u89c6", 
             "name": "2-3", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u963f\u8bfa\u5fb7/\u91d1\u65f6\u8d6b/\u4e54\u4f0a", 
+                            "request": "\u7efc\u827a/\u670d\u88c5"
+                        }, 
+                        {
+                            "content": "\u8d3e\u4e09\u9646/\u725b\u9c9c\u82b1/\u745e\u514b/\u5353\u5c3e", 
+                            "request": "\u7efc\u827a/\u673a\u654f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u5ba1\u89c6"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u8d3e\u4e09\u9646/\u725b\u9c9c\u82b1/\u745e\u514b/\u5353\u5c3e", 
+                            "request": "\u7efc\u827a/\u673a\u654f"
+                        }, 
+                        {
+                            "content": "ssr\u5360\u6709/sr\u4f60\u662f\u6211\u7684/sr\u8bda\u610f\u6559\u5b66/sr\u6fc0\u6218/r\u9006\u98ce/r\u63e1\u7d27\u7684\u62f3/r\u70ed\u8eab", 
+                            "request": "\u767d\u8d77/\u52c7\u6c14"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u601d\u8003\u8005"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u5b59\u5c0f\u8499", 
+                            "request": "\u7535\u89c6\u5267/\u6587\u6848"
+                        }, 
+                        {
+                            "content": "ssr\u5e26\u4f60\u79bb\u5f00/sr\u9163\u68a6/sr\u4e0e\u4f60\u6bd4\u80a9/sr\u6674\u591c/sr\u95ea\u4eae\u6ce8\u89c6/r\u7535\u53f0\u8ff7\u8e2a/r\u4f60\u7684\u6837\u5b50", 
+                            "request": "\u5468\u68cb\u6d1b/\u6e29\u60c5"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u627f\u8bfa"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u9b4f\u5b85\u751f/\u6768\u5a55/\u8d75\u575a\u5f3a", 
+                            "request": "\u7eaa\u5f55\u7247/\u526a\u8f91"
+                        }, 
+                        {
+                            "content": "\u6f6e\u9738\u5929/\u5f17\u5170\u80af\u65af\u5766/\u9a6c\u82f1\u4fca", 
+                            "request": "\u7eaa\u5f55\u7247/\u975e\u4e3b\u6d41"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u548c\u6211\u7ea6\u4f1a"
+                }
+            }, 
             "decision": "0.45", 
             "creativity": "0.35", 
             "appetency": "0.65", 
             "action": "0.55", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u963f\u8bfa\u5fb7/\u91d1\u65f6\u8d6b/\u4e54\u4f0a", 
-                    "request": "\u7efc\u827a/\u670d\u88c5"
-                }, 
-                {
-                    "content": "\u8d3e\u4e09\u9646/\u725b\u9c9c\u82b1/\u745e\u514b/\u5353\u5c3e", 
-                    "request": "\u7efc\u827a/\u673a\u654f"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u548c\u6211\u7ea6\u4f1a", 
-            "name": "2-3", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.45", 
-            "creativity": "0.35", 
-            "appetency": "0.65", 
-            "action": "0.55", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u9b4f\u5b85\u751f/\u6768\u5a55/\u8d75\u575a\u5f3a", 
-                    "request": "\u7eaa\u5f55\u7247/\u526a\u8f91"
-                }, 
-                {
-                    "content": "\u6f6e\u9738\u5929/\u5f17\u5170\u80af\u65af\u5766/\u9a6c\u82f1\u4fca", 
-                    "request": "\u7eaa\u5f55\u7247/\u975e\u4e3b\u6d41"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u601d\u8003\u8005", 
-            "name": "2-3", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.45", 
-            "creativity": "0.35", 
-            "appetency": "0.65", 
-            "action": "0.55", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d3e\u4e09\u9646/\u725b\u9c9c\u82b1/\u745e\u514b/\u5353\u5c3e", 
-                    "request": "\u7efc\u827a/\u673a\u654f"
-                }, 
-                {
-                    "content": "ssr\u5360\u6709/sr\u4f60\u662f\u6211\u7684/sr\u8bda\u610f\u6559\u5b66/sr\u6fc0\u6218/r\u9006\u98ce/r\u63e1\u7d27\u7684\u62f3/r\u70ed\u8eab", 
-                    "request": "\u767d\u8d77/\u52c7\u6c14"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u627f\u8bfa", 
-            "name": "2-3", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.45", 
-            "creativity": "0.35", 
-            "appetency": "0.65", 
-            "action": "0.55", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5b59\u5c0f\u8499", 
-                    "request": "\u7535\u89c6\u5267/\u6587\u6848"
-                }, 
-                {
-                    "content": "ssr\u5e26\u4f60\u79bb\u5f00/sr\u9163\u68a6/sr\u4e0e\u4f60\u6bd4\u80a9/sr\u6674\u591c/sr\u95ea\u4eae\u6ce8\u89c6/r\u7535\u53f0\u8ff7\u8e2a/r\u4f60\u7684\u6837\u5b50", 
-                    "request": "\u5468\u68cb\u6d1b/\u6e29\u60c5"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u6613\u5982\u53cd\u638c", 
             "name": "2-4", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u6f6e\u9738\u5929/\u5f17\u5170\u80af\u65af\u5766/\u90dd\u7f8e\u4e3d", 
+                            "request": "\u7efc\u827a/\u706f\u5149"
+                        }, 
+                        {
+                            "content": "\u79e6\u78a7\u7389", 
+                            "request": "\u7efc\u827a/\u53e4\u98ce"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6613\u5982\u53cd\u638c"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u5c71\u53e3\u8d24/\u8131\u5154/\u6cf0\u68ee\u5a1c", 
+                            "request": "\u7efc\u827a/\u8fd0\u52a8"
+                        }, 
+                        {
+                            "content": "sr\u90a3\u65f6\u79cb\u6df1/sr\u7ae5\u8da3\u65f6\u5149/r\u51ac\u65e5\u82b1\u706b/r\u773c\u524d\u4e00\u4eae/r\u4efb\u6027\u9080\u7ea6", 
+                            "request": "\u767d\u8d77/\u7eaf\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u8e0c\u8e87"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u725b\u5927\u4f1f/\u5b8b\u4f73\u6d0b/\u745f\u897f/\u5f20\u5c0f\u9f99", 
+                            "request": "\u7535\u89c6\u5267/\u8868\u6f14"
+                        }, 
+                        {
+                            "content": "\u8d3e\u4e09\u9646", 
+                            "request": "\u7535\u89c6\u5267/\u533b\u7597"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u5b8c\u7f8e\u793c\u670d"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a/\u677e\u4e0b\u656c\u52a9", 
+                            "request": "\u7eaa\u5f55\u7247/\u540e\u52e4"
+                        }, 
+                        {
+                            "content": "ssr\u6eba\u6d77/sr\u6df1\u9677/sr\u5b9a\u683c/r\u56de\u7738/r\u6cbb\u6108\u5e08/r\u7247\u523b\u72b9\u7591", 
+                            "request": "\u8bb8\u58a8/\u52c7\u6c14"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u9759\u9759\u7b49\u5f85"
+                }
+            }, 
             "decision": "0.35", 
             "creativity": "0.65", 
             "appetency": "0.45", 
             "action": "0.55", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u6f6e\u9738\u5929/\u5f17\u5170\u80af\u65af\u5766/\u90dd\u7f8e\u4e3d", 
-                    "request": "\u7efc\u827a/\u706f\u5149"
-                }, 
-                {
-                    "content": "\u79e6\u78a7\u7389", 
-                    "request": "\u7efc\u827a/\u53e4\u98ce"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u9759\u9759\u7b49\u5f85", 
-            "name": "2-4", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.35", 
-            "creativity": "0.65", 
-            "appetency": "0.45", 
-            "action": "0.55", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a/\u677e\u4e0b\u656c\u52a9", 
-                    "request": "\u7eaa\u5f55\u7247/\u540e\u52e4"
-                }, 
-                {
-                    "content": "ssr\u6eba\u6d77/sr\u6df1\u9677/sr\u5b9a\u683c/r\u56de\u7738/r\u6cbb\u6108\u5e08/r\u7247\u523b\u72b9\u7591", 
-                    "request": "\u8bb8\u58a8/\u52c7\u6c14"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u8e0c\u8e87", 
-            "name": "2-4", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.35", 
-            "creativity": "0.65", 
-            "appetency": "0.45", 
-            "action": "0.55", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5c71\u53e3\u8d24/\u8131\u5154/\u6cf0\u68ee\u5a1c", 
-                    "request": "\u7efc\u827a/\u8fd0\u52a8"
-                }, 
-                {
-                    "content": "sr\u90a3\u65f6\u79cb\u6df1/sr\u7ae5\u8da3\u65f6\u5149/r\u51ac\u65e5\u82b1\u706b/r\u773c\u524d\u4e00\u4eae/r\u4efb\u6027\u9080\u7ea6", 
-                    "request": "\u767d\u8d77/\u7eaf\u771f"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u5b8c\u7f8e\u793c\u670d", 
-            "name": "2-4", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.35", 
-            "creativity": "0.65", 
-            "appetency": "0.45", 
-            "action": "0.55", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u725b\u5927\u4f1f/\u5b8b\u4f73\u6d0b/\u745f\u897f/\u5f20\u5c0f\u9f99", 
-                    "request": "\u7535\u89c6\u5267/\u8868\u6f14"
-                }, 
-                {
-                    "content": "\u8d3e\u4e09\u9646", 
-                    "request": "\u7535\u89c6\u5267/\u533b\u7597"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u53f3\u624b\u8fb9\u7684\u4f60", 
             "name": "2-5", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u5c71\u53e3\u8d24", 
+                            "request": "\u7efc\u827a/\u5b89\u4fdd"
+                        }, 
+                        {
+                            "content": "ssr\u63a0\u593a\u8005/sr\u4fa7\u8033\u503e\u542c/r\u7279\u6b8a\u4efb\u52a1/r\u4e0d\u8981\u8bf4\u8bdd/r\u5378\u4e0b\u5fc3\u9632", 
+                            "request": "\u674e\u6cfd\u8a00/\u8ba4\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u53f3\u624b\u8fb9\u7684\u4f60"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u5b59\u5c0f\u8499/\u8131\u5154", 
+                            "request": "\u7efc\u827a/\u7f16\u5267"
+                        }, 
+                        {
+                            "content": "\u963f\u8bfa\u5fb7/\u5eb7\u6587/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u8d75\u5c0f\u70e6", 
+                            "request": "\u7efc\u827a/\u9020\u578b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u4e00\u5bf9\u4e00\u5ba1\u8baf"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u5357\u67ab/\u6cf0\u68ee\u5a1c/\u5f20\u5c0f\u9f99/\u8d75\u5c0f\u70e6", 
+                            "request": "\u640f\u51fb"
+                        }, 
+                        {
+                            "content": "ssr\u5e26\u4f60\u79bb\u5f00/sr\u9163\u68a6/sr\u4e0e\u4f60\u6bd4\u80a9/sr\u6674\u591c/sr\u95ea\u4eae\u6ce8\u89c6/r\u7535\u53f0\u8ff7\u8e2a/r\u4f60\u7684\u6837\u5b50", 
+                            "request": "\u5468\u68cb\u6d1b/\u6e29\u60c5"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7535\u53f0\u8ff7\u8e2a"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u5357\u67ab/\u5c71\u53e3\u8d24", 
+                            "request": "\u7eaa\u5f55\u7247/\u5b89\u4fdd"
+                        }, 
+                        {
+                            "content": "ssr\u6eba\u6d77/sr\u6df1\u9677/sr\u5b9a\u683c/r\u56de\u7738/r\u6cbb\u6108\u5e08/r\u7247\u523b\u72b9\u7591", 
+                            "request": "\u8bb8\u58a8/\u52c7\u6c14"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6211\u7684\u6674\u5929"
+                }
+            }, 
             "decision": "0.65", 
             "creativity": "0.35", 
             "appetency": "0.45", 
             "action": "0.55", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5c71\u53e3\u8d24", 
-                    "request": "\u7efc\u827a/\u5b89\u4fdd"
-                }, 
-                {
-                    "content": "ssr\u63a0\u593a\u8005/sr\u4fa7\u8033\u503e\u542c/r\u7279\u6b8a\u4efb\u52a1/r\u4e0d\u8981\u8bf4\u8bdd/r\u5378\u4e0b\u5fc3\u9632", 
-                    "request": "\u674e\u6cfd\u8a00/\u8ba4\u771f"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u6211\u7684\u6674\u5929", 
-            "name": "2-5", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.65", 
-            "creativity": "0.35", 
-            "appetency": "0.45", 
-            "action": "0.55", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5357\u67ab/\u5c71\u53e3\u8d24", 
-                    "request": "\u7eaa\u5f55\u7247/\u5b89\u4fdd"
-                }, 
-                {
-                    "content": "ssr\u6eba\u6d77/sr\u6df1\u9677/sr\u5b9a\u683c/r\u56de\u7738/r\u6cbb\u6108\u5e08/r\u7247\u523b\u72b9\u7591", 
-                    "request": "\u8bb8\u58a8/\u52c7\u6c14"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u4e00\u5bf9\u4e00\u5ba1\u8baf", 
-            "name": "2-5", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.65", 
-            "creativity": "0.35", 
-            "appetency": "0.45", 
-            "action": "0.55", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5b59\u5c0f\u8499/\u8131\u5154", 
-                    "request": "\u7efc\u827a/\u7f16\u5267"
-                }, 
-                {
-                    "content": "\u963f\u8bfa\u5fb7/\u5eb7\u6587/\u79e6\u78a7\u7389/\u4e54\u4f0a/\u8d75\u5c0f\u70e6", 
-                    "request": "\u7efc\u827a/\u9020\u578b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u7535\u53f0\u8ff7\u8e2a", 
-            "name": "2-5", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.65", 
-            "creativity": "0.35", 
-            "appetency": "0.45", 
-            "action": "0.55", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5357\u67ab/\u6cf0\u68ee\u5a1c/\u5f20\u5c0f\u9f99/\u8d75\u5c0f\u70e6", 
-                    "request": "\u640f\u51fb"
-                }, 
-                {
-                    "content": "ssr\u5e26\u4f60\u79bb\u5f00/sr\u9163\u68a6/sr\u4e0e\u4f60\u6bd4\u80a9/sr\u6674\u591c/sr\u95ea\u4eae\u6ce8\u89c6/r\u7535\u53f0\u8ff7\u8e2a/r\u4f60\u7684\u6837\u5b50", 
-                    "request": "\u5468\u68cb\u6d1b/\u6e29\u60c5"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u5951\u7ea6", 
             "name": "2-6", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u5c71\u53e3\u8d24/\u8131\u5154/\u6cf0\u68ee\u5a1c", 
+                            "request": "\u7efc\u827a/\u8fd0\u52a8"
+                        }, 
+                        {
+                            "content": "ssr\u63a0\u593a\u8005/sr\u4fa7\u8033\u503e\u542c/r\u7279\u6b8a\u4efb\u52a1/r\u4e0d\u8981\u8bf4\u8bdd/r\u5378\u4e0b\u5fc3\u9632", 
+                            "request": "\u674e\u6cfd\u8a00/\u8ba4\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u5951\u7ea6"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a/\u5f20\u5c0f\u9f99/\u5361\u68ee", 
+                            "request": "\u7efc\u827a/\u540e\u52e4"
+                        }, 
+                        {
+                            "content": "r\u601d\u8003\u8005/r\u8e0c\u8e87/r\u56de\u5fc6\u89e3\u9501", 
+                            "request": "\u767d\u8d77/\u7f9e\u6da9"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u610f\u4e71"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u6f6e\u9738\u5929/\u8d6b\u65af/\u80af\u5854/\u4e54\u5e03\u65af/\u5b8b\u4f73\u6d0b", 
+                            "request": "\u97f3\u4e50"
+                        }, 
+                        {
+                            "content": "ssr\u661f\u4e4b\u6d77/sr\u5f77\u5fa8\u4e4b\u7738/r\u5feb\u4e50\u6839\u6e90/r\u4f60\u7684\u5b58\u5728/r\u614c\u4e71", 
+                            "request": "\u5468\u68cb\u6d1b/\u7eaf\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7eda\u70c2\u65f6\u523b"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u725b\u9c9c\u82b1/\u745e\u514b", 
+                            "request": "\u7eaa\u5f55\u7247/\u673a\u654f"
+                        }, 
+                        {
+                            "content": "ssr\u6a31\u843d\u65e0\u58f0/sr\u70b9\u70b9\u8424\u5149/sr\u6697\u591c\u5149\u8292/sr\u96ea\u5df2\u6df1/r\u7406\u667a\u4e0e\u60c5\u611f", 
+                            "request": "\u8bb8\u58a8/\u6d6a\u6f2b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6cbb\u6108\u5e08"
+                }
+            }, 
             "decision": "0.65", 
             "creativity": "0.55", 
             "appetency": "0.45", 
             "action": "0.35", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5c71\u53e3\u8d24/\u8131\u5154/\u6cf0\u68ee\u5a1c", 
-                    "request": "\u7efc\u827a/\u8fd0\u52a8"
-                }, 
-                {
-                    "content": "ssr\u63a0\u593a\u8005/sr\u4fa7\u8033\u503e\u542c/r\u7279\u6b8a\u4efb\u52a1/r\u4e0d\u8981\u8bf4\u8bdd/r\u5378\u4e0b\u5fc3\u9632", 
-                    "request": "\u674e\u6cfd\u8a00/\u8ba4\u771f"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u6cbb\u6108\u5e08", 
-            "name": "2-6", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.65", 
-            "creativity": "0.55", 
-            "appetency": "0.45", 
-            "action": "0.35", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u725b\u9c9c\u82b1/\u745e\u514b", 
-                    "request": "\u7eaa\u5f55\u7247/\u673a\u654f"
-                }, 
-                {
-                    "content": "ssr\u6a31\u843d\u65e0\u58f0/sr\u70b9\u70b9\u8424\u5149/sr\u6697\u591c\u5149\u8292/sr\u96ea\u5df2\u6df1/r\u7406\u667a\u4e0e\u60c5\u611f", 
-                    "request": "\u8bb8\u58a8/\u6d6a\u6f2b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u610f\u4e71", 
-            "name": "2-6", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.65", 
-            "creativity": "0.55", 
-            "appetency": "0.45", 
-            "action": "0.35", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a/\u5f20\u5c0f\u9f99/\u5361\u68ee", 
-                    "request": "\u7efc\u827a/\u540e\u52e4"
-                }, 
-                {
-                    "content": "r\u601d\u8003\u8005/r\u8e0c\u8e87/r\u56de\u5fc6\u89e3\u9501", 
-                    "request": "\u767d\u8d77/\u7f9e\u6da9"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u7eda\u70c2\u65f6\u523b", 
-            "name": "2-6", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.65", 
-            "creativity": "0.55", 
-            "appetency": "0.45", 
-            "action": "0.35", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u6f6e\u9738\u5929/\u8d6b\u65af/\u80af\u5854/\u4e54\u5e03\u65af/\u5b8b\u4f73\u6d0b", 
-                    "request": "\u97f3\u4e50"
-                }, 
-                {
-                    "content": "ssr\u661f\u4e4b\u6d77/sr\u5f77\u5fa8\u4e4b\u7738/r\u5feb\u4e50\u6839\u6e90/r\u4f60\u7684\u5b58\u5728/r\u614c\u4e71", 
-                    "request": "\u5468\u68cb\u6d1b/\u7eaf\u771f"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u5ba1\u89c6", 
             "name": "3-2", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u745e\u514b/\u82cf\u83f2/\u5434\u56fd\u5f3a/\u5361\u68ee", 
+                            "request": "\u65b0\u95fb/\u516c\u5173"
+                        }, 
+                        {
+                            "content": "\u6768\u5a55", 
+                            "request": "\u65b0\u95fb/\u5bfc\u6f14"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u5ba1\u89c6"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u5353\u5c3e", 
+                            "request": "\u7efc\u827a/\u72d7\u4ed4"
+                        }, 
+                        {
+                            "content": "\u9a6c\u82f1\u4fca/\u4e54\u6cbb/\u745e\u514b/\u5434\u56fd\u5f3a/\u5361\u68ee", 
+                            "request": "\u7efc\u827a/\u516c\u5173"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u601d\u8003\u8005"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u79e6\u78a7\u7389", 
+                            "request": "\u7535\u5f71/\u9020\u578b"
+                        }, 
+                        {
+                            "content": "\u90dd\u7f8e\u4e3d", 
+                            "request": "\u7535\u5f71/\u706f\u5149"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u627f\u8bfa"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u5c71\u53e3\u8d24/\u8131\u5154/\u6cf0\u68ee\u5a1c", 
+                            "request": "\u7efc\u827a/\u8fd0\u52a8"
+                        }, 
+                        {
+                            "content": "\u5f17\u5170\u80af\u65af\u5766/\u80af\u5854", 
+                            "request": "\u7efc\u827a/\u6447\u6eda"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u548c\u6211\u7ea6\u4f1a"
+                }
+            }, 
             "decision": "0.55", 
             "creativity": "0.35", 
             "appetency": "0.45", 
             "action": "0.65", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u745e\u514b/\u82cf\u83f2/\u5434\u56fd\u5f3a/\u5361\u68ee", 
-                    "request": "\u65b0\u95fb/\u516c\u5173"
-                }, 
-                {
-                    "content": "\u6768\u5a55", 
-                    "request": "\u65b0\u95fb/\u5bfc\u6f14"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u548c\u6211\u7ea6\u4f1a", 
-            "name": "3-2", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.55", 
-            "creativity": "0.35", 
-            "appetency": "0.45", 
-            "action": "0.65", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5c71\u53e3\u8d24/\u8131\u5154/\u6cf0\u68ee\u5a1c", 
-                    "request": "\u7efc\u827a/\u8fd0\u52a8"
-                }, 
-                {
-                    "content": "\u5f17\u5170\u80af\u65af\u5766/\u80af\u5854", 
-                    "request": "\u7efc\u827a/\u6447\u6eda"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u601d\u8003\u8005", 
-            "name": "3-2", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.55", 
-            "creativity": "0.35", 
-            "appetency": "0.45", 
-            "action": "0.65", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5353\u5c3e", 
-                    "request": "\u7efc\u827a/\u72d7\u4ed4"
-                }, 
-                {
-                    "content": "\u9a6c\u82f1\u4fca/\u4e54\u6cbb/\u745e\u514b/\u5434\u56fd\u5f3a/\u5361\u68ee", 
-                    "request": "\u7efc\u827a/\u516c\u5173"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u627f\u8bfa", 
-            "name": "3-2", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.55", 
-            "creativity": "0.35", 
-            "appetency": "0.45", 
-            "action": "0.65", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u79e6\u78a7\u7389", 
-                    "request": "\u7535\u5f71/\u9020\u578b"
-                }, 
-                {
-                    "content": "\u90dd\u7f8e\u4e3d", 
-                    "request": "\u7535\u5f71/\u706f\u5149"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u5951\u7ea6", 
             "name": "3-3", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u91d1\u65f6\u8d6b", 
+                            "request": "\u65b0\u95fb/\u53cb\u5584"
+                        }, 
+                        {
+                            "content": "\u8d6b\u65af/\u5353\u5c3e", 
+                            "request": "\u65b0\u95fb/\u6444\u5f71"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u5951\u7ea6"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u5b59\u5c0f\u8499/\u8131\u5154", 
+                            "request": "\u7efc\u827a/\u7f16\u5267"
+                        }, 
+                        {
+                            "content": "\u5f17\u5170\u80af\u65af\u5766/\u80af\u5854", 
+                            "request": "\u7efc\u827a/\u6447\u6eda"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u610f\u4e71"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u80af\u5854", 
+                            "request": "\u7535\u5f71/\u8425\u9500"
+                        }, 
+                        {
+                            "content": "\u5353\u5c3e", 
+                            "request": "\u72d7\u4ed4"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7eda\u70c2\u65f6\u523b"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u90ed\u5b9d\u513f/\u91d1\u65f6\u8d6b/\u9a6c\u82f1\u4fca/\u5b59\u5c0f\u8499", 
+                            "request": "\u7efc\u827a/\u53cb\u5584"
+                        }, 
+                        {
+                            "content": "\u6f6e\u9738\u5929/\u5f17\u5170\u80af\u65af\u5766/\u90dd\u7f8e\u4e3d/\u9a6c\u82f1\u4fca", 
+                            "request": "\u7efc\u827a/\u975e\u4e3b\u6d41"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6cbb\u6108\u5e08"
+                }
+            }, 
             "decision": "0.45", 
             "creativity": "0.35", 
             "appetency": "0.65", 
             "action": "0.55", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u91d1\u65f6\u8d6b", 
-                    "request": "\u65b0\u95fb/\u53cb\u5584"
-                }, 
-                {
-                    "content": "\u8d6b\u65af/\u5353\u5c3e", 
-                    "request": "\u65b0\u95fb/\u6444\u5f71"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u6cbb\u6108\u5e08", 
-            "name": "3-3", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.45", 
-            "creativity": "0.35", 
-            "appetency": "0.65", 
-            "action": "0.55", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u90ed\u5b9d\u513f/\u91d1\u65f6\u8d6b/\u9a6c\u82f1\u4fca/\u5b59\u5c0f\u8499", 
-                    "request": "\u7efc\u827a/\u53cb\u5584"
-                }, 
-                {
-                    "content": "\u6f6e\u9738\u5929/\u5f17\u5170\u80af\u65af\u5766/\u90dd\u7f8e\u4e3d/\u9a6c\u82f1\u4fca", 
-                    "request": "\u7efc\u827a/\u975e\u4e3b\u6d41"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u610f\u4e71", 
-            "name": "3-3", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.45", 
-            "creativity": "0.35", 
-            "appetency": "0.65", 
-            "action": "0.55", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5b59\u5c0f\u8499/\u8131\u5154", 
-                    "request": "\u7efc\u827a/\u7f16\u5267"
-                }, 
-                {
-                    "content": "\u5f17\u5170\u80af\u65af\u5766/\u80af\u5854", 
-                    "request": "\u7efc\u827a/\u6447\u6eda"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u7eda\u70c2\u65f6\u523b", 
-            "name": "3-3", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.45", 
-            "creativity": "0.35", 
-            "appetency": "0.65", 
-            "action": "0.55", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u80af\u5854", 
-                    "request": "\u7535\u5f71/\u8425\u9500"
-                }, 
-                {
-                    "content": "\u5353\u5c3e", 
-                    "request": "\u72d7\u4ed4"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u601d\u7d22", 
             "name": "3-4", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u745e\u514b/\u82cf\u83f2/\u5434\u56fd\u5f3a/\u5361\u68ee", 
+                            "request": "\u65b0\u95fb/\u516c\u5173"
+                        }, 
+                        {
+                            "content": "ssr\u63a0\u593a\u8005/sr\u4fa7\u8033\u503e\u542c/r\u7279\u6b8a\u4efb\u52a1/r\u4e0d\u8981\u8bf4\u8bdd/r\u5378\u4e0b\u5fc3\u9632", 
+                            "request": "\u674e\u6cfd\u8a00/\u8ba4\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u601d\u7d22"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u8d3e\u4e09\u9646/\u725b\u9c9c\u82b1", 
+                            "request": "\u7efc\u827a/\u533b\u7597"
+                        }, 
+                        {
+                            "content": "ssr\u70bd\u70ed\u80f8\u819b/sr\u7425\u73c0\u65f6\u5149/sr\u4f60\u7684\u773c\u7738/r\u773c\u4e2d\u7684\u4f60/r\u4e00\u5bf9\u4e00\u5ba1\u8baf/r\u7387\u6027", 
+                            "request": "\u767d\u8d77/\u6e29\u60c5"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7387\u6027"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u90ed\u5b9d\u513f/\u5b59\u5c0f\u8499", 
+                            "request": "\u7535\u5f71/\u7ec6\u5fc3"
+                        }, 
+                        {
+                            "content": "sr\u7275\u7eca/sr\u843d\u96ea\u65f6\u5149/r\u5b8c\u7f8e\u7ebf\u6761/r\u707c\u590f/r\u4e50\u5929\u6d3e/r\u5b8c\u7f8e\u793c\u670d", 
+                            "request": "\u5468\u68cb\u6d1b/\u6d3b\u529b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u707c\u590f"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u80af\u5854", 
+                            "request": "\u7efc\u827a/\u5e7d\u9ed8"
+                        }, 
+                        {
+                            "content": "r\u6ce8\u5b9a/r\u8bfb\u4f60/r\u6559\u6388\u5728\u4e0a/r\u6076\u4f5c\u5267", 
+                            "request": "\u8bb8\u58a8/\u7f9e\u6da9"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6076\u4f5c\u5267"
+                }
+            }, 
             "decision": "0.25", 
             "creativity": "0.6", 
             "appetency": "0.75", 
             "action": "0.4", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u745e\u514b/\u82cf\u83f2/\u5434\u56fd\u5f3a/\u5361\u68ee", 
-                    "request": "\u65b0\u95fb/\u516c\u5173"
-                }, 
-                {
-                    "content": "ssr\u63a0\u593a\u8005/sr\u4fa7\u8033\u503e\u542c/r\u7279\u6b8a\u4efb\u52a1/r\u4e0d\u8981\u8bf4\u8bdd/r\u5378\u4e0b\u5fc3\u9632", 
-                    "request": "\u674e\u6cfd\u8a00/\u8ba4\u771f"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u6076\u4f5c\u5267", 
-            "name": "3-4", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.25", 
-            "creativity": "0.6", 
-            "appetency": "0.75", 
-            "action": "0.4", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u80af\u5854", 
-                    "request": "\u7efc\u827a/\u5e7d\u9ed8"
-                }, 
-                {
-                    "content": "r\u6ce8\u5b9a/r\u8bfb\u4f60/r\u6559\u6388\u5728\u4e0a/r\u6076\u4f5c\u5267", 
-                    "request": "\u8bb8\u58a8/\u7f9e\u6da9"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u7387\u6027", 
-            "name": "3-4", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.25", 
-            "creativity": "0.6", 
-            "appetency": "0.75", 
-            "action": "0.4", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d3e\u4e09\u9646/\u725b\u9c9c\u82b1", 
-                    "request": "\u7efc\u827a/\u533b\u7597"
-                }, 
-                {
-                    "content": "ssr\u70bd\u70ed\u80f8\u819b/sr\u7425\u73c0\u65f6\u5149/sr\u4f60\u7684\u773c\u7738/r\u773c\u4e2d\u7684\u4f60/r\u4e00\u5bf9\u4e00\u5ba1\u8baf/r\u7387\u6027", 
-                    "request": "\u767d\u8d77/\u6e29\u60c5"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u707c\u590f", 
-            "name": "3-4", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.25", 
-            "creativity": "0.6", 
-            "appetency": "0.75", 
-            "action": "0.4", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u90ed\u5b9d\u513f/\u5b59\u5c0f\u8499", 
-                    "request": "\u7535\u5f71/\u7ec6\u5fc3"
-                }, 
-                {
-                    "content": "sr\u7275\u7eca/sr\u843d\u96ea\u65f6\u5149/r\u5b8c\u7f8e\u7ebf\u6761/r\u707c\u590f/r\u4e50\u5929\u6d3e/r\u5b8c\u7f8e\u793c\u670d", 
-                    "request": "\u5468\u68cb\u6d1b/\u6d3b\u529b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u5951\u7ea6", 
             "name": "3-5", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u5c71\u53e3\u8d24/\u6768\u5a55", 
+                            "request": "\u65b0\u95fb/\u8fd0\u52a8"
+                        }, 
+                        {
+                            "content": "ssr\u63a0\u593a\u8005/sr\u4fa7\u8033\u503e\u542c/r\u7279\u6b8a\u4efb\u52a1/r\u4e0d\u8981\u8bf4\u8bdd/r\u5378\u4e0b\u5fc3\u9632", 
+                            "request": "\u674e\u6cfd\u8a00/\u8ba4\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u5951\u7ea6"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u6cf0\u68ee\u5a1c/\u5f20\u5c0f\u9f99", 
+                            "request": "\u7efc\u827a/\u640f\u51fb"
+                        }, 
+                        {
+                            "content": "r\u5de6\u53f3\u4e3a\u96be/r\u4e0d\u7f81\u7684\u5fc3/r\u63a8\u7406/r\u610f\u4e71/r\u6613\u5982\u53cd\u638c", 
+                            "request": "\u767d\u8d77/\u8ba4\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u610f\u4e71"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u6797\u840c\u840c/\u4e54\u6cbb/\u745e\u514b/\u5b8b\u4f73\u6d0b", 
+                            "request": "\u4e3b\u6301"
+                        }, 
+                        {
+                            "content": "\u514b\u91cc\u65af\u8482\u5b89", 
+                            "request": "\u7535\u5f71/\u7eaf\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7eda\u70c2\u65f6\u523b"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u5c71\u53e3\u8d24", 
+                            "request": "\u7efc\u827a/\u5b89\u4fdd"
+                        }, 
+                        {
+                            "content": "ssr\u6026\u7136\u5fc3\u52a8/sr\u67d4\u8f6f\u5fc3\u7eea/sr\u96e8\u4e2d\u81c2\u5f2f/r\u5473\u857e\u70d9\u5370/r\u517b\u4f60/r\u6696\u5fc3\u96ea\u591c", 
+                            "request": "\u8bb8\u58a8/\u6e29\u60c5"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6cbb\u6108\u5e08"
+                }
+            }, 
             "decision": "0.4", 
             "creativity": "0.6", 
             "appetency": "0.75", 
             "action": "0.25", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5c71\u53e3\u8d24/\u6768\u5a55", 
-                    "request": "\u65b0\u95fb/\u8fd0\u52a8"
-                }, 
-                {
-                    "content": "ssr\u63a0\u593a\u8005/sr\u4fa7\u8033\u503e\u542c/r\u7279\u6b8a\u4efb\u52a1/r\u4e0d\u8981\u8bf4\u8bdd/r\u5378\u4e0b\u5fc3\u9632", 
-                    "request": "\u674e\u6cfd\u8a00/\u8ba4\u771f"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u6cbb\u6108\u5e08", 
-            "name": "3-5", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.4", 
-            "creativity": "0.6", 
-            "appetency": "0.75", 
-            "action": "0.25", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5c71\u53e3\u8d24", 
-                    "request": "\u7efc\u827a/\u5b89\u4fdd"
-                }, 
-                {
-                    "content": "ssr\u6026\u7136\u5fc3\u52a8/sr\u67d4\u8f6f\u5fc3\u7eea/sr\u96e8\u4e2d\u81c2\u5f2f/r\u5473\u857e\u70d9\u5370/r\u517b\u4f60/r\u6696\u5fc3\u96ea\u591c", 
-                    "request": "\u8bb8\u58a8/\u6e29\u60c5"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u610f\u4e71", 
-            "name": "3-5", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.4", 
-            "creativity": "0.6", 
-            "appetency": "0.75", 
-            "action": "0.25", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u6cf0\u68ee\u5a1c/\u5f20\u5c0f\u9f99", 
-                    "request": "\u7efc\u827a/\u640f\u51fb"
-                }, 
-                {
-                    "content": "r\u5de6\u53f3\u4e3a\u96be/r\u4e0d\u7f81\u7684\u5fc3/r\u63a8\u7406/r\u610f\u4e71/r\u6613\u5982\u53cd\u638c", 
-                    "request": "\u767d\u8d77/\u8ba4\u771f"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u7eda\u70c2\u65f6\u523b", 
-            "name": "3-5", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.4", 
-            "creativity": "0.6", 
-            "appetency": "0.75", 
-            "action": "0.25", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u6797\u840c\u840c/\u4e54\u6cbb/\u745e\u514b/\u5b8b\u4f73\u6d0b", 
-                    "request": "\u4e3b\u6301"
-                }, 
-                {
-                    "content": "\u514b\u91cc\u65af\u8482\u5b89", 
-                    "request": "\u7535\u5f71/\u7eaf\u771f"
-                }
-            ]
-        }, 
-        {
-            "goods": "SR\u00b7\u4fa7\u8033\u503e\u542c", 
             "name": "3-6", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u91d1\u65f6\u8d6b", 
+                            "request": "\u65b0\u95fb/\u670d\u88c5"
+                        }, 
+                        {
+                            "content": "ssr\u7737\u5ff5\u6d77\u98ce/sr\u5149\u5f71\u968f\u5fc3/sr\u821e\u4f1a\u9080\u7ea6/sr\u4e16\u754c\u4e4b\u5916/r\u54c1\u5473/r\u5348\u9910\u65e5\u5e38/r\u5951\u7ea6", 
+                            "request": "\u674e\u6cfd\u8a00/\u6d6a\u6f2b"
+                        }
+                    ], 
+                    "goods": "SR\u00b7\u4fa7\u8033\u503e\u542c"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u9a6c\u82f1\u4fca/\u4e54\u6cbb/\u745e\u514b/\u5434\u56fd\u5f3a/\u5361\u68ee", 
+                            "request": "\u7efc\u827a/\u516c\u5173"
+                        }, 
+                        {
+                            "content": "ssr\u70bd\u70ed\u80f8\u819b/sr\u7425\u73c0\u65f6\u5149/sr\u4f60\u7684\u773c\u7738/r\u773c\u4e2d\u7684\u4f60/r\u4e00\u5bf9\u4e00\u5ba1\u8baf/r\u7387\u6027", 
+                            "request": "\u767d\u8d77/\u6e29\u60c5"
+                        }
+                    ], 
+                    "goods": "SR\u00b7\u4f60\u7684\u773c\u7738"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u5eb7\u6587/\u5b8b\u4f73\u6d0b/\u6c64\u59c6\u68ee", 
+                            "request": "\u82f1\u4fca"
+                        }, 
+                        {
+                            "content": "sr\u8ffd\u968f/r\u5e7b\u60f3\u8005", 
+                            "request": "\u5468\u68cb\u6d1b/\u7f9e\u6da9"
+                        }
+                    ], 
+                    "goods": "SR\u00b7\u8ffd\u968f"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "sr\u76f8\u9047/r\u8bb0\u5f55/r\u6536\u85cf\u56de\u5fc6/r\u628a\u624b\u7ed9\u6211", 
+                            "request": "\u8bb8\u58a8/\u7eaf\u771f"
+                        }, 
+                        {
+                            "content": "\u5f17\u5170\u80af\u65af\u5766/\u80af\u5854", 
+                            "request": "\u7efc\u827a/\u6447\u6eda"
+                        }
+                    ], 
+                    "goods": "SR\u00b7\u5348\u540e\u6696\u9633"
+                }
+            }, 
             "decision": "0.25", 
             "creativity": "0.4", 
             "appetency": "0.75", 
             "action": "0.6", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u91d1\u65f6\u8d6b", 
-                    "request": "\u65b0\u95fb/\u670d\u88c5"
-                }, 
-                {
-                    "content": "ssr\u7737\u5ff5\u6d77\u98ce/sr\u5149\u5f71\u968f\u5fc3/sr\u821e\u4f1a\u9080\u7ea6/sr\u4e16\u754c\u4e4b\u5916/r\u54c1\u5473/r\u5348\u9910\u65e5\u5e38/r\u5951\u7ea6", 
-                    "request": "\u674e\u6cfd\u8a00/\u6d6a\u6f2b"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "SR\u00b7\u5348\u540e\u6696\u9633", 
-            "name": "3-6", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.25", 
-            "creativity": "0.4", 
-            "appetency": "0.75", 
-            "action": "0.6", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "sr\u76f8\u9047/r\u8bb0\u5f55/r\u6536\u85cf\u56de\u5fc6/r\u628a\u624b\u7ed9\u6211", 
-                    "request": "\u8bb8\u58a8/\u7eaf\u771f"
-                }, 
-                {
-                    "content": "\u5f17\u5170\u80af\u65af\u5766/\u80af\u5854", 
-                    "request": "\u7efc\u827a/\u6447\u6eda"
-                }
-            ]
-        }, 
-        {
-            "goods": "SR\u00b7\u4f60\u7684\u773c\u7738", 
-            "name": "3-6", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.25", 
-            "creativity": "0.4", 
-            "appetency": "0.75", 
-            "action": "0.6", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u9a6c\u82f1\u4fca/\u4e54\u6cbb/\u745e\u514b/\u5434\u56fd\u5f3a/\u5361\u68ee", 
-                    "request": "\u7efc\u827a/\u516c\u5173"
-                }, 
-                {
-                    "content": "ssr\u70bd\u70ed\u80f8\u819b/sr\u7425\u73c0\u65f6\u5149/sr\u4f60\u7684\u773c\u7738/r\u773c\u4e2d\u7684\u4f60/r\u4e00\u5bf9\u4e00\u5ba1\u8baf/r\u7387\u6027", 
-                    "request": "\u767d\u8d77/\u6e29\u60c5"
-                }
-            ]
-        }, 
-        {
-            "goods": "SR\u00b7\u8ffd\u968f", 
-            "name": "3-6", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.25", 
-            "creativity": "0.4", 
-            "appetency": "0.75", 
-            "action": "0.6", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5eb7\u6587/\u5b8b\u4f73\u6d0b/\u6c64\u59c6\u68ee", 
-                    "request": "\u82f1\u4fca"
-                }, 
-                {
-                    "content": "sr\u8ffd\u968f/r\u5e7b\u60f3\u8005", 
-                    "request": "\u5468\u68cb\u6d1b/\u7f9e\u6da9"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u601d\u7d22", 
             "name": "4-2", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u8d3e\u4e09\u9646/\u725b\u9c9c\u82b1/\u745e\u514b/\u5353\u5c3e", 
+                            "request": "\u7efc\u827a/\u673a\u654f"
+                        }, 
+                        {
+                            "content": "\u963f\u8bfa\u5fb7/\u91d1\u65f6\u8d6b/\u4e54\u4f0a", 
+                            "request": "\u7efc\u827a/\u670d\u88c5"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u601d\u7d22"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u6768\u5a55", 
+                            "request": "\u7eaa\u5f55\u7247/\u7f16\u5267"
+                        }, 
+                        {
+                            "content": "\u5eb7\u6587/\u725b\u5927\u4f1f", 
+                            "request": "\u7eaa\u5f55\u7247/\u8868\u6f14"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7387\u6027"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u963f\u8bfa\u5fb7/\u91d1\u65f6\u8d6b/\u4e54\u4f0a", 
+                            "request": "\u7efc\u827a/\u670d\u88c5"
+                        }, 
+                        {
+                            "content": "\u79e6\u78a7\u7389/\u5434\u56fd\u5f3a/\u5361\u68ee", 
+                            "request": "\u7efc\u827a/\u793c\u4eea"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u707c\u590f"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u9a6c\u82f1\u4fca/\u677e\u4e0b\u656c\u52a9", 
+                            "request": "\u7eaa\u5f55\u7247/\u53cb\u5584"
+                        }, 
+                        {
+                            "content": "\u725b\u5927\u4f1f/\u4e54\u5e03\u65af", 
+                            "request": "\u7eaa\u5f55\u7247/\u7eaf\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6076\u4f5c\u5267"
+                }
+            }, 
             "decision": "0.6", 
             "creativity": "0.4", 
             "appetency": "0.25", 
             "action": "0.75", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d3e\u4e09\u9646/\u725b\u9c9c\u82b1/\u745e\u514b/\u5353\u5c3e", 
-                    "request": "\u7efc\u827a/\u673a\u654f"
-                }, 
-                {
-                    "content": "\u963f\u8bfa\u5fb7/\u91d1\u65f6\u8d6b/\u4e54\u4f0a", 
-                    "request": "\u7efc\u827a/\u670d\u88c5"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u6076\u4f5c\u5267", 
-            "name": "4-2", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.6", 
-            "creativity": "0.4", 
-            "appetency": "0.25", 
-            "action": "0.75", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u9a6c\u82f1\u4fca/\u677e\u4e0b\u656c\u52a9", 
-                    "request": "\u7eaa\u5f55\u7247/\u53cb\u5584"
-                }, 
-                {
-                    "content": "\u725b\u5927\u4f1f/\u4e54\u5e03\u65af", 
-                    "request": "\u7eaa\u5f55\u7247/\u7eaf\u771f"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u7387\u6027", 
-            "name": "4-2", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.6", 
-            "creativity": "0.4", 
-            "appetency": "0.25", 
-            "action": "0.75", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u6768\u5a55", 
-                    "request": "\u7eaa\u5f55\u7247/\u7f16\u5267"
-                }, 
-                {
-                    "content": "\u5eb7\u6587/\u725b\u5927\u4f1f", 
-                    "request": "\u7eaa\u5f55\u7247/\u8868\u6f14"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u707c\u590f", 
-            "name": "4-2", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.6", 
-            "creativity": "0.4", 
-            "appetency": "0.25", 
-            "action": "0.75", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u963f\u8bfa\u5fb7/\u91d1\u65f6\u8d6b/\u4e54\u4f0a", 
-                    "request": "\u7efc\u827a/\u670d\u88c5"
-                }, 
-                {
-                    "content": "\u79e6\u78a7\u7389/\u5434\u56fd\u5f3a/\u5361\u68ee", 
-                    "request": "\u7efc\u827a/\u793c\u4eea"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u6613\u5982\u53cd\u638c", 
             "name": "4-3", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u5c71\u53e3\u8d24", 
+                            "request": "\u7efc\u827a/\u5b89\u4fdd"
+                        }, 
+                        {
+                            "content": "\u90ed\u5b9d\u513f/\u6797\u840c\u840c/\u9a6c\u82f1\u4fca/\u725b\u9c9c\u82b1/\u5b59\u5c0f\u8499/\u745f\u897f/\u8131\u5154/\u9b4f\u5b85\u751f/\u8d75\u575a\u5f3a/\u5361\u68ee", 
+                            "request": "\u7efc\u827a/\u7ec6\u5fc3"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6613\u5982\u53cd\u638c"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u725b\u5927\u4f1f/\u4e54\u5e03\u65af", 
+                            "request": "\u7eaa\u5f55\u7247/\u7eaf\u771f"
+                        }, 
+                        {
+                            "content": "\u9a6c\u82f1\u4fca/\u725b\u9c9c\u82b1/\u5357\u67ab/\u9b4f\u5b85\u751f/\u8d75\u575a\u5f3a", 
+                            "request": "\u7eaa\u5f55\u7247/\u7ec6\u5fc3"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u62bd\u6410"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u5353\u5c3e", 
+                            "request": "\u7efc\u827a/\u72d7\u4ed4"
+                        }, 
+                        {
+                            "content": "sr\u8ffd\u968f/r\u5e7b\u60f3\u8005", 
+                            "request": "\u5468\u68cb\u6d1b/\u7f9e\u6da9"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u5b8c\u7f8e\u793c\u670d"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u4e54\u4f0a/\u9b4f\u5b85\u751f", 
+                            "request": "\u7eaa\u5f55\u7247/\u6444\u5f71"
+                        }, 
+                        {
+                            "content": "ssr\u6eba\u6d77/sr\u6df1\u9677/sr\u5b9a\u683c/r\u56de\u7738/r\u6cbb\u6108\u5e08/r\u7247\u523b\u72b9\u7591", 
+                            "request": "\u8bb8\u58a8/\u52c7\u6c14"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u9759\u9759\u7b49\u5f85"
+                }
+            }, 
             "decision": "0.4", 
             "creativity": "0.6", 
             "appetency": "0.25", 
             "action": "0.75", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5c71\u53e3\u8d24", 
-                    "request": "\u7efc\u827a/\u5b89\u4fdd"
-                }, 
-                {
-                    "content": "\u90ed\u5b9d\u513f/\u6797\u840c\u840c/\u9a6c\u82f1\u4fca/\u725b\u9c9c\u82b1/\u5b59\u5c0f\u8499/\u745f\u897f/\u8131\u5154/\u9b4f\u5b85\u751f/\u8d75\u575a\u5f3a/\u5361\u68ee", 
-                    "request": "\u7efc\u827a/\u7ec6\u5fc3"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u9759\u9759\u7b49\u5f85", 
-            "name": "4-3", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.4", 
-            "creativity": "0.6", 
-            "appetency": "0.25", 
-            "action": "0.75", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u4e54\u4f0a/\u9b4f\u5b85\u751f", 
-                    "request": "\u7eaa\u5f55\u7247/\u6444\u5f71"
-                }, 
-                {
-                    "content": "ssr\u6eba\u6d77/sr\u6df1\u9677/sr\u5b9a\u683c/r\u56de\u7738/r\u6cbb\u6108\u5e08/r\u7247\u523b\u72b9\u7591", 
-                    "request": "\u8bb8\u58a8/\u52c7\u6c14"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u62bd\u6410", 
-            "name": "4-3", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.4", 
-            "creativity": "0.6", 
-            "appetency": "0.25", 
-            "action": "0.75", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u725b\u5927\u4f1f/\u4e54\u5e03\u65af", 
-                    "request": "\u7eaa\u5f55\u7247/\u7eaf\u771f"
-                }, 
-                {
-                    "content": "\u9a6c\u82f1\u4fca/\u725b\u9c9c\u82b1/\u5357\u67ab/\u9b4f\u5b85\u751f/\u8d75\u575a\u5f3a", 
-                    "request": "\u7eaa\u5f55\u7247/\u7ec6\u5fc3"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u5b8c\u7f8e\u793c\u670d", 
-            "name": "4-3", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.4", 
-            "creativity": "0.6", 
-            "appetency": "0.25", 
-            "action": "0.75", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5353\u5c3e", 
-                    "request": "\u7efc\u827a/\u72d7\u4ed4"
-                }, 
-                {
-                    "content": "sr\u8ffd\u968f/r\u5e7b\u60f3\u8005", 
-                    "request": "\u5468\u68cb\u6d1b/\u7f9e\u6da9"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u5378\u4e0b\u5fc3\u9632", 
             "name": "4-4", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u6f6e\u9738\u5929/\u80af\u5854/\u5b8b\u4f73\u6d0b", 
+                            "request": "\u7efc\u827a/\u97f3\u4e50"
+                        }, 
+                        {
+                            "content": "ssr\u4ea4\u7f20\u89c6\u7ebf/sr\u6e29\u67d4\u9f13\u52b1/r\u65f6\u95f4\u638c\u63a7\u8005/r\u7f8e\u5473\u5173\u7cfb/r\u5ba1\u89c6", 
+                            "request": "\u674e\u6cfd\u8a00/\u6e29\u60c5"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u5378\u4e0b\u5fc3\u9632"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u9a6c\u82f1\u4fca/\u745e\u514b/\u82cf\u83f2/\u677e\u4e0b\u656c\u52a9", 
+                            "request": "\u7eaa\u5f55\u7247/\u516c\u5173"
+                        }, 
+                        {
+                            "content": "r\u5de6\u53f3\u4e3a\u96be/r\u4e0d\u7f81\u7684\u5fc3/r\u63a8\u7406/r\u610f\u4e71/r\u6613\u5982\u53cd\u638c", 
+                            "request": "\u767d\u8d77/\u8ba4\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u56de\u5fc6\u89e3\u9501"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a/\u8d3e\u4e09\u9646/\u4f69\u59ec/\u8131\u5154/\u5434\u56fd\u5f3a/\u5361\u68ee", 
+                            "request": "\u7efc\u827a/\u77e5\u8bc6"
+                        }, 
+                        {
+                            "content": "ssr\u5e26\u4f60\u79bb\u5f00/sr\u9163\u68a6/sr\u4e0e\u4f60\u6bd4\u80a9/sr\u6674\u591c/sr\u95ea\u4eae\u6ce8\u89c6/r\u7535\u53f0\u8ff7\u8e2a/r\u4f60\u7684\u6837\u5b50", 
+                            "request": "\u5468\u68cb\u6d1b/\u6e29\u60c5"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u725b\u5976\u60e9\u7f5a"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u5f17\u5170\u80af\u65af\u5766/\u4e54\u5e03\u65af", 
+                            "request": "\u7eaa\u5f55\u7247/\u6447\u6eda"
+                        }, 
+                        {
+                            "content": "sr\u76f8\u9047/r\u8bb0\u5f55/r\u6536\u85cf\u56de\u5fc6/r\u628a\u624b\u7ed9\u6211", 
+                            "request": "\u8bb8\u58a8/\u7eaf\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7406\u667a\u4e0e\u611f\u60c5"
+                }
+            }, 
             "decision": "0.25", 
             "creativity": "0.6", 
             "appetency": "0.75", 
             "action": "0.4", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u6f6e\u9738\u5929/\u80af\u5854/\u5b8b\u4f73\u6d0b", 
-                    "request": "\u7efc\u827a/\u97f3\u4e50"
-                }, 
-                {
-                    "content": "ssr\u4ea4\u7f20\u89c6\u7ebf/sr\u6e29\u67d4\u9f13\u52b1/r\u65f6\u95f4\u638c\u63a7\u8005/r\u7f8e\u5473\u5173\u7cfb/r\u5ba1\u89c6", 
-                    "request": "\u674e\u6cfd\u8a00/\u6e29\u60c5"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u7406\u667a\u4e0e\u611f\u60c5", 
-            "name": "4-4", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.25", 
-            "creativity": "0.6", 
-            "appetency": "0.75", 
-            "action": "0.4", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5f17\u5170\u80af\u65af\u5766/\u4e54\u5e03\u65af", 
-                    "request": "\u7eaa\u5f55\u7247/\u6447\u6eda"
-                }, 
-                {
-                    "content": "sr\u76f8\u9047/r\u8bb0\u5f55/r\u6536\u85cf\u56de\u5fc6/r\u628a\u624b\u7ed9\u6211", 
-                    "request": "\u8bb8\u58a8/\u7eaf\u771f"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u56de\u5fc6\u89e3\u9501", 
-            "name": "4-4", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.25", 
-            "creativity": "0.6", 
-            "appetency": "0.75", 
-            "action": "0.4", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u9a6c\u82f1\u4fca/\u745e\u514b/\u82cf\u83f2/\u677e\u4e0b\u656c\u52a9", 
-                    "request": "\u7eaa\u5f55\u7247/\u516c\u5173"
-                }, 
-                {
-                    "content": "r\u5de6\u53f3\u4e3a\u96be/r\u4e0d\u7f81\u7684\u5fc3/r\u63a8\u7406/r\u610f\u4e71/r\u6613\u5982\u53cd\u638c", 
-                    "request": "\u767d\u8d77/\u8ba4\u771f"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u725b\u5976\u60e9\u7f5a", 
-            "name": "4-4", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.25", 
-            "creativity": "0.6", 
-            "appetency": "0.75", 
-            "action": "0.4", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a/\u8d3e\u4e09\u9646/\u4f69\u59ec/\u8131\u5154/\u5434\u56fd\u5f3a/\u5361\u68ee", 
-                    "request": "\u7efc\u827a/\u77e5\u8bc6"
-                }, 
-                {
-                    "content": "ssr\u5e26\u4f60\u79bb\u5f00/sr\u9163\u68a6/sr\u4e0e\u4f60\u6bd4\u80a9/sr\u6674\u591c/sr\u95ea\u4eae\u6ce8\u89c6/r\u7535\u53f0\u8ff7\u8e2a/r\u4f60\u7684\u6837\u5b50", 
-                    "request": "\u5468\u68cb\u6d1b/\u6e29\u60c5"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u5951\u7ea6", 
             "name": "4-5", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a/\u5f20\u5c0f\u9f99/\u5361\u68ee", 
+                            "request": "\u7efc\u827a/\u540e\u52e4"
+                        }, 
+                        {
+                            "content": "r\u4f11\u95f2/r\u5fc3\u5f26\u4e4b\u97f3", 
+                            "request": "\u674e\u6cfd\u8a00/\u6d3b\u529b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u5951\u7ea6"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u5357\u67ab/\u6cf0\u68ee\u5a1c", 
+                            "request": "\u7eaa\u5f55\u7247/\u640f\u51fb"
+                        }, 
+                        {
+                            "content": "ssr\u6211\u7684\u82f1\u96c4/sr\u5343\u94a7\u4e00\u53d1/sr\u529b\u91cf\u6e90\u6cc9/r\u51b7\u6696/r\u6d17\u767d\u767d", 
+                            "request": "\u767d\u8d77/\u6d3b\u529b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u610f\u4e71"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u8d3e\u4e09\u9646/\u5c71\u53e3\u8d24", 
+                            "request": "\u7efc\u827a/\u52c7\u6562"
+                        }, 
+                        {
+                            "content": "ssr\u82b1\u821e/sr\u5b64\u5c9b/r\u5165\u7720/r\u7b49\u4f60\u56de\u4fe1/r\u751c\u871c\u5fc3\u60c5", 
+                            "request": "\u5468\u68cb\u6d1b/\u6d6a\u6f2b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7eda\u70c2\u65f6\u523b"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u745e\u514b", 
+                            "request": "\u7eaa\u5f55\u7247/\u8425\u9500"
+                        }, 
+                        {
+                            "content": "ssr\u6a31\u843d\u65e0\u58f0/sr\u70b9\u70b9\u8424\u5149/sr\u6697\u591c\u5149\u8292/sr\u96ea\u5df2\u6df1/r\u7406\u667a\u4e0e\u60c5\u611f", 
+                            "request": "\u8bb8\u58a8/\u6d6a\u6f2b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6cbb\u6108\u5e08"
+                }
+            }, 
             "decision": "0.85", 
             "creativity": "0.6", 
             "appetency": "0.35", 
             "action": "0.2", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a/\u5f20\u5c0f\u9f99/\u5361\u68ee", 
-                    "request": "\u7efc\u827a/\u540e\u52e4"
-                }, 
-                {
-                    "content": "r\u4f11\u95f2/r\u5fc3\u5f26\u4e4b\u97f3", 
-                    "request": "\u674e\u6cfd\u8a00/\u6d3b\u529b"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u6cbb\u6108\u5e08", 
-            "name": "4-5", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.85", 
-            "creativity": "0.6", 
-            "appetency": "0.35", 
-            "action": "0.2", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u745e\u514b", 
-                    "request": "\u7eaa\u5f55\u7247/\u8425\u9500"
-                }, 
-                {
-                    "content": "ssr\u6a31\u843d\u65e0\u58f0/sr\u70b9\u70b9\u8424\u5149/sr\u6697\u591c\u5149\u8292/sr\u96ea\u5df2\u6df1/r\u7406\u667a\u4e0e\u60c5\u611f", 
-                    "request": "\u8bb8\u58a8/\u6d6a\u6f2b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u610f\u4e71", 
-            "name": "4-5", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.85", 
-            "creativity": "0.6", 
-            "appetency": "0.35", 
-            "action": "0.2", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5357\u67ab/\u6cf0\u68ee\u5a1c", 
-                    "request": "\u7eaa\u5f55\u7247/\u640f\u51fb"
-                }, 
-                {
-                    "content": "ssr\u6211\u7684\u82f1\u96c4/sr\u5343\u94a7\u4e00\u53d1/sr\u529b\u91cf\u6e90\u6cc9/r\u51b7\u6696/r\u6d17\u767d\u767d", 
-                    "request": "\u767d\u8d77/\u6d3b\u529b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u7eda\u70c2\u65f6\u523b", 
-            "name": "4-5", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.85", 
-            "creativity": "0.6", 
-            "appetency": "0.35", 
-            "action": "0.2", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d3e\u4e09\u9646/\u5c71\u53e3\u8d24", 
-                    "request": "\u7efc\u827a/\u52c7\u6562"
-                }, 
-                {
-                    "content": "ssr\u82b1\u821e/sr\u5b64\u5c9b/r\u5165\u7720/r\u7b49\u4f60\u56de\u4fe1/r\u751c\u871c\u5fc3\u60c5", 
-                    "request": "\u5468\u68cb\u6d1b/\u6d6a\u6f2b"
-                }
-            ]
-        }, 
-        {
-            "goods": "SR\u00b7\u4fa7\u8033\u503e\u542c", 
             "name": "4-6", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u5353\u5c3e", 
+                            "request": "\u7efc\u827a/\u72d7\u4ed4"
+                        }, 
+                        {
+                            "content": "ssr\u7737\u5ff5\u6d77\u98ce/sr\u5149\u5f71\u968f\u5fc3/sr\u821e\u4f1a\u9080\u7ea6/sr\u4e16\u754c\u4e4b\u5916/r\u54c1\u5473/r\u5348\u9910\u65e5\u5e38/r\u5951\u7ea6", 
+                            "request": "\u674e\u6cfd\u8a00/\u6d6a\u6f2b"
+                        }
+                    ], 
+                    "goods": "SR\u00b7\u4fa7\u8033\u503e\u542c"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u6f6e\u9738\u5929/\u4e54\u5e03\u65af", 
+                            "request": "\u7eaa\u5f55\u7247/\u97f3\u4e50"
+                        }, 
+                        {
+                            "content": "ssr\u661f\u4e0e\u7738/sr\u661f\u7a7a\u4e4b\u543b/sr\u707c\u707c\u5149\u8292/sr\u7480\u74a8\u7684\u5fc3/sr\u5728\u4f60\u8eab\u540e/r\u7825\u783a/r\u70e6\u607c/r\u81f4\u656c\u5403\u8d27", 
+                            "request": "\u767d\u8d77/\u6d6a\u6f2b"
+                        }
+                    ], 
+                    "goods": "SR\u00b7\u4f60\u7684\u773c\u7738"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u90dd\u7f8e\u4e3d/\u91d1\u65f6\u8d6b/\u725b\u5927\u4f1f", 
+                            "request": "\u7efc\u827a/\u7f51\u7ea2"
+                        }, 
+                        {
+                            "content": "sr\u8ffd\u968f/r\u5e7b\u60f3\u8005", 
+                            "request": "\u5468\u68cb\u6d1b/\u7f9e\u6da9"
+                        }
+                    ], 
+                    "goods": "SR\u00b7\u8ffd\u968f"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u90dd\u7f8e\u4e3d/\u745f\u897f", 
+                            "request": "\u5360\u535c"
+                        }, 
+                        {
+                            "content": "ssr\u6a31\u843d\u65e0\u58f0/sr\u70b9\u70b9\u8424\u5149/sr\u6697\u591c\u5149\u8292/sr\u96ea\u5df2\u6df1/r\u7406\u667a\u4e0e\u60c5\u611f", 
+                            "request": "\u8bb8\u58a8/\u6d6a\u6f2b"
+                        }
+                    ], 
+                    "goods": "SR\u00b7\u5348\u540e\u6696\u9633"
+                }
+            }, 
             "decision": "0.6", 
             "creativity": "0.2", 
             "appetency": "0.85", 
             "action": "0.35", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5353\u5c3e", 
-                    "request": "\u7efc\u827a/\u72d7\u4ed4"
-                }, 
-                {
-                    "content": "ssr\u7737\u5ff5\u6d77\u98ce/sr\u5149\u5f71\u968f\u5fc3/sr\u821e\u4f1a\u9080\u7ea6/sr\u4e16\u754c\u4e4b\u5916/r\u54c1\u5473/r\u5348\u9910\u65e5\u5e38/r\u5951\u7ea6", 
-                    "request": "\u674e\u6cfd\u8a00/\u6d6a\u6f2b"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "SR\u00b7\u5348\u540e\u6696\u9633", 
-            "name": "4-6", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.6", 
-            "creativity": "0.2", 
-            "appetency": "0.85", 
-            "action": "0.35", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u90dd\u7f8e\u4e3d/\u745f\u897f", 
-                    "request": "\u5360\u535c"
-                }, 
-                {
-                    "content": "ssr\u6a31\u843d\u65e0\u58f0/sr\u70b9\u70b9\u8424\u5149/sr\u6697\u591c\u5149\u8292/sr\u96ea\u5df2\u6df1/r\u7406\u667a\u4e0e\u60c5\u611f", 
-                    "request": "\u8bb8\u58a8/\u6d6a\u6f2b"
-                }
-            ]
-        }, 
-        {
-            "goods": "SR\u00b7\u4f60\u7684\u773c\u7738", 
-            "name": "4-6", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.6", 
-            "creativity": "0.2", 
-            "appetency": "0.85", 
-            "action": "0.35", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u6f6e\u9738\u5929/\u4e54\u5e03\u65af", 
-                    "request": "\u7eaa\u5f55\u7247/\u97f3\u4e50"
-                }, 
-                {
-                    "content": "ssr\u661f\u4e0e\u7738/sr\u661f\u7a7a\u4e4b\u543b/sr\u707c\u707c\u5149\u8292/sr\u7480\u74a8\u7684\u5fc3/sr\u5728\u4f60\u8eab\u540e/r\u7825\u783a/r\u70e6\u607c/r\u81f4\u656c\u5403\u8d27", 
-                    "request": "\u767d\u8d77/\u6d6a\u6f2b"
-                }
-            ]
-        }, 
-        {
-            "goods": "SR\u00b7\u8ffd\u968f", 
-            "name": "4-6", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.6", 
-            "creativity": "0.2", 
-            "appetency": "0.85", 
-            "action": "0.35", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u90dd\u7f8e\u4e3d/\u91d1\u65f6\u8d6b/\u725b\u5927\u4f1f", 
-                    "request": "\u7efc\u827a/\u7f51\u7ea2"
-                }, 
-                {
-                    "content": "sr\u8ffd\u968f/r\u5e7b\u60f3\u8005", 
-                    "request": "\u5468\u68cb\u6d1b/\u7f9e\u6da9"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u5378\u4e0b\u5fc3\u9632", 
             "name": "5-2", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a/\u5434\u56fd\u5f3a/\u5361\u68ee", 
+                            "request": "\u65b0\u95fb/\u77e5\u8bc6"
+                        }, 
+                        {
+                            "content": "\u5c71\u53e3\u8d24/\u6768\u5a55", 
+                            "request": "\u65b0\u95fb/\u8fd0\u52a8"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u5378\u4e0b\u5fc3\u9632"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a", 
+                            "request": "\u65b0\u95fb/\u6587\u6848"
+                        }, 
+                        {
+                            "content": "\u91d1\u65f6\u8d6b", 
+                            "request": "\u65b0\u95fb/\u670d\u88c5"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u56de\u5fc6\u89e3\u9501"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u5f17\u5170\u80af\u65af\u5766/\u80af\u5854", 
+                            "request": "\u5a31\u4e50/\u6447\u6eda"
+                        }, 
+                        {
+                            "content": "\u90dd\u7f8e\u4e3d", 
+                            "request": "\u5a31\u4e50/\u5360\u535c"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u725b\u5976\u60e9\u7f5a"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u5b59\u5c0f\u8499", 
+                            "request": "\u7535\u5f71/\u7f16\u5267"
+                        }, 
+                        {
+                            "content": "r\u6ce8\u5b9a/r\u8bfb\u4f60/r\u6559\u6388\u5728\u4e0a/r\u6076\u4f5c\u5267", 
+                            "request": "\u8bb8\u58a8/\u7f9e\u6da9"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7406\u667a\u4e0e\u611f\u60c5"
+                }
+            }, 
             "decision": "0.85", 
             "creativity": "0.2", 
             "appetency": "0.35", 
             "action": "0.6", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a/\u5434\u56fd\u5f3a/\u5361\u68ee", 
-                    "request": "\u65b0\u95fb/\u77e5\u8bc6"
-                }, 
-                {
-                    "content": "\u5c71\u53e3\u8d24/\u6768\u5a55", 
-                    "request": "\u65b0\u95fb/\u8fd0\u52a8"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u7406\u667a\u4e0e\u611f\u60c5", 
-            "name": "5-2", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.85", 
-            "creativity": "0.2", 
-            "appetency": "0.35", 
-            "action": "0.6", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5b59\u5c0f\u8499", 
-                    "request": "\u7535\u5f71/\u7f16\u5267"
-                }, 
-                {
-                    "content": "r\u6ce8\u5b9a/r\u8bfb\u4f60/r\u6559\u6388\u5728\u4e0a/r\u6076\u4f5c\u5267", 
-                    "request": "\u8bb8\u58a8/\u7f9e\u6da9"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u56de\u5fc6\u89e3\u9501", 
-            "name": "5-2", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.85", 
-            "creativity": "0.2", 
-            "appetency": "0.35", 
-            "action": "0.6", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a", 
-                    "request": "\u65b0\u95fb/\u6587\u6848"
-                }, 
-                {
-                    "content": "\u91d1\u65f6\u8d6b", 
-                    "request": "\u65b0\u95fb/\u670d\u88c5"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u725b\u5976\u60e9\u7f5a", 
-            "name": "5-2", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.85", 
-            "creativity": "0.2", 
-            "appetency": "0.35", 
-            "action": "0.6", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5f17\u5170\u80af\u65af\u5766/\u80af\u5854", 
-                    "request": "\u5a31\u4e50/\u6447\u6eda"
-                }, 
-                {
-                    "content": "\u90dd\u7f8e\u4e3d", 
-                    "request": "\u5a31\u4e50/\u5360\u535c"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u601d\u7d22", 
             "name": "5-3", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u745e\u514b", 
+                            "request": "\u65b0\u95fb/\u4e3b\u6301"
+                        }, 
+                        {
+                            "content": "sr\u8bd5\u95ee\u771f\u5fc3/sr\u6e29\u67d4\u65f6\u523b/r\u53f3\u624b\u8fb9\u7684\u4f60/r\u601d\u7d22", 
+                            "request": "\u674e\u6cfd\u8a00/\u52c7\u6c14"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u601d\u7d22"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u8d6b\u65af/\u5353\u5c3e", 
+                            "request": "\u65b0\u95fb/\u6444\u5f71"
+                        }, 
+                        {
+                            "content": "ssr\u5360\u6709/sr\u4f60\u662f\u6211\u7684/sr\u8bda\u610f\u6559\u5b66/sr\u6fc0\u6218/r\u9006\u98ce/r\u63e1\u7d27\u7684\u62f3/r\u70ed\u8eab", 
+                            "request": "\u767d\u8d77/\u52c7\u6c14"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7387\u6027"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u963f\u8bfa\u5fb7/\u5eb7\u6587", 
+                            "request": "\u5a31\u4e50/\u9020\u578b"
+                        }, 
+                        {
+                            "content": "sr\u7275\u7eca/sr\u843d\u96ea\u65f6\u5149/r\u5b8c\u7f8e\u7ebf\u6761/r\u707c\u590f/r\u4e50\u5929\u6d3e/r\u5b8c\u7f8e\u793c\u670d", 
+                            "request": "\u5468\u68cb\u6d1b/\u6d3b\u529b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u707c\u590f"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u90dd\u7f8e\u4e3d", 
+                            "request": "\u7535\u5f71/\u7f51\u7ea2"
+                        }, 
+                        {
+                            "content": "sr\u5348\u540e\u6696\u9633/r\u548c\u6211\u7ea6\u4f1a", 
+                            "request": "\u8bb8\u58a8/\u5e7d\u9ed8"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6076\u4f5c\u5267"
+                }
+            }, 
             "decision": "0.2", 
             "creativity": "0.6", 
             "appetency": "0.35", 
             "action": "0.85", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u745e\u514b", 
-                    "request": "\u65b0\u95fb/\u4e3b\u6301"
-                }, 
-                {
-                    "content": "sr\u8bd5\u95ee\u771f\u5fc3/sr\u6e29\u67d4\u65f6\u523b/r\u53f3\u624b\u8fb9\u7684\u4f60/r\u601d\u7d22", 
-                    "request": "\u674e\u6cfd\u8a00/\u52c7\u6c14"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u6076\u4f5c\u5267", 
-            "name": "5-3", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.2", 
-            "creativity": "0.6", 
-            "appetency": "0.35", 
-            "action": "0.85", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u90dd\u7f8e\u4e3d", 
-                    "request": "\u7535\u5f71/\u7f51\u7ea2"
-                }, 
-                {
-                    "content": "sr\u5348\u540e\u6696\u9633/r\u548c\u6211\u7ea6\u4f1a", 
-                    "request": "\u8bb8\u58a8/\u5e7d\u9ed8"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u7387\u6027", 
-            "name": "5-3", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.2", 
-            "creativity": "0.6", 
-            "appetency": "0.35", 
-            "action": "0.85", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d6b\u65af/\u5353\u5c3e", 
-                    "request": "\u65b0\u95fb/\u6444\u5f71"
-                }, 
-                {
-                    "content": "ssr\u5360\u6709/sr\u4f60\u662f\u6211\u7684/sr\u8bda\u610f\u6559\u5b66/sr\u6fc0\u6218/r\u9006\u98ce/r\u63e1\u7d27\u7684\u62f3/r\u70ed\u8eab", 
-                    "request": "\u767d\u8d77/\u52c7\u6c14"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u707c\u590f", 
-            "name": "5-3", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.2", 
-            "creativity": "0.6", 
-            "appetency": "0.35", 
-            "action": "0.85", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u963f\u8bfa\u5fb7/\u5eb7\u6587", 
-                    "request": "\u5a31\u4e50/\u9020\u578b"
-                }, 
-                {
-                    "content": "sr\u7275\u7eca/sr\u843d\u96ea\u65f6\u5149/r\u5b8c\u7f8e\u7ebf\u6761/r\u707c\u590f/r\u4e50\u5929\u6d3e/r\u5b8c\u7f8e\u793c\u670d", 
-                    "request": "\u5468\u68cb\u6d1b/\u6d3b\u529b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u53f3\u624b\u8fb9\u7684\u4f60", 
             "name": "5-4", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a/\u5361\u68ee", 
+                            "request": "\u65b0\u95fb/\u540e\u52e4"
+                        }, 
+                        {
+                            "content": "ssr\u4e70/sr\u4ea4\u6362\u79d8\u5bc6/r\u8c03\u6559/r\u6574\u88c5\u5f85\u53d1", 
+                            "request": "\u674e\u6cfd\u8a00/\u5e7d\u9ed8"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u53f3\u624b\u8fb9\u7684\u4f60"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u745e\u514b/\u5353\u5c3e", 
+                            "request": "\u65b0\u95fb/\u673a\u654f"
+                        }, 
+                        {
+                            "content": "r\u5f39\u65e0\u865a\u53d1/r\u8c03\u67e5/r\u9510\u6c14", 
+                            "request": "\u767d\u8d77/\u5e7d\u9ed8"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u4e00\u5bf9\u4e00\u5ba1\u8baf"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u8131\u5154", 
+                            "request": "\u5a31\u4e50/\u7f16\u5267"
+                        }, 
+                        {
+                            "content": "ssr\u82b1\u821e/sr\u5b64\u5c9b/r\u5165\u7720/r\u7b49\u4f60\u56de\u4fe1/r\u751c\u871c\u5fc3\u60c5", 
+                            "request": "\u5468\u68cb\u6d1b/\u6d6a\u6f2b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7535\u53f0\u8ff7\u8e2a"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u514b\u91cc\u65af\u8482\u5b89/\u5f20\u5c0f\u9f99", 
+                            "request": "\u7535\u5f71/\u8868\u6f14"
+                        }, 
+                        {
+                            "content": "sr\u76f8\u9047/r\u8bb0\u5f55/r\u6536\u85cf\u56de\u5fc6/r\u628a\u624b\u7ed9\u6211", 
+                            "request": "\u8bb8\u58a8/\u7eaf\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6211\u7684\u6674\u5929"
+                }
+            }, 
             "decision": "0.6", 
             "creativity": "0.2", 
             "appetency": "0.35", 
             "action": "0.85", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a/\u5361\u68ee", 
-                    "request": "\u65b0\u95fb/\u540e\u52e4"
-                }, 
-                {
-                    "content": "ssr\u4e70/sr\u4ea4\u6362\u79d8\u5bc6/r\u8c03\u6559/r\u6574\u88c5\u5f85\u53d1", 
-                    "request": "\u674e\u6cfd\u8a00/\u5e7d\u9ed8"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u6211\u7684\u6674\u5929", 
-            "name": "5-4", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.6", 
-            "creativity": "0.2", 
-            "appetency": "0.35", 
-            "action": "0.85", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u514b\u91cc\u65af\u8482\u5b89/\u5f20\u5c0f\u9f99", 
-                    "request": "\u7535\u5f71/\u8868\u6f14"
-                }, 
-                {
-                    "content": "sr\u76f8\u9047/r\u8bb0\u5f55/r\u6536\u85cf\u56de\u5fc6/r\u628a\u624b\u7ed9\u6211", 
-                    "request": "\u8bb8\u58a8/\u7eaf\u771f"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u4e00\u5bf9\u4e00\u5ba1\u8baf", 
-            "name": "5-4", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.6", 
-            "creativity": "0.2", 
-            "appetency": "0.35", 
-            "action": "0.85", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u745e\u514b/\u5353\u5c3e", 
-                    "request": "\u65b0\u95fb/\u673a\u654f"
-                }, 
-                {
-                    "content": "r\u5f39\u65e0\u865a\u53d1/r\u8c03\u67e5/r\u9510\u6c14", 
-                    "request": "\u767d\u8d77/\u5e7d\u9ed8"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u7535\u53f0\u8ff7\u8e2a", 
-            "name": "5-4", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.6", 
-            "creativity": "0.2", 
-            "appetency": "0.35", 
-            "action": "0.85", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8131\u5154", 
-                    "request": "\u5a31\u4e50/\u7f16\u5267"
-                }, 
-                {
-                    "content": "ssr\u82b1\u821e/sr\u5b64\u5c9b/r\u5165\u7720/r\u7b49\u4f60\u56de\u4fe1/r\u751c\u871c\u5fc3\u60c5", 
-                    "request": "\u5468\u68cb\u6d1b/\u6d6a\u6f2b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u5378\u4e0b\u5fc3\u9632", 
             "name": "5-5", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a/\u5361\u68ee", 
+                            "request": "\u65b0\u95fb/\u540e\u52e4"
+                        }, 
+                        {
+                            "content": "\u8d3a\u5c0a", 
+                            "request": "\u65b0\u95fb/\u6587\u6848"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u5378\u4e0b\u5fc3\u9632"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u6f6e\u9738\u5929/\u5f17\u5170\u80af\u65af\u5766/\u90dd\u7f8e\u4e3d", 
+                            "request": "\u706f\u5149"
+                        }, 
+                        {
+                            "content": "ssr\u70bd\u70ed\u80f8\u819b/sr\u7425\u73c0\u65f6\u5149/sr\u4f60\u7684\u773c\u7738/r\u773c\u4e2d\u7684\u4f60/r\u4e00\u5bf9\u4e00\u5ba1\u8baf/r\u7387\u6027", 
+                            "request": "\u767d\u8d77/\u6e29\u60c5"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u56de\u5fc6\u89e3\u9501"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u90ed\u5b9d\u513f/\u6797\u840c\u840c/\u5357\u67ab/\u8131\u5154", 
+                            "request": "\u5a31\u4e50/\u7ec6\u5fc3"
+                        }, 
+                        {
+                            "content": "ssr\u82b1\u821e/sr\u5b64\u5c9b/r\u5165\u7720/r\u7b49\u4f60\u56de\u4fe1/r\u751c\u871c\u5fc3\u60c5", 
+                            "request": "\u5468\u68cb\u6d1b/\u6d6a\u6f2b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u725b\u5976\u60e9\u7f5a"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u8d6b\u65af/\u80af\u5854", 
+                            "request": "\u7535\u5f71/\u97f3\u4e50"
+                        }, 
+                        {
+                            "content": "sr\u5348\u540e\u6696\u9633/r\u548c\u6211\u7ea6\u4f1a", 
+                            "request": "\u8bb8\u58a8/\u5e7d\u9ed8"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7406\u667a\u4e0e\u611f\u60c5"
+                }
+            }, 
             "decision": "0.35", 
             "creativity": "0.85", 
             "appetency": "0.6", 
             "action": "0.2", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a/\u5361\u68ee", 
-                    "request": "\u65b0\u95fb/\u540e\u52e4"
-                }, 
-                {
-                    "content": "\u8d3a\u5c0a", 
-                    "request": "\u65b0\u95fb/\u6587\u6848"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u7406\u667a\u4e0e\u611f\u60c5", 
-            "name": "5-5", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.35", 
-            "creativity": "0.85", 
-            "appetency": "0.6", 
-            "action": "0.2", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d6b\u65af/\u80af\u5854", 
-                    "request": "\u7535\u5f71/\u97f3\u4e50"
-                }, 
-                {
-                    "content": "sr\u5348\u540e\u6696\u9633/r\u548c\u6211\u7ea6\u4f1a", 
-                    "request": "\u8bb8\u58a8/\u5e7d\u9ed8"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u56de\u5fc6\u89e3\u9501", 
-            "name": "5-5", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.35", 
-            "creativity": "0.85", 
-            "appetency": "0.6", 
-            "action": "0.2", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u6f6e\u9738\u5929/\u5f17\u5170\u80af\u65af\u5766/\u90dd\u7f8e\u4e3d", 
-                    "request": "\u706f\u5149"
-                }, 
-                {
-                    "content": "ssr\u70bd\u70ed\u80f8\u819b/sr\u7425\u73c0\u65f6\u5149/sr\u4f60\u7684\u773c\u7738/r\u773c\u4e2d\u7684\u4f60/r\u4e00\u5bf9\u4e00\u5ba1\u8baf/r\u7387\u6027", 
-                    "request": "\u767d\u8d77/\u6e29\u60c5"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u725b\u5976\u60e9\u7f5a", 
-            "name": "5-5", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.35", 
-            "creativity": "0.85", 
-            "appetency": "0.6", 
-            "action": "0.2", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u90ed\u5b9d\u513f/\u6797\u840c\u840c/\u5357\u67ab/\u8131\u5154", 
-                    "request": "\u5a31\u4e50/\u7ec6\u5fc3"
-                }, 
-                {
-                    "content": "ssr\u82b1\u821e/sr\u5b64\u5c9b/r\u5165\u7720/r\u7b49\u4f60\u56de\u4fe1/r\u751c\u871c\u5fc3\u60c5", 
-                    "request": "\u5468\u68cb\u6d1b/\u6d6a\u6f2b"
-                }
-            ]
-        }, 
-        {
-            "goods": "SR\u00b7\u8bd5\u95ee\u771f\u5fc3", 
             "name": "5-6", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u5c71\u53e3\u8d24/\u6768\u5a55", 
+                            "request": "\u65b0\u95fb/\u8fd0\u52a8"
+                        }, 
+                        {
+                            "content": "sr\u8bd5\u95ee\u771f\u5fc3/sr\u6e29\u67d4\u65f6\u523b/r\u53f3\u624b\u8fb9\u7684\u4f60/r\u601d\u7d22", 
+                            "request": "\u674e\u6cfd\u8a00/\u52c7\u6c14"
+                        }
+                    ], 
+                    "goods": "SR\u00b7\u8bd5\u95ee\u771f\u5fc3"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u91d1\u65f6\u8d6b", 
+                            "request": "\u65b0\u95fb/\u7f8e\u98df"
+                        }, 
+                        {
+                            "content": "r\u601d\u8003\u8005/r\u8e0c\u8e87/r\u56de\u5fc6\u89e3\u9501", 
+                            "request": "\u767d\u8d77/\u7f9e\u6da9"
+                        }
+                    ], 
+                    "goods": "SR\u00b7\u5728\u4f60\u8eab\u540e"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u80af\u5854", 
+                            "request": "\u5a31\u4e50/\u8425\u9500"
+                        }, 
+                        {
+                            "content": "sr\u7275\u7eca/sr\u843d\u96ea\u65f6\u5149/r\u5b8c\u7f8e\u7ebf\u6761/r\u707c\u590f/r\u4e50\u5929\u6d3e/r\u5b8c\u7f8e\u793c\u670d", 
+                            "request": "\u5468\u68cb\u6d1b/\u6d3b\u529b"
+                        }
+                    ], 
+                    "goods": "SR\u00b7\u95ea\u4eae\u6ce8\u89c6"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u963f\u8bfa\u5fb7/\u91d1\u65f6\u8d6b/\u4e54\u4f0a", 
+                            "request": "\u670d\u88c5"
+                        }, 
+                        {
+                            "content": "r\u6ce8\u5b9a/r\u8bfb\u4f60/r\u6559\u6388\u5728\u4e0a/r\u6076\u4f5c\u5267", 
+                            "request": "\u8bb8\u58a8/\u7f9e\u6da9"
+                        }
+                    ], 
+                    "goods": "SR\u00b7\u96ea\u5df2\u6df1"
+                }
+            }, 
             "decision": "0.3", 
             "creativity": "0.6", 
             "appetency": "0.9", 
             "action": "0.2", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5c71\u53e3\u8d24/\u6768\u5a55", 
-                    "request": "\u65b0\u95fb/\u8fd0\u52a8"
-                }, 
-                {
-                    "content": "sr\u8bd5\u95ee\u771f\u5fc3/sr\u6e29\u67d4\u65f6\u523b/r\u53f3\u624b\u8fb9\u7684\u4f60/r\u601d\u7d22", 
-                    "request": "\u674e\u6cfd\u8a00/\u52c7\u6c14"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "SR\u00b7\u96ea\u5df2\u6df1", 
-            "name": "5-6", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.3", 
-            "creativity": "0.6", 
-            "appetency": "0.9", 
-            "action": "0.2", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u963f\u8bfa\u5fb7/\u91d1\u65f6\u8d6b/\u4e54\u4f0a", 
-                    "request": "\u670d\u88c5"
-                }, 
-                {
-                    "content": "r\u6ce8\u5b9a/r\u8bfb\u4f60/r\u6559\u6388\u5728\u4e0a/r\u6076\u4f5c\u5267", 
-                    "request": "\u8bb8\u58a8/\u7f9e\u6da9"
-                }
-            ]
-        }, 
-        {
-            "goods": "SR\u00b7\u5728\u4f60\u8eab\u540e", 
-            "name": "5-6", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.3", 
-            "creativity": "0.6", 
-            "appetency": "0.9", 
-            "action": "0.2", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u91d1\u65f6\u8d6b", 
-                    "request": "\u65b0\u95fb/\u7f8e\u98df"
-                }, 
-                {
-                    "content": "r\u601d\u8003\u8005/r\u8e0c\u8e87/r\u56de\u5fc6\u89e3\u9501", 
-                    "request": "\u767d\u8d77/\u7f9e\u6da9"
-                }
-            ]
-        }, 
-        {
-            "goods": "SR\u00b7\u95ea\u4eae\u6ce8\u89c6", 
-            "name": "5-6", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.3", 
-            "creativity": "0.6", 
-            "appetency": "0.9", 
-            "action": "0.2", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u80af\u5854", 
-                    "request": "\u5a31\u4e50/\u8425\u9500"
-                }, 
-                {
-                    "content": "sr\u7275\u7eca/sr\u843d\u96ea\u65f6\u5149/r\u5b8c\u7f8e\u7ebf\u6761/r\u707c\u590f/r\u4e50\u5929\u6d3e/r\u5b8c\u7f8e\u793c\u670d", 
-                    "request": "\u5468\u68cb\u6d1b/\u6d3b\u529b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u6574\u88c5\u5f85\u53d1", 
             "name": "6-2", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u8131\u5154/\u6768\u5a55", 
+                            "request": "\u5e7f\u544a/\u7f16\u5267"
+                        }, 
+                        {
+                            "content": "\u6f6e\u9738\u5929", 
+                            "request": "\u5e7f\u544a/\u97f3\u4e50"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6574\u88c5\u5f85\u53d1"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u6768\u5a55", 
+                            "request": "\u7eaa\u5f55\u7247/\u5bfc\u6f14"
+                        }, 
+                        {
+                            "content": "ssr\u6211\u7684\u82f1\u96c4/sr\u5343\u94a7\u4e00\u53d1/sr\u529b\u91cf\u6e90\u6cc9/r\u51b7\u6696/r\u6d17\u767d\u767d", 
+                            "request": "\u767d\u8d77/\u6d3b\u529b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u4efb\u6027\u9080\u7ea6"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u8d3e\u4e09\u9646/\u8131\u5154", 
+                            "request": "\u5a31\u4e50/\u77e5\u8bc6"
+                        }, 
+                        {
+                            "content": "\u963f\u8bfa\u5fb7/\u5eb7\u6587", 
+                            "request": "\u5a31\u4e50/\u9020\u578b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u8d2a\u7761"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u725b\u9c9c\u82b1/\u745e\u514b", 
+                            "request": "\u7eaa\u5f55\u7247/\u673a\u654f"
+                        }, 
+                        {
+                            "content": "\u4e54\u4f0a/\u9b4f\u5b85\u751f", 
+                            "request": "\u7eaa\u5f55\u7247/\u6444\u5f71"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7247\u523b\u8fdf\u7591"
+                }
+            }, 
             "decision": "0.2", 
             "creativity": "0.9", 
             "appetency": "0.6", 
             "action": "0.3", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8131\u5154/\u6768\u5a55", 
-                    "request": "\u5e7f\u544a/\u7f16\u5267"
-                }, 
-                {
-                    "content": "\u6f6e\u9738\u5929", 
-                    "request": "\u5e7f\u544a/\u97f3\u4e50"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u7247\u523b\u8fdf\u7591", 
-            "name": "6-2", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.2", 
-            "creativity": "0.9", 
-            "appetency": "0.6", 
-            "action": "0.3", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u725b\u9c9c\u82b1/\u745e\u514b", 
-                    "request": "\u7eaa\u5f55\u7247/\u673a\u654f"
-                }, 
-                {
-                    "content": "\u4e54\u4f0a/\u9b4f\u5b85\u751f", 
-                    "request": "\u7eaa\u5f55\u7247/\u6444\u5f71"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u4efb\u6027\u9080\u7ea6", 
-            "name": "6-2", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.2", 
-            "creativity": "0.9", 
-            "appetency": "0.6", 
-            "action": "0.3", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u6768\u5a55", 
-                    "request": "\u7eaa\u5f55\u7247/\u5bfc\u6f14"
-                }, 
-                {
-                    "content": "ssr\u6211\u7684\u82f1\u96c4/sr\u5343\u94a7\u4e00\u53d1/sr\u529b\u91cf\u6e90\u6cc9/r\u51b7\u6696/r\u6d17\u767d\u767d", 
-                    "request": "\u767d\u8d77/\u6d3b\u529b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u8d2a\u7761", 
-            "name": "6-2", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.2", 
-            "creativity": "0.9", 
-            "appetency": "0.6", 
-            "action": "0.3", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d3e\u4e09\u9646/\u8131\u5154", 
-                    "request": "\u5a31\u4e50/\u77e5\u8bc6"
-                }, 
-                {
-                    "content": "\u963f\u8bfa\u5fb7/\u5eb7\u6587", 
-                    "request": "\u5a31\u4e50/\u9020\u578b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u5ba1\u89c6", 
             "name": "6-3", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u514b\u91cc\u65af\u8482\u5b89/\u6797\u840c\u840c", 
+                            "request": "\u5e7f\u544a/\u7eaf\u771f"
+                        }, 
+                        {
+                            "content": "\u6768\u5a55/\u8d75\u575a\u5f3a", 
+                            "request": "\u5e7f\u544a/\u6bc5\u529b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u5ba1\u89c6"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u5eb7\u6587/\u725b\u5927\u4f1f", 
+                            "request": "\u7eaa\u5f55\u7247/\u8868\u6f14"
+                        }, 
+                        {
+                            "content": "r\u5f39\u65e0\u865a\u53d1/r\u8c03\u67e5/r\u9510\u6c14", 
+                            "request": "\u767d\u8d77/\u5e7d\u9ed8"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u601d\u8003\u8005"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u80af\u5854/\u5b8b\u4f73\u6d0b", 
+                            "request": "\u5a31\u4e50/\u97f3\u4e50"
+                        }, 
+                        {
+                            "content": "ssr\u590f\u65e5\u7ea6\u5b9a/sr\u627e\u5230\u4f60\u4e86/r\u4f2a\u88c5\u8005/r\u72ec\u5bb6\u5b9a\u5236", 
+                            "request": "\u5468\u68cb\u6d1b/\u5e7d\u9ed8"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u627f\u8bfa"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u9a6c\u82f1\u4fca/\u677e\u4e0b\u656c\u52a9", 
+                            "request": "\u7eaa\u5f55\u7247/\u53cb\u5584"
+                        }, 
+                        {
+                            "content": "sr\u4e13\u6ce8/r\u9759\u9759\u7b49\u5f85/r\u4e56\u4e56\u5403\u836f", 
+                            "request": "\u8bb8\u58a8/\u8ba4\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u548c\u6211\u7ea6\u4f1a"
+                }
+            }, 
             "decision": "0.9", 
             "creativity": "0.2", 
             "appetency": "0.3", 
             "action": "0.6", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u514b\u91cc\u65af\u8482\u5b89/\u6797\u840c\u840c", 
-                    "request": "\u5e7f\u544a/\u7eaf\u771f"
-                }, 
-                {
-                    "content": "\u6768\u5a55/\u8d75\u575a\u5f3a", 
-                    "request": "\u5e7f\u544a/\u6bc5\u529b"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u548c\u6211\u7ea6\u4f1a", 
-            "name": "6-3", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.9", 
-            "creativity": "0.2", 
-            "appetency": "0.3", 
-            "action": "0.6", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u9a6c\u82f1\u4fca/\u677e\u4e0b\u656c\u52a9", 
-                    "request": "\u7eaa\u5f55\u7247/\u53cb\u5584"
-                }, 
-                {
-                    "content": "sr\u4e13\u6ce8/r\u9759\u9759\u7b49\u5f85/r\u4e56\u4e56\u5403\u836f", 
-                    "request": "\u8bb8\u58a8/\u8ba4\u771f"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u601d\u8003\u8005", 
-            "name": "6-3", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.9", 
-            "creativity": "0.2", 
-            "appetency": "0.3", 
-            "action": "0.6", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5eb7\u6587/\u725b\u5927\u4f1f", 
-                    "request": "\u7eaa\u5f55\u7247/\u8868\u6f14"
-                }, 
-                {
-                    "content": "r\u5f39\u65e0\u865a\u53d1/r\u8c03\u67e5/r\u9510\u6c14", 
-                    "request": "\u767d\u8d77/\u5e7d\u9ed8"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u627f\u8bfa", 
-            "name": "6-3", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.9", 
-            "creativity": "0.2", 
-            "appetency": "0.3", 
-            "action": "0.6", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u80af\u5854/\u5b8b\u4f73\u6d0b", 
-                    "request": "\u5a31\u4e50/\u97f3\u4e50"
-                }, 
-                {
-                    "content": "ssr\u590f\u65e5\u7ea6\u5b9a/sr\u627e\u5230\u4f60\u4e86/r\u4f2a\u88c5\u8005/r\u72ec\u5bb6\u5b9a\u5236", 
-                    "request": "\u5468\u68cb\u6d1b/\u5e7d\u9ed8"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u5378\u4e0b\u5fc3\u9632", 
             "name": "6-4", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u6f6e\u9738\u5929", 
+                            "request": "\u5e7f\u544a/\u53db\u9006"
+                        }, 
+                        {
+                            "content": "r\u5fc3\u7075\u535a\u5f08/r\u51b0\u5c71\u6c14\u573a", 
+                            "request": "\u674e\u6cfd\u8a00/\u7f9e\u6da9"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u5378\u4e0b\u5fc3\u9632"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u5357\u67ab/\u5c71\u53e3\u8d24/\u6cf0\u68ee\u5a1c/\u6768\u5a55", 
+                            "request": "\u7eaa\u5f55\u7247/\u8fd0\u52a8"
+                        }, 
+                        {
+                            "content": "ssr\u6211\u7684\u82f1\u96c4/sr\u5343\u94a7\u4e00\u53d1/sr\u529b\u91cf\u6e90\u6cc9/r\u51b7\u6696/r\u6d17\u767d\u767d", 
+                            "request": "\u767d\u8d77/\u6d3b\u529b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u56de\u5fc6\u89e3\u9501"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u5357\u67ab/\u8131\u5154", 
+                            "request": "\u5a31\u4e50/\u8fd0\u52a8"
+                        }, 
+                        {
+                            "content": "ssr\u661f\u4e4b\u6d77/sr\u5f77\u5fa8\u4e4b\u7738/r\u5feb\u4e50\u6839\u6e90/r\u4f60\u7684\u5b58\u5728/r\u614c\u4e71", 
+                            "request": "\u5468\u68cb\u6d1b/\u7eaf\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u725b\u5976\u60e9\u7f5a"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u5eb7\u6587", 
+                            "request": "\u7eaa\u5f55\u7247/\u82f1\u4fca"
+                        }, 
+                        {
+                            "content": "ssr\u6eba\u6d77/sr\u6df1\u9677/sr\u5b9a\u683c/r\u56de\u7738/r\u6cbb\u6108\u5e08/r\u7247\u523b\u72b9\u7591", 
+                            "request": "\u8bb8\u58a8/\u52c7\u6c14"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7406\u667a\u4e0e\u611f\u60c5"
+                }
+            }, 
             "decision": "0.6", 
             "creativity": "0.9", 
             "appetency": "0.3", 
             "action": "0.2", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u6f6e\u9738\u5929", 
-                    "request": "\u5e7f\u544a/\u53db\u9006"
-                }, 
-                {
-                    "content": "r\u5fc3\u7075\u535a\u5f08/r\u51b0\u5c71\u6c14\u573a", 
-                    "request": "\u674e\u6cfd\u8a00/\u7f9e\u6da9"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u7406\u667a\u4e0e\u611f\u60c5", 
-            "name": "6-4", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.6", 
-            "creativity": "0.9", 
-            "appetency": "0.3", 
-            "action": "0.2", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5eb7\u6587", 
-                    "request": "\u7eaa\u5f55\u7247/\u82f1\u4fca"
-                }, 
-                {
-                    "content": "ssr\u6eba\u6d77/sr\u6df1\u9677/sr\u5b9a\u683c/r\u56de\u7738/r\u6cbb\u6108\u5e08/r\u7247\u523b\u72b9\u7591", 
-                    "request": "\u8bb8\u58a8/\u52c7\u6c14"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u56de\u5fc6\u89e3\u9501", 
-            "name": "6-4", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.6", 
-            "creativity": "0.9", 
-            "appetency": "0.3", 
-            "action": "0.2", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5357\u67ab/\u5c71\u53e3\u8d24/\u6cf0\u68ee\u5a1c/\u6768\u5a55", 
-                    "request": "\u7eaa\u5f55\u7247/\u8fd0\u52a8"
-                }, 
-                {
-                    "content": "ssr\u6211\u7684\u82f1\u96c4/sr\u5343\u94a7\u4e00\u53d1/sr\u529b\u91cf\u6e90\u6cc9/r\u51b7\u6696/r\u6d17\u767d\u767d", 
-                    "request": "\u767d\u8d77/\u6d3b\u529b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u725b\u5976\u60e9\u7f5a", 
-            "name": "6-4", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.6", 
-            "creativity": "0.9", 
-            "appetency": "0.3", 
-            "action": "0.2", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5357\u67ab/\u8131\u5154", 
-                    "request": "\u5a31\u4e50/\u8fd0\u52a8"
-                }, 
-                {
-                    "content": "ssr\u661f\u4e4b\u6d77/sr\u5f77\u5fa8\u4e4b\u7738/r\u5feb\u4e50\u6839\u6e90/r\u4f60\u7684\u5b58\u5728/r\u614c\u4e71", 
-                    "request": "\u5468\u68cb\u6d1b/\u7eaf\u771f"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u6574\u88c5\u5f85\u53d1", 
             "name": "6-5", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u6f6e\u9738\u5929", 
+                            "request": "\u5e7f\u544a/\u97f3\u4e50"
+                        }, 
+                        {
+                            "content": "r\u4f11\u95f2/r\u5fc3\u5f26\u4e4b\u97f3", 
+                            "request": "\u674e\u6cfd\u8a00/\u6d3b\u529b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u6574\u88c5\u5f85\u53d1"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u5eb7\u6587/\u79e6\u78a7\u7389/\u4e54\u4f0a", 
+                            "request": "\u7eaa\u5f55\u7247/\u9020\u578b"
+                        }, 
+                        {
+                            "content": "ssr\u661f\u4e0e\u7738/sr\u661f\u7a7a\u4e4b\u543b/sr\u707c\u707c\u5149\u8292/sr\u7480\u74a8\u7684\u5fc3/sr\u5728\u4f60\u8eab\u540e/r\u7825\u783a/r\u70e6\u607c/r\u81f4\u656c\u5403\u8d27", 
+                            "request": "\u767d\u8d77/\u6d6a\u6f2b"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u4efb\u6027\u9080\u7ea6"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u5f17\u5170\u80af\u65af\u5766/\u90dd\u7f8e\u4e3d", 
+                            "request": "\u5a31\u4e50/\u706f\u5149"
+                        }, 
+                        {
+                            "content": "\u90ed\u5b9d\u513f/\u5353\u5c3e", 
+                            "request": "\u5a31\u4e50/\u6444\u5f71"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u8d2a\u7761"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a", 
+                            "request": "\u7eaa\u5f55\u7247/\u77e5\u8bc6"
+                        }, 
+                        {
+                            "content": "sr\u4e13\u6ce8/r\u9759\u9759\u7b49\u5f85/r\u4e56\u4e56\u5403\u836f", 
+                            "request": "\u8bb8\u58a8/\u8ba4\u771f"
+                        }
+                    ], 
+                    "goods": "R\u00b7\u7247\u523b\u8fdf\u7591"
+                }
+            }, 
             "decision": "0.2", 
             "creativity": "0.9", 
             "appetency": "0.6", 
             "action": "0.3", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u6f6e\u9738\u5929", 
-                    "request": "\u5e7f\u544a/\u97f3\u4e50"
-                }, 
-                {
-                    "content": "r\u4f11\u95f2/r\u5fc3\u5f26\u4e4b\u97f3", 
-                    "request": "\u674e\u6cfd\u8a00/\u6d3b\u529b"
-                }
-            ]
+            "prof": "0.5"
         }, 
         {
-            "goods": "R\u00b7\u7247\u523b\u8fdf\u7591", 
-            "name": "6-5", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.2", 
-            "creativity": "0.9", 
-            "appetency": "0.6", 
-            "action": "0.3", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a", 
-                    "request": "\u7eaa\u5f55\u7247/\u77e5\u8bc6"
-                }, 
-                {
-                    "content": "sr\u4e13\u6ce8/r\u9759\u9759\u7b49\u5f85/r\u4e56\u4e56\u5403\u836f", 
-                    "request": "\u8bb8\u58a8/\u8ba4\u771f"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u4efb\u6027\u9080\u7ea6", 
-            "name": "6-5", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.2", 
-            "creativity": "0.9", 
-            "appetency": "0.6", 
-            "action": "0.3", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5eb7\u6587/\u79e6\u78a7\u7389/\u4e54\u4f0a", 
-                    "request": "\u7eaa\u5f55\u7247/\u9020\u578b"
-                }, 
-                {
-                    "content": "ssr\u661f\u4e0e\u7738/sr\u661f\u7a7a\u4e4b\u543b/sr\u707c\u707c\u5149\u8292/sr\u7480\u74a8\u7684\u5fc3/sr\u5728\u4f60\u8eab\u540e/r\u7825\u783a/r\u70e6\u607c/r\u81f4\u656c\u5403\u8d27", 
-                    "request": "\u767d\u8d77/\u6d6a\u6f2b"
-                }
-            ]
-        }, 
-        {
-            "goods": "R\u00b7\u8d2a\u7761", 
-            "name": "6-5", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.2", 
-            "creativity": "0.9", 
-            "appetency": "0.6", 
-            "action": "0.3", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5f17\u5170\u80af\u65af\u5766/\u90dd\u7f8e\u4e3d", 
-                    "request": "\u5a31\u4e50/\u706f\u5149"
-                }, 
-                {
-                    "content": "\u90ed\u5b9d\u513f/\u5353\u5c3e", 
-                    "request": "\u5a31\u4e50/\u6444\u5f71"
-                }
-            ]
-        }, 
-        {
-            "goods": "SR\u00b7\u8bd5\u95ee\u771f\u5fc3", 
             "name": "6-6", 
-            "character": "\u674e\u6cfd\u8a00", 
+            "list": {
+                "\u674e\u6cfd\u8a00": {
+                    "requests": [
+                        {
+                            "content": "\u677e\u4e0b\u656c\u52a9", 
+                            "request": "\u5e7f\u544a/\u53cb\u5584"
+                        }, 
+                        {
+                            "content": "ssr\u4ea4\u7f20\u89c6\u7ebf/sr\u6e29\u67d4\u9f13\u52b1/r\u65f6\u95f4\u638c\u63a7\u8005/r\u7f8e\u5473\u5173\u7cfb/r\u5ba1\u89c6", 
+                            "request": "\u674e\u6cfd\u8a00/\u6e29\u60c5"
+                        }
+                    ], 
+                    "goods": "SR\u00b7\u8bd5\u95ee\u771f\u5fc3"
+                }, 
+                "\u767d\u8d77": {
+                    "requests": [
+                        {
+                            "content": "\u8d3a\u5c0a/\u677e\u4e0b\u656c\u52a9", 
+                            "request": "\u7eaa\u5f55\u7247/\u540e\u52e4"
+                        }, 
+                        {
+                            "content": "ssr\u70bd\u70ed\u80f8\u819b/sr\u7425\u73c0\u65f6\u5149/sr\u4f60\u7684\u773c\u7738/r\u773c\u4e2d\u7684\u4f60/r\u4e00\u5bf9\u4e00\u5ba1\u8baf/r\u7387\u6027", 
+                            "request": "\u767d\u8d77/\u6e29\u60c5"
+                        }
+                    ], 
+                    "goods": "SR\u00b7\u5728\u4f60\u8eab\u540e"
+                }, 
+                "\u5468\u68cb\u6d1b": {
+                    "requests": [
+                        {
+                            "content": "\u5357\u67ab", 
+                            "request": "\u5a31\u4e50/\u6bc5\u529b"
+                        }, 
+                        {
+                            "content": "ssr\u82b1\u821e/sr\u5b64\u5c9b/r\u5165\u7720/r\u7b49\u4f60\u56de\u4fe1/r\u751c\u871c\u5fc3\u60c5", 
+                            "request": "\u5468\u68cb\u6d1b/\u6d6a\u6f2b"
+                        }
+                    ], 
+                    "goods": "SR\u00b7\u95ea\u4eae\u6ce8\u89c6"
+                }, 
+                "\u8bb8\u58a8": {
+                    "requests": [
+                        {
+                            "content": "\u5eb7\u6587/\u79e6\u78a7\u7389/\u4e54\u4f0a", 
+                            "request": "\u7eaa\u5f55\u7247/\u9020\u578b"
+                        }, 
+                        {
+                            "content": "ssr\u6a31\u843d\u65e0\u58f0/sr\u70b9\u70b9\u8424\u5149/sr\u6697\u591c\u5149\u8292/sr\u96ea\u5df2\u6df1/r\u7406\u667a\u4e0e\u60c5\u611f", 
+                            "request": "\u8bb8\u58a8/\u6d6a\u6f2b"
+                        }
+                    ], 
+                    "goods": "SR\u00b7\u96ea\u5df2\u6df1"
+                }
+            }, 
             "decision": "0.3", 
             "creativity": "0.6", 
             "appetency": "0.2", 
             "action": "0.9", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u677e\u4e0b\u656c\u52a9", 
-                    "request": "\u5e7f\u544a/\u53cb\u5584"
-                }, 
-                {
-                    "content": "ssr\u4ea4\u7f20\u89c6\u7ebf/sr\u6e29\u67d4\u9f13\u52b1/r\u65f6\u95f4\u638c\u63a7\u8005/r\u7f8e\u5473\u5173\u7cfb/r\u5ba1\u89c6", 
-                    "request": "\u674e\u6cfd\u8a00/\u6e29\u60c5"
-                }
-            ]
-        }, 
-        {
-            "goods": "SR\u00b7\u96ea\u5df2\u6df1", 
-            "name": "6-6", 
-            "character": "\u8bb8\u58a8", 
-            "decision": "0.3", 
-            "creativity": "0.6", 
-            "appetency": "0.2", 
-            "action": "0.9", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5eb7\u6587/\u79e6\u78a7\u7389/\u4e54\u4f0a", 
-                    "request": "\u7eaa\u5f55\u7247/\u9020\u578b"
-                }, 
-                {
-                    "content": "ssr\u6a31\u843d\u65e0\u58f0/sr\u70b9\u70b9\u8424\u5149/sr\u6697\u591c\u5149\u8292/sr\u96ea\u5df2\u6df1/r\u7406\u667a\u4e0e\u60c5\u611f", 
-                    "request": "\u8bb8\u58a8/\u6d6a\u6f2b"
-                }
-            ]
-        }, 
-        {
-            "goods": "SR\u00b7\u5728\u4f60\u8eab\u540e", 
-            "name": "6-6", 
-            "character": "\u767d\u8d77", 
-            "decision": "0.3", 
-            "creativity": "0.6", 
-            "appetency": "0.2", 
-            "action": "0.9", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u8d3a\u5c0a/\u677e\u4e0b\u656c\u52a9", 
-                    "request": "\u7eaa\u5f55\u7247/\u540e\u52e4"
-                }, 
-                {
-                    "content": "ssr\u70bd\u70ed\u80f8\u819b/sr\u7425\u73c0\u65f6\u5149/sr\u4f60\u7684\u773c\u7738/r\u773c\u4e2d\u7684\u4f60/r\u4e00\u5bf9\u4e00\u5ba1\u8baf/r\u7387\u6027", 
-                    "request": "\u767d\u8d77/\u6e29\u60c5"
-                }
-            ]
-        }, 
-        {
-            "goods": "SR\u00b7\u95ea\u4eae\u6ce8\u89c6", 
-            "name": "6-6", 
-            "character": "\u5468\u68cb\u6d1b", 
-            "decision": "0.3", 
-            "creativity": "0.6", 
-            "appetency": "0.2", 
-            "action": "0.9", 
-            "prof": "0.5", 
-            "requests": [
-                {
-                    "content": "\u5357\u67ab", 
-                    "request": "\u5a31\u4e50/\u6bc5\u529b"
-                }, 
-                {
-                    "content": "ssr\u82b1\u821e/sr\u5b64\u5c9b/r\u5165\u7720/r\u7b49\u4f60\u56de\u4fe1/r\u751c\u871c\u5fc3\u60c5", 
-                    "request": "\u5468\u68cb\u6d1b/\u6d6a\u6f2b"
-                }
-            ]
+            "prof": "0.5"
         }
     ], 
     "hard": [
