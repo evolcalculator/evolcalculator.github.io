@@ -308,6 +308,14 @@ var vm = new Vue({
                             for (var j = 0; j < self.list.length; j++) {
                                 var score = 0;
                                 var card = self.list[j];
+
+                                if ((item.category == 3 && [2, 5].indexOf(card.category) < 0) ||
+                                    (item.category == 4 && [4, 5].indexOf(card.category) < 0) ||
+                                    (item.category == 5 && [1, 5].indexOf(card.category) < 0) ||
+                                    (item.category == 6 && [3, 5].indexOf(card.category) < 0)) {
+                                    continue;
+                                }
+
                                 var prop = self.prop;
 
                                 for (var k = 0; k < prop.length; k++) {
@@ -418,6 +426,13 @@ var vm = new Vue({
                 var score = 0;
                 var card = list[i];
                 var prop = self.prop;
+
+                if ((self.levels.level.category == 3 && [2, 5].indexOf(card.category) < 0) ||
+                    (self.levels.level.category == 4 && [4, 5].indexOf(card.category) < 0) ||
+                    (self.levels.level.category == 5 && [1, 5].indexOf(card.category) < 0) ||
+                    (self.levels.level.category == 6 && [3, 5].indexOf(card.category) < 0)) {
+                    continue;
+                }
 
                 var config = '';
                 if (card.type == 3) {
