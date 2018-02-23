@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        base_url: 'http://app.coderprepares.com/evol/calculator/',
+        base_url: 'https://app.coderprepares.com/evol/calculator/',
         prop: ['decisiveness', 'creativity', 'kindness', 'activity'],
         dom_init: false, // 初始化dom元素
         nav: 'level', // 导航
