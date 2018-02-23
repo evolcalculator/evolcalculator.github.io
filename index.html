@@ -78,13 +78,18 @@
         margin-top: 10px;
     }
 
-    .modal-main .radio {
+    .radio {
         text-align: left;
         font-size: small;
     }
 
-    .modal-main .radio label {
+    .radio label {
         padding-right: 10px;
+    }
+
+    .radio span {
+        display: inline-block;
+        width: 40px;
     }
 
     .modal-body textarea {
@@ -163,7 +168,7 @@
                         </h4>
                         <div class="form-group">
                             <span>羁绊数量：{{list.length}}</span>
-                            <a href="javascript:;" @click="nav = 'card'" v-show="nav != 'card'">查看</a>
+                            <a href="javascript:;" @click="nav = 'card'" v-show="nav != 'card'">查看羁绊</a>
                             <a href="javascript:;" @click="nav = 'level'" v-show="nav != 'level'">关卡计算</a>
                         </div>
                         <h4>公司属性</h4>
@@ -200,7 +205,7 @@
                         <h4>添加羁绊</h4>
                         <div class="pd15">
                             <label class="label-above">输入关键字，添加或修改羁绊</label>
-                            <input type="text" class="typeahead form-control" data-provide="typeahead" autocomplete="off">
+                            <input id="card_typeahead" type="text" class="typeahead form-control" data-provide="typeahead" autocomplete="off">
                             <p class="help-block">添加时先输入等级，自动推算属性值</p>
                         </div>
                         <div class="form-group">
@@ -355,14 +360,47 @@
                                     <td>{{levels.level['request'+i]}}</td>
                                     <td class="cell" :class="{'cell-all': levels.overflow}" @click="levels.overflow = !levels.overflow">{{levels.level['recommend'+i]}}</td>
                                 </tr>
+                            </tbody>
+                        </table>
 
-                                <tr v-show="levels.level.pass_score > 0">
+                        <table class="table table-bordered table-hover table-condensed">
+                            <tbody>
+                                <tr>
+                                    <th>公司得分</th>
+                                    <td>
+                                        <a href="javascript:;" @click="show_special()">{{levels.company.decisiveness}} / {{levels.company.creativity}} / {{levels.company.kindness}} / {{levels.company.activity}}</a>
+                                    </td>
+                                    <td>{{get_company_score()}}</td>
+                                </tr>
+                                <tr>
+                                    <th>专家得分</th>
+                                    <td><a href="javascript:;" @click="show_special()">Normal * {{levels.multiple}}</a></td>
+                                    <td>{{get_special_score()}}</td>
+                                </tr>
+                                <tr v-for="(item, idx) in levels.combine">
+                                    <th rowspan="3" v-if="idx == 0">羁绊得分</th>
+                                    <td><a href="javascript:;" @click="show_combine(idx)">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></a></td>
+                                    <td>{{item.score}}</td>
+                                </tr>
+                                <tr>
+                                    <th>总分</th>
+                                    <td><small style="color: #737373;">点击上方更改</small></td>
+                                    <td>{{get_total_score()}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-bordered table-hover table-condensed" v-show="levels.level.pass_score > 0">
+                            <thead>
+                                <tr>
                                     <th>一星</th>
                                     <th>二星</th>
                                     <th>三星</th>
                                     <th>评级</th>
                                 </tr>
-                                <tr v-show="levels.level.pass_score > 0">
+                            </thead>
+                            <tbody>
+                                <tr>
                                     <td>{{levels.level.pass_score}}</td>
                                     <td>{{levels.level.half_score}}</td>
                                     <td>{{levels.level.full_score}}</td>
@@ -371,59 +409,115 @@
                             </tbody>
                         </table>
 
-                        <table class="table table-bordered table-hover table-condensed">
+                        <div class="form-group">
+                            <p class="help-block">注：过关分数存在误差仅供参考，压线过关需谨慎</p>
+                        </div>
+                    </div>
+
+                    <div v-show="!empty(levels.cards)">
+                        <h4>
+                            <span>羁绊分析</span>
+                            <a href="javascript:;" @click="levels.config = !levels.config">设置</a>
+                        </h4>
+
+                        <div v-show="levels.config">
+                            <div class="radio">
+                                <span>筛选：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.card" value="my">
+                                    我的羁绊
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.card" value="all">
+                                    所有羁绊
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <span>R：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="hidden">
+                                    隐藏
+                                </label>
+                                <label v-show="levels.card == 'my'">
+                                    <input type="radio" v-model="levels.r" value="remain">
+                                    不改变
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="ordinary">
+                                    进化前
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="evolved">
+                                    进化后
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <span>SR：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="hidden">
+                                    隐藏
+                                </label>
+                                <label v-show="levels.card == 'my'">
+                                    <input type="radio" v-model="levels.sr" value="remain">
+                                    不改变
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="ordinary">
+                                    进化前
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="evolved">
+                                    进化后
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <span>SSR：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="hidden">
+                                    隐藏
+                                </label>
+                                <label v-show="levels.card == 'my'">
+                                    <input type="radio" v-model="levels.ssr" value="remain">
+                                    不改变
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="ordinary">
+                                    进化前
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="evolved">
+                                    进化后
+                                </label>
+                            </div>
+                        </div>
+
+                        <p class="help-block">点击设置更改羁绊属性，可进行过关分析</p>
+
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>等级</th>
+                                    <th class="hidden-xs">决策</th>
+                                    <th class="hidden-xs">创造</th>
+                                    <th class="hidden-xs">亲和</th>
+                                    <th class="hidden-xs">行动</th>
+                                    <th>得分</th>
+                                </tr>
+                            </thead>
                             <tbody>
-                                <tr>
-                                    <th>公司得分</th>
-                                    <td></td>
-                                    <td>{{get_company_score()}}</td>
-                                </tr>
-                                <tr>
-                                    <th>专家得分</th>
-                                    <td></td>
-                                    <td>{{get_special_score()}}</td>
-                                </tr>
-                                <tr v-for="(item, idx) in levels.combine">
-                                    <th rowspan="3" v-if="idx == 0">羁绊得分</th>
+                                <tr v-for="item in levels.cards">
                                     <td>{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></td>
+                                    <td>lv.{{item.level}} {{get_star_print(item.star)}} {{get_evolved_tag(item.evolved)}}</td>
+                                    <td class="hidden-xs">{{item.decisiveness}}</td>
+                                    <td class="hidden-xs">{{item.creativity}}</td>
+                                    <td class="hidden-xs">{{item.kindness}}</td>
+                                    <td class="hidden-xs">{{item.activity}}</td>
                                     <td>{{item.score}}</td>
-                                </tr>
-                                <tr>
-                                    <th>总分</th>
-                                    <td></td>
-                                    <td>{{get_total_score()}}</td>
                                 </tr>
                             </tbody>
                         </table>
-
-                        <p class="help-block">注：过关分数存在误差仅供参考，压线过关需谨慎</p>
                     </div>
-
-                    <h4>过关分析</h4>
-                    <table class="table table-bordered table-hover" v-show="!empty(levels.cards)">
-                        <thead>
-                            <tr>
-                                <th>名称</th>
-                                <th>等级</th>
-                                <th class="hidden-xs">决策</th>
-                                <th class="hidden-xs">创造</th>
-                                <th class="hidden-xs">亲和</th>
-                                <th class="hidden-xs">行动</th>
-                                <th>得分</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="item in levels.cards">
-                                <td>{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></td>
-                                <td>lv.{{item.level}} {{get_star_print(item.star)}} {{get_evolved_tag(item.evolved)}}</td>
-                                <td class="hidden-xs">{{item.decisiveness}}</td>
-                                <td class="hidden-xs">{{item.creativity}}</td>
-                                <td class="hidden-xs">{{item.kindness}}</td>
-                                <td class="hidden-xs">{{item.activity}}</td>
-                                <td>{{item.score}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
             <div class="modal fade" tabindex="-1" role="dialog" id="company">
@@ -509,6 +603,101 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                             <button type="button" id="save_card" class="btn btn-primary" data-loading-text="保存中..." @click="save_card()">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" tabindex="-1" role="dialog" id="combine">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="pd15">
+                                <label class="label-above">羁绊名</label>
+                                <input type="text" id="combine_typeahead" class="typeahead form-control" data-provide="typeahead" autocomplete="off">
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">进化</label>
+                                    <select class="form-control" v-model="levels.select.evolved">
+                                        <option value="0">未进化</option>
+                                        <option value="1">进化</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">星级</label>
+                                    <input type="number" class="form-control" v-model="levels.select.star">
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">等级</label>
+                                    <input type="number" class="form-control" v-model="levels.select.level">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">决策</label>
+                                    <input type="number" class="form-control" v-model="levels.select.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">创造</label>
+                                    <input type="number" class="form-control" v-model="levels.select.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">亲和</label>
+                                    <input type="number" class="form-control" v-model="levels.select.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">行动</label>
+                                    <input type="number" class="form-control" v-model="levels.select.activity">
+                                </div>
+                            </div>
+                            <p>得分：{{levels.select.score}}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" @click="save_combine()">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" tabindex="-1" role="dialog" id="special">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">决策</label>
+                                    <input type="number" class="form-control" v-model="levels.company.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">创造</label>
+                                    <input type="number" class="form-control" v-model="levels.company.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">亲和</label>
+                                    <input type="number" class="form-control" v-model="levels.company.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">行动</label>
+                                    <input type="number" class="form-control" v-model="levels.company.activity">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">Normal倍数</label>
+                                    <input type="number" class="form-control" v-model="levels.multiple">
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above" style="text-align: center;">公司得分</label>
+                                    <span>{{get_company_score()}}</span>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above" style="text-align: center;">专家得分</label>
+                                    <span>{{get_special_score()}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
                         </div>
                     </div>
                 </div>
@@ -605,13 +794,41 @@
                 export: '',
                 fail: []
             },
+            //关卡计算
             levels: {
                 level: {},
                 list: [],
                 overflow: false,
                 multiple: 2,
                 cards: [],
-                combine: []
+                combine: [],
+                card: 'my',
+                r: 'remain',
+                sr: 'remain',
+                ssr: 'remain',
+                config: false,
+                company: {
+                    decisiveness: 0,
+                    creativity: 0,
+                    kindness: 0,
+                    activity: 0
+                },
+                select: {
+                    card_id: 0,
+                    evolved: 0,
+                    star: 1,
+                    level: 1,
+                    decisiveness: 0,
+                    creativity: 0,
+                    kindness: 0,
+                    creativity: 0,
+                    idx: 0,
+                    score: 0,
+                    total: 0,
+                    category: 0,
+                    type: 0,
+                    name: ''
+                }
             }
         },
         watch: {
@@ -661,9 +878,80 @@
             },
             'card_select.level': function(newVal, oldVal){
                 this.update_card_select();
+            },
+            //过关羁绊
+            'levels.select.evolved': function(newVal, oldVal){
+                this.update_combine_select();
+            },
+            'levels.select.star': function(newVal, oldVal){
+                this.update_combine_select();
+            },
+            'levels.select.level': function(newVal, oldVal){
+                this.update_combine_select();
+            },
+            //过关分析
+            'levels.card': function(newVal, oldVal){
+                if(newVal == 'all'){
+                    this.levels.r = (this.levels.r == 'remain') ? 'evolved' : this.levels.r;
+                    this.levels.sr = (this.levels.sr == 'remain') ? 'evolved' : this.levels.sr;
+                    this.levels.ssr = (this.levels.ssr == 'remain') ? 'evolved' : this.levels.ssr;
+                } else {
+                    this.levels.r = 'remain';
+                    this.levels.sr = 'remain';
+                    this.levels.ssr = 'remain';
+                }
+                this.level_cards();
+            },
+            'levels.r': function(newVal, oldVal){
+                this.level_cards();
+            },
+            'levels.sr': function(newVal, oldVal){
+                this.level_cards();
+            },
+            'levels.ssr': function(newVal, oldVal){
+                this.level_cards();
             }
         },
         methods: {
+            //过关羁绊
+            show_combine: function(idx){
+                this.levels.select.idx = idx;
+                var card = this.levels.combine[idx];
+                this.levels.select.card_id = card.card_id;
+                this.levels.select.evolved = card.evolved;
+                this.levels.select.star = card.star;
+                this.levels.select.level = card.level;
+                this.levels.select.decisiveness = card.decisiveness;
+                this.levels.select.creativity = card.creativity;
+                this.levels.select.kindness = card.kindness;
+                this.levels.select.activity = card.activity;
+                $('#combine_typeahead').val(card.name);
+
+                $('#combine').modal();
+            },
+            save_combine: function(){
+                var card = this.levels.combine[this.levels.select.idx];
+                var select = this.levels.select;
+
+                card.card_id = select.card_id;
+                card.evolved = select.evolved;
+                card.star = select.star;
+                card.level = select.level;
+                card.decisiveness = select.decisiveness;
+                card.creativity = select.creativity;
+                card.kindness = select.kindness;
+                card.activity = select.activity;
+                card.name = select.name;
+                card.type = select.type;
+                card.category = select.category;
+                card.total = select.total;
+                card.score = select.score;
+
+                $('#combine').modal('hide');
+            },
+            show_special: function(){
+                $('#special').modal();
+            },
             //总分
             get_total_score: function(){
                 var score = 0;
@@ -682,7 +970,7 @@
                 var score = 0;
 
                 for(var i = 0; i < prop.length; i++){
-                    score += this.levels.level[prop[i]] * this.company[prop[i]] * this.levels.level['company'];
+                    score += this.levels.level[prop[i]] * this.levels.company[prop[i]] * this.levels.level['company'];
                 }
 
                 return Math.round(score);
@@ -693,7 +981,7 @@
                 var score = 0;
 
                 for(var i = 0; i < prop.length; i++){
-                    score += this.levels.level[prop[i]] * this.company[prop[i]] * this.levels.level['special'] * this.levels.multiple;
+                    score += this.levels.level[prop[i]] * this.levels.company[prop[i]] * this.levels.level['special'] * this.levels.multiple;
                 }
 
                 return Math.round(score);
@@ -737,6 +1025,9 @@
             get_levels: function(){
                 var self = this;
                 self.levels.overflow = false;
+                self.levels.multiple = 2;
+                self.levels.level = {};
+                self.levels.cards = [];
 
                 if(self.level != 0){
                     $level_id = self.select[self.category][self.chapter][self.level];
@@ -812,6 +1103,9 @@
             get_level: function(id){
                 var self = this;
                 self.levels.list = [];
+                for(key in self.company){
+                    self.levels.company[key] = self.company[key];
+                }
 
                 $('#get_levels').button('loading');
                 $.ajax({
@@ -854,10 +1148,69 @@
             level_cards: function(){
                 var self = this;
                 var my_cards = [];
-                for(var i = 0; i < self.list.length; i++){
+                var list = [];
+
+                for(id in self.cards){
+                    id = parseInt(id, 10);
+                    if(self.levels.card == 'my' && self.my_cards.indexOf(id) < 0){
+                        continue;
+                    }
+                    list.push(self.cards[id]);
+                }
+
+                for(var i = 0; i < list.length; i++){
                     var score = 0;
-                    var card = self.list[i];
+                    var card = list[i];
                     var prop = self.prop;
+
+                    var config = '';
+                    if(card.type == 3){
+                        config = self.levels.r;
+                    } else if (card.type == 4){
+                        config = self.levels.sr;
+                    } else if (card.type == 5){
+                        config = self.levels.ssr;
+                    }
+
+                    if(config == 'hidden'){
+                        continue;
+                    } else if (config == 'ordinary') {
+                        card.evolved = 0;
+                        card.star = card.type;
+                        card.level = (card.type - 1) * 10;
+                    } else if (config == 'evolved') {
+                        card.evolved = 1;
+                        card.star = card.type + 1;
+                        card.level = card.type * 10;
+                    }
+
+                    if(card.type == 1 || card.type == 2){
+                        card.evolved = 0;
+                        card.star = 1;
+                        card.level = card.type * 5;
+                    }
+
+                    var data = self.predict_card(card.card_id, card.evolved, card.star, card.level);
+                    card.total = 0;
+                    for(var j = 0; j < prop.length; j++){
+                        card[prop[j]] = data[prop[j]];
+                        card.total += data[prop[j]];
+                    }
+
+                    var idx = self.my_cards.indexOf(card.card_id);
+                    if(idx >= 0){
+                        var my_card = self.list[idx];
+                        if(config == 'remain' || (self.levels.card == 'my' && my_card.total > card.total)){
+                            card.evolved = my_card.evolved;
+                            card.star = my_card.star;
+                            card.level = my_card.level;
+                            card.decisiveness = my_card.decisiveness;
+                            card.creativity = my_card.creativity;
+                            card.kindness = my_card.kindness;
+                            card.activity = my_card.activity;
+                            card.total = my_card.total;
+                        }
+                    }
 
                     for(var j = 0; j < prop.length; j++){
                         score += card[prop[j]] * self.levels.level[prop[j]];
@@ -873,7 +1226,16 @@
                 self.levels.cards = my_cards;
 
                 //高分羁绊
-                self.levels.combine = my_cards.slice(0, 3);
+                var combine = [];
+                for(var i = 0; i < 3; i++){
+                    var my_card = my_cards[i];
+                    var card = {};
+                    for(key in my_card){
+                        card[key] = my_card[key];
+                    }
+                    combine.push(card);
+                }
+                self.levels.combine = combine;
             },
             //导出数据
             export_data: function(){
@@ -1144,6 +1506,22 @@
                 $('#card').modal();
             },
             //更新羁绊选择
+            update_combine_select: function(){
+                var data = this.predict_card(this.levels.select.card_id, this.levels.select.evolved, this.levels.select.star, this.levels.select.level);
+                var prop = this.prop;
+                var total = 0;
+                var score = 0;
+
+                for(var i = 0; i < prop.length; i++){
+                    this.levels.select[prop[i]] = data[prop[i]];
+                    total += data[prop[i]];
+                    score += data[prop[i]] * this.levels.level[prop[i]];
+                }
+
+                this.levels.select.total = total;
+                this.levels.select.score = Math.round(score);
+            },
+            //更新羁绊选择
             update_card_select: function(){
                 var data = this.predict_card(this.card_select.card_id, this.card_select.evolved, this.card_select.star, this.card_select.level);
                 var prop = this.prop;
@@ -1273,6 +1651,9 @@
                 this.company = {};
                 this.list = [];
                 this.my_cards = [];
+                this.levels.list = [];
+                this.levels.level = {};
+                this.levels.cards = [];
             },
             //显示提示信息
             show_msg: function(msg) {
@@ -1453,13 +1834,30 @@
                                     $(this).typeahead('lookup');
                                 });
 
-                                $('.typeahead').change(function(){
+                                $('#card_typeahead').change(function(){
                                     var name = $(this).val();
 
                                     if(self.card_list.indexOf(name) >= 0){
                                         self.card_select.name = name;
                                         $(this).val('');
                                         self.show_card();
+                                    }
+                                });
+
+                                $('#combine_typeahead').change(function(){
+                                    var name = $(this).val();
+
+                                    if(self.card_list.indexOf(name) >= 0){
+                                        for(id in self.cards){
+                                            if(self.cards[id].name == name){
+                                                self.levels.select.card_id = id;
+                                                self.levels.select.category = self.cards[id].category;
+                                                self.levels.select.type = self.cards[id].type;
+                                                self.levels.select.name = self.cards[id].name;
+                                                break;
+                                            }
+                                        }
+                                        self.update_combine_select();
                                     }
                                 });
 
