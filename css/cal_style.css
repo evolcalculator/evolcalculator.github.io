@@ -267,3 +267,7 @@ h4 span,
     white-space: normal;
     word-wrap: break-word;
 }
+
+.item_body {
+    padding-bottom: 40px;
+}

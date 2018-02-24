@@ -11,9 +11,14 @@ var vm = new Vue({
         level: 0, // 关卡
         cards: {}, // 全羁绊信息
         card_list: [], // 全羁绊名称
-        company: {}, //我的公司
-        list: [], // 我的羁绊
-        my_cards: [], //我的羁绊ID
+        company: $.LS.get('company') ? JSON.parse($.LS.get('company')) : { //我的公司
+            decisiveness: 0,
+            creativity: 0,
+            kindness: 0,
+            activity: 0
+        },
+        list: $.LS.get('list') ? JSON.parse($.LS.get('list')) : [], // 我的羁绊
+        my_cards: $.LS.get('my_cards') ? JSON.parse($.LS.get('my_cards')) : [], //我的羁绊ID
         login: { // 登录信息
             name: '',
             code: '',
@@ -85,18 +90,164 @@ var vm = new Vue({
                 type: 0,
                 name: ''
             }
+        },
+        //票房
+        ticket: [],
+        today: {},
+        tickets: {
+            ticket_id: 1,
+            category: 1,
+            star: 3,
+            combine: [],
+            ticket: {},
+            my: [],
+            match: [
+                {
+                    card_id: 0,
+                    evolved: 0,
+                    star: 1,
+                    level: 1,
+                    decisiveness: 0,
+                    creativity: 0,
+                    kindness: 0,
+                    activity: 0,
+                    name: '',
+                    type: 0,
+                    category: 0,
+                    total: 0,
+                    score: 0
+                },
+                {
+                    card_id: 0,
+                    evolved: 0,
+                    star: 1,
+                    level: 1,
+                    decisiveness: 0,
+                    creativity: 0,
+                    kindness: 0,
+                    activity: 0,
+                    name: '',
+                    type: 0,
+                    category: 0,
+                    total: 0,
+                    score: 0
+                },
+                {
+                    card_id: 0,
+                    evolved: 0,
+                    star: 1,
+                    level: 1,
+                    decisiveness: 0,
+                    creativity: 0,
+                    kindness: 0,
+                    activity: 0,
+                    name: '',
+                    type: 0,
+                    category: 0,
+                    total: 0,
+                    score: 0
+                }
+            ],
+            option: 'my',
+            my_company: {
+                decisiveness: 0,
+                creativity: 0,
+                kindness: 0,
+                activity: 0
+            },
+            match_company: {
+                decisiveness: 0,
+                creativity: 0,
+                kindness: 0,
+                activity: 0
+            },
+            company: {
+                decisiveness: 0,
+                creativity: 0,
+                kindness: 0,
+                activity: 0,
+                option: ''
+            },
+            select: {
+                card_id: 0,
+                evolved: 0,
+                star: 1,
+                level: 1,
+                decisiveness: 0,
+                creativity: 0,
+                kindness: 0,
+                creativity: 0,
+                idx: 0,
+                score: 0,
+                total: 0,
+                category: 0,
+                type: 0,
+                name: '',
+                option: ''
+            }
+        },
+        ticket_select: {
+            ticket_id: 1,
+            category: 1,
+            star: 3
+        },
+        reverse: {
+            option: 'addup',
+            separate: {
+                decisiveness: '',
+                creativity: '',
+                kindness: '',
+                activity: ''
+            },
+            addup: {
+                decisiveness: '',
+                creativity: '',
+                kindness: '',
+                activity: ''
+            },
+            scores: {
+                decisiveness: '',
+                creativity: '',
+                kindness: '',
+                activity: ''
+            }
         }
     },
     watch: {
+        //数据本地存储
+        list: function(newVal, oldVal){
+            $.LS.set('list', JSON.stringify(newVal));
+
+            this.ticket_combine();
+        },
+        my_cards: function(newVal, oldVal){
+            $.LS.set('my_cards', JSON.stringify(newVal));
+        },
+        'company.decisiveness': function(newVal, oldVal){
+            this.company.decisiveness = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            $.LS.set('company', JSON.stringify(this.company));
+        },
+        'company.creativity': function(newVal, oldVal){
+            this.company.creativity = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            $.LS.set('company', JSON.stringify(this.company));
+        },
+        'company.kindness': function(newVal, oldVal){
+            this.company.kindness = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            $.LS.set('company', JSON.stringify(this.company));
+        },
+        'company.activity': function(newVal, oldVal){
+            this.company.activity = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            $.LS.set('company', JSON.stringify(this.company));
+        },
         //关卡级联选择
         category: function(newVal, oldVal) {
-            var category = parseInt(newVal, 10);
+            var category = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             if (!this.select[category][this.chapter]) {
                 this.chapter = 1;
             }
         },
         chapter: function(newVal, oldVal) {
-            var chapter = parseInt(newVal, 10);
+            var chapter = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             if (!this.select[this.category][chapter][this.level]) {
                 this.level = 0;
             }
@@ -112,7 +263,7 @@ var vm = new Vue({
             }
         },
         'card_select.card_id': function(newVal, oldVal) {
-            var card_id = parseInt(newVal, 10);
+            var card_id = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             if (this.my_cards.indexOf(card_id) >= 0) {
                 for (var i = 0; i < this.list.length; i++) {
                     if (card_id == this.list[i].card_id) {
@@ -120,6 +271,8 @@ var vm = new Vue({
                         this.card_select.evolved = this.list[i].evolved;
                         this.card_select.star = this.list[i].star;
                         this.card_select.level = this.list[i].level;
+                        this.card_select.type = this.list[i].type;
+                        this.card_select.category = this.list[i].category;
                         break;
                     }
                 }
@@ -127,23 +280,76 @@ var vm = new Vue({
             this.update_card_select();
         },
         'card_select.evolved': function(newVal, oldVal) {
+            this.card_select.evolved = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             this.update_card_select();
         },
         'card_select.star': function(newVal, oldVal) {
+            this.card_select.star = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             this.update_card_select();
         },
         'card_select.level': function(newVal, oldVal) {
+            this.card_select.level = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             this.update_card_select();
         },
         //过关羁绊
+        'levels.select.card_id': function(newVal, oldVal) {
+            var card_id = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            if (this.my_cards.indexOf(card_id) >= 0) {
+                for (var i = 0; i < this.list.length; i++) {
+                    if (card_id == this.list[i].card_id) {
+                        this.levels.select.name = this.list[i].name;
+                        this.levels.select.evolved = this.list[i].evolved;
+                        this.levels.select.star = this.list[i].star;
+                        this.levels.select.level = this.list[i].level;
+                        this.levels.select.type = this.list[i].type;
+                        this.levels.select.category = this.list[i].category;
+                        break;
+                    }
+                }
+            }
+            this.update_combine_select();
+        },
         'levels.select.evolved': function(newVal, oldVal) {
+            this.levels.select.evolved = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             this.update_combine_select();
         },
         'levels.select.star': function(newVal, oldVal) {
+            this.levels.select.star = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             this.update_combine_select();
         },
         'levels.select.level': function(newVal, oldVal) {
+            this.levels.select.level = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             this.update_combine_select();
+        },
+        //票房羁绊
+        'tickets.select.card_id': function(newVal, oldVal) {
+            var card_id = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            if (this.my_cards.indexOf(card_id) >= 0) {
+                for (var i = 0; i < this.list.length; i++) {
+                    if (card_id == this.list[i].card_id) {
+                        this.tickets.select.name = this.list[i].name;
+                        this.tickets.select.evolved = this.list[i].evolved;
+                        this.tickets.select.star = this.list[i].star;
+                        this.tickets.select.level = this.list[i].level;
+                        this.tickets.select.type = this.list[i].type;
+                        this.tickets.select.category = this.list[i].category;
+                        break;
+                    }
+                }
+            }
+            this.update_battle_select();
+        },
+        'tickets.select.evolved': function(newVal, oldVal) {
+            this.tickets.select.evolved = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            this.update_battle_select();
+        },
+        'tickets.select.star': function(newVal, oldVal) {
+            this.tickets.select.star = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            this.update_battle_select();
+        },
+        'tickets.select.level': function(newVal, oldVal) {
+            this.tickets.select.level = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            this.update_battle_select();
         },
         //过关分析
         'levels.card': function(newVal, oldVal) {
@@ -157,23 +363,572 @@ var vm = new Vue({
                 this.levels.ssr = 'remain';
             }
             this.level_cards();
+            this.ticket_cards();
         },
         'levels.r': function(newVal, oldVal) {
             this.level_cards();
+            this.ticket_cards();
         },
         'levels.sr': function(newVal, oldVal) {
             this.level_cards();
+            this.ticket_cards();
         },
         'levels.ssr': function(newVal, oldVal) {
             this.level_cards();
-        }
+            this.ticket_cards();
+        },
+        //票房反推
+        'reverse.separate.decisiveness': function(newVal, oldVal){
+            this.reverse.separate.decisiveness = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            this.update_reverse_scores();
+        },
+        'reverse.separate.creativity': function(newVal, oldVal){
+            this.reverse.separate.creativity = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            this.update_reverse_scores();
+        },
+        'reverse.separate.kindness': function(newVal, oldVal){
+            this.reverse.separate.kindness = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            this.update_reverse_scores();
+        },
+        'reverse.separate.activity': function(newVal, oldVal){
+            this.reverse.separate.kindness = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            this.update_reverse_scores();
+        },
+        'reverse.addup.decisiveness': function(newVal, oldVal){
+            this.reverse.addup.decisiveness = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            this.update_reverse_scores();
+        },
+        'reverse.addup.creativity': function(newVal, oldVal){
+            this.reverse.addup.creativity = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            this.update_reverse_scores();
+        },
+        'reverse.addup.kindness': function(newVal, oldVal){
+            this.reverse.addup.kindness = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            this.update_reverse_scores();
+        },
+        'reverse.addup.activity': function(newVal, oldVal){
+            this.reverse.addup.activity = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            this.update_reverse_scores();
+        },
     },
     methods: {
+        //票房
+        add_to_table: function(){
+            var prop = this.prop;
+            for(var i = 0; i < prop.length; i++){
+                this.tickets.match_company[prop[i]] = this.reverse.scores[prop[i]];
+            }
+            this.reset_reverse();
+            $('#reverse').modal('hide');
+        },
+        reset_reverse: function(){
+            var prop = this.prop;
+            for(var i = 0; i < prop.length; i++){
+                this.reverse.separate[prop[i]] = '';
+                this.reverse.addup[prop[i]] = '';
+                this.reverse.scores[prop[i]] = '';
+            }
+        },
+        has_reverse_scores: function(){
+            var ret = true;
+            var prop = this.prop;
+            for(var i = 0; i < prop.length; i++){
+                if(!this.reverse.scores[prop[i]]){
+                    ret = false;
+                    break;
+                }
+            }
+            return ret;
+        },
+        update_reverse_scores: function(){
+            var prop = this.prop;
+            var option = this.reverse.option;
+            var factor = this.get_ticket_factor(this.tickets.ticket.ticket_id);
+            var sum = 0;
+            for(var i = 0; i < prop.length; i++){
+                if(this.reverse[option][prop[i]]){
+                    var total = this.reverse[option][prop[i]];
+                    if(option == 'addup'){
+                        var t = total;
+                        total = total - sum;
+                        sum = t;
+
+                        this.reverse['separate'][prop[i]] = total;
+                    } else if (option == 'separate'){
+                        sum += t;
+
+                        this.reverse['addup'][prop[i]] = sum;
+                    }
+
+                    var score = this.get_ticket_reverse_prop_score(prop[i], 'match');
+                    var attr = (total - score) / factor[prop[i]];
+
+                    console.log(total, score, factor[prop[i]], attr);
+
+                    this.reverse.scores[prop[i]] = Math.round(attr);
+                }
+            }
+        },
+        show_reverse: function(){
+            if(this.get_ticket_empty('match') >= 0){
+                this.show_msg('请先设置对手阵容');
+                return false;
+            }
+
+            $('#reverse').modal();
+        },
+        get_ticket_reverse_prop_score: function(attr, option){
+            var prop = this.get_ticket_reverse_prop(attr, option);
+            var factor = this.get_ticket_factor(this.tickets.ticket.ticket_id);
+            return Math.round(factor[attr] * prop);
+        },
+        get_ticket_reverse_prop: function(attr, option){
+            var ret = 0;
+            for(var i = 0; i < this.tickets[option].length; i++){
+                var card = this.tickets[option][i];
+                if(!this.empty(card)){
+                    ret += card[attr];
+                }
+            }
+            // ret += this.tickets[option + '_company'][attr];
+            return ret;
+        },
+        get_ticket_prop_score: function(attr, option){
+            var prop = this.get_ticket_prop(attr, option);
+            var factor = this.get_ticket_factor(this.tickets.ticket.ticket_id);
+            return Math.round(factor[attr] * prop);
+        },
+        get_ticket_prop_score_diff: function(attr, option1, option2){
+            return this.get_ticket_prop_score(attr, option1) - this.get_ticket_prop_score(attr, option2);
+        },
+        get_ticket_character_score: function(option){
+            var score = 0;
+            var factor = this.get_ticket_factor(this.tickets.ticket.ticket_id);
+            var weight = this.get_ticket_weight(this.tickets.ticket.star) - 1;
+            var prop = this.prop;
+            for(var i = 0; i < this.tickets[option].length; i++){
+                var card = this.tickets[option][i];
+                if(this.card_id == 0){
+                    continue;
+                }
+
+                if(card.category != this.tickets.ticket.category){
+                    continue;
+                }
+                for (var j = 0; j < prop.length; j++) {
+                    score += card[prop[j]] * factor[prop[j]] * weight;
+                }
+            }
+            return Math.round(score);
+        },
+        get_ticket_character_score_diff: function(option1, option2){
+            return this.get_ticket_character_score(option1) - this.get_ticket_character_score(option2);
+        },
+        get_ticket_total_score: function(option){
+            var score = 0;
+            score += this.get_ticket_company_score(option);
+            for(var i = 0; i < this.tickets[option].length; i++){
+                score += this.tickets[option][i].score || 0;
+            }
+            return score;
+        },
+        get_ticket_total_score_diff: function(option1, option2){
+            return this.get_ticket_total_score(option1) - this.get_ticket_total_score(option2);
+        },
+        get_select_company_score: function() {
+            var prop = this.prop;
+            var score = 0;
+            var factor = this.get_ticket_factor(this.tickets.ticket.ticket_id);
+
+            for (var i = 0; i < prop.length; i++) {
+                score += factor[prop[i]] * this.tickets.company[prop[i]];
+            }
+
+            return Math.round(score);
+        },
+        get_ticket_company_score: function(option) {
+            var prop = this.prop;
+            var score = 0;
+            var factor = this.get_ticket_factor(this.tickets.ticket.ticket_id);
+
+            for (var i = 0; i < prop.length; i++) {
+                score += factor[prop[i]] * this.tickets[option + '_company'][prop[i]];
+            }
+
+            return Math.round(score);
+        },
+        get_ticket_empty: function(option) {
+            var ret = -1;
+            for(var i = 0; i < this.tickets[option].length; i++){
+                if(this.tickets[option][i].card_id == 0){
+                    ret = i;
+                    break;
+                }
+            }
+            return ret;
+        },
+        set_ticket_empty: function(option){
+            var idx = this.get_ticket_empty(option);
+            this.tickets.select.idx = idx;
+            this.tickets.select.option = 'match';
+            this.tickets.option = 'match';
+            if(idx >= 0){
+                this.show_battle(idx, option);
+            }
+        },
+        get_ticket_prop: function(attr, option){
+            var ret = 0;
+            for(var i = 0; i < this.tickets[option].length; i++){
+                var card = this.tickets[option][i];
+                if(card.card_id != 0){
+                    ret += card[attr];
+                }
+            }
+            ret += parseInt(this.tickets[option + '_company'][attr], 10);
+            return ret;
+        },
+        show_battle: function(idx, option) {
+            this.tickets.select.idx = idx;
+            this.tickets.select.option = option;
+            var card = this.tickets[option][idx];
+            if(card.card_id != 0){
+                this.tickets.select.card_id = card.card_id;
+                // this.tickets.select.type = card.type;
+                // this.tickets.select.category = card.category;
+                this.tickets.select.evolved = card.evolved;
+                this.tickets.select.star = card.star;
+                this.tickets.select.level = card.level;
+                this.tickets.select.decisiveness = card.decisiveness;
+                this.tickets.select.creativity = card.creativity;
+                this.tickets.select.kindness = card.kindness;
+                this.tickets.select.activity = card.activity;
+                // this.tickets.select.name = card.name;
+            
+                $('#battle_typeahead').val(card.name);
+            } else {
+                this.tickets.select.card_id = 0;
+                // this.tickets.select.evolved = 0;
+                // this.tickets.select.star = 1;
+                // this.tickets.select.level = 1;
+                this.tickets.select.decisiveness = 0;
+                this.tickets.select.creativity = 0;
+                this.tickets.select.kindness = 0;
+                this.tickets.select.activity = 0;
+                this.tickets.select.score = 0;
+
+                $('#battle_typeahead').val('');
+            }
+
+            $('#battle').modal();
+        },
+        save_battle: function() {
+            var option = this.tickets.select.option;
+            var card = this.tickets[option][this.tickets.select.idx];
+            var select = this.tickets.select;
+
+            card.card_id = select.card_id;
+            card.evolved = select.evolved;
+            card.star = select.star;
+            card.level = select.level;
+            card.decisiveness = select.decisiveness;
+            card.creativity = select.creativity;
+            card.kindness = select.kindness;
+            card.activity = select.activity;
+            card.name = select.name;
+            card.type = select.type;
+            card.category = select.category;
+            card.total = select.total;
+            card.score = select.score;
+
+            $('#battle').modal('hide');
+        },
+        save_ticket_company: function(){
+            var prop = this.prop;
+            var company = this.tickets.company;
+            var option = company.option;
+
+            for (var i = 0; i < prop.length; i++) {
+                this.tickets[option + '_company'][prop[i]] = company[prop[i]];
+            }
+
+            $('#ticket').modal('hide');
+        },
+        show_ticket_company: function(option){
+            var prop = this.prop;
+
+            for (var i = 0; i < prop.length; i++) {
+                this.tickets.company[prop[i]] = this.tickets[option + '_company'][prop[i]];
+            }
+            this.tickets.company.option = option;
+
+            $('#ticket').modal();
+        },
+        show_ticket: function(){
+            if(!this.empty(this.today)){
+                this.tickets.ticket_id = this.today.ticket_id;
+                this.tickets.category = this.today.category;
+                this.tickets.star = this.today.star;
+                this.get_tickets();
+            }
+            this.nav = 'ticket';
+        },
+        get_tickets: function(){
+            var ticket = {
+                ticket_id: this.tickets.ticket_id,
+                category: this.tickets.category,
+                star: this.tickets.star
+            };
+            for (key in this.company) {
+                this.tickets.my_company[key] = this.company[key];
+                this.tickets.match_company[key] = this.company[key];
+            }
+            this.tickets.ticket = ticket;
+            this.reset_config();
+            this.ticket_cards();
+        },
+        ticket_cards: function(){
+            var self = this;
+            var my_cards = [];
+            var list = [];
+            var factor = self.get_ticket_factor(self.tickets.ticket.ticket_id);
+            var weight = self.get_ticket_weight(self.tickets.ticket.star);
+
+            for (id in self.cards) {
+                id = parseInt(id, 10);
+                if (self.levels.card == 'my' && self.my_cards.indexOf(id) < 0) {
+                    continue;
+                }
+                list.push(self.cards[id]);
+            }
+
+            for (var i = 0; i < list.length; i++) {
+                var score = 0;
+                var card = list[i];
+                var prop = self.prop;
+
+                var config = '';
+                if (card.type == 3) {
+                    config = self.levels.r;
+                } else if (card.type == 4) {
+                    config = self.levels.sr;
+                } else if (card.type == 5) {
+                    config = self.levels.ssr;
+                }
+
+                if (config == 'hidden') {
+                    continue;
+                } else if (config == 'ordinary') {
+                    card.evolved = 0;
+                    card.star = card.type;
+                    card.level = (card.type - 1) * 10;
+                } else if (config == 'evolved') {
+                    card.evolved = 1;
+                    card.star = card.type + 1;
+                    card.level = card.type * 10;
+                }
+
+                if (card.type == 1 || card.type == 2) {
+                    card.evolved = 0;
+                    card.star = 1;
+                    card.level = card.type * 5;
+                }
+
+                var data = self.predict_card(card.card_id, card.evolved, card.star, card.level);
+                card.total = 0;
+                for (var j = 0; j < prop.length; j++) {
+                    card[prop[j]] = data[prop[j]];
+                    card.total += data[prop[j]];
+                }
+
+                var idx = self.my_cards.indexOf(card.card_id);
+                if (idx >= 0) {
+                    var my_card = self.list[idx];
+                    if (config == 'remain' || (self.levels.card == 'my' && my_card.total > card.total)) {
+                        card.evolved = my_card.evolved;
+                        card.star = my_card.star;
+                        card.level = my_card.level;
+                        card.decisiveness = my_card.decisiveness;
+                        card.creativity = my_card.creativity;
+                        card.kindness = my_card.kindness;
+                        card.activity = my_card.activity;
+                        card.total = my_card.total;
+                    }
+                }
+
+                for (var j = 0; j < prop.length; j++) {
+                    score += card[prop[j]] * factor[prop[j]];
+                }
+
+                if(card.category == self.tickets.ticket.category){
+                    score *= weight;
+                }
+
+                my_cards.push({
+                    card: card,
+                    score: Math.round(score)
+                });
+            }
+            my_cards.sort(function(a, b) {
+                return b.score - a.score;
+            });
+
+            self.tickets.cards = my_cards;
+
+            //高分羁绊
+            var combine = [];
+            for (var i = 0; i < 3; i++) {
+                var score = my_cards[i].score;
+                var my_card = my_cards[i].card;
+                var card = {};
+                for (key in my_card) {
+                    card[key] = my_card[key];
+                }
+                card.score = score;
+                combine.push(card);
+            }
+            self.tickets.my = combine;
+        },
+        //更新羁绊选择
+        update_battle_select: function() {
+            if(this.tickets.select.card_id == 0){
+                return false;
+            }
+
+            var data = this.predict_card(this.tickets.select.card_id, this.tickets.select.evolved, this.tickets.select.star, this.tickets.select.level);
+            var prop = this.prop;
+            var total = 0;
+            var score = 0;
+
+            var factor = this.get_ticket_factor(this.tickets.ticket.ticket_id);
+            var weight = this.get_ticket_weight(this.tickets.ticket.star);
+
+            for (var i = 0; i < prop.length; i++) {
+                this.tickets.select[prop[i]] = data[prop[i]];
+                total += data[prop[i]];
+                score += data[prop[i]] * factor[prop[i]];
+            }
+
+            if(this.tickets.select.category == this.tickets.ticket.category){
+                score *= weight;
+            }
+
+            this.tickets.select.total = total;
+            this.tickets.select.score = Math.round(score);
+        },
+        show_today: function(){
+            if(this.today){
+                this.ticket_select.ticket_id = this.today.ticket_id;
+                this.ticket_select.category = this.today.category;
+                this.ticket_select.star = this.today.star;
+            }
+            $('#today').modal();
+        },
+        save_today: function(){
+            var self = this;
+            var data = {
+                ticket_id: self.ticket_select.ticket_id,
+                category: self.ticket_select.category,
+                star: self.ticket_select.star
+            };
+
+            $('#save_today').button('loading');
+
+            $.ajax({
+                url: self.base_url + 'ticket',
+                type: 'post',
+                data: data,
+                success: function(res) {
+                    if (res.status == 1) {
+                        self.today = data;
+
+                        $('#today').modal('hide');
+                    } else if (res.info) {
+                        show_msg(res.info);
+                    }
+                },
+                error: function(res) {
+                    self.show_msg('请求失败');
+                },
+                complete: function() {
+                    $('#save_today').button('reset');
+                }
+            });
+        },
+        ticket_combine: function(){
+            if(this.list.length < 3){
+                return false;
+            }
+
+            var list = this.list;
+            var scores = [];
+            var factor = this.get_ticket_factor(this.today.ticket_id);
+            var weight = this.get_ticket_weight(this.today.star);
+            var prop = this.prop;
+            var combine = [];
+
+            for(var i = 0; i < list.length; i++){
+                var card = list[i];
+                var score = 0;
+
+                for(var j = 0; j < prop.length; j++){
+                    score += card[prop[j]] * factor[prop[j]];
+                }
+
+                if(card.category == this.today.category){
+                    score *= weight;
+                }
+
+                scores.push({
+                    card: card,
+                    score: score
+                });
+            }
+
+            scores.sort(function(a, b){
+                return b.score - a.score;
+            });
+
+            for(var i = 0; i < 3; i++){
+                combine.push(scores[i].card.name);
+            }
+
+            this.tickets.combine = combine;
+        },
+        get_ticket_weight: function(star){
+            star = parseInt(star, 10);
+            var ret = 1;
+            switch(star){
+                case 3:
+                    ret = 1.1;
+                    break;
+                case 4:
+                    ret = 1.2;
+                    break;
+                case 5:
+                    ret = 1.3;
+                    break;
+            }
+            return ret;
+        },
+        get_ticket_factor: function(ticket_id){
+            var ret = {};
+
+            for(var i = 0; i < this.ticket.length; i++){
+                if(this.ticket[i].id == ticket_id){
+                    ret = this.ticket[i];
+                    break;
+                }
+            }
+
+            return ret;
+        },
         //过关羁绊
         show_combine: function(idx) {
             this.levels.select.idx = idx;
             var card = this.levels.combine[idx];
             this.levels.select.card_id = card.card_id;
+            // this.levels.select.type = card.type;
+            // this.levels.select.category = card.category;
             this.levels.select.evolved = card.evolved;
             this.levels.select.star = card.star;
             this.levels.select.level = card.level;
@@ -181,6 +936,7 @@ var vm = new Vue({
             this.levels.select.creativity = card.creativity;
             this.levels.select.kindness = card.kindness;
             this.levels.select.activity = card.activity;
+            // this.levels.select.name = card.name;
             $('#combine_typeahead').val(card.name);
 
             $('#combine').modal();
@@ -370,6 +1126,7 @@ var vm = new Vue({
             for (key in self.company) {
                 self.levels.company[key] = self.company[key];
             }
+            self.reset_config();
 
             $('#get_levels').button('loading');
             $.ajax({
@@ -407,6 +1164,13 @@ var vm = new Vue({
                     $('#get_levels').button('reset');
                 }
             });
+        },
+        reset_config: function(){
+            this.levels.config = false;
+            this.levels.card = 'my';
+            this.levels.r = 'remain';
+            this.levels.sr = 'remain';
+            this.levels.ssr = 'remain';
         },
         //关卡羁绊得分计算
         level_cards: function() {
@@ -487,8 +1251,10 @@ var vm = new Vue({
                     score += card[prop[j]] * self.levels.level[prop[j]];
                 }
 
-                card.score = Math.round(score);
-                my_cards.push(card);
+                my_cards.push({
+                    card: card,
+                    score: Math.round(score)
+                });
             }
             my_cards.sort(function(a, b) {
                 return b.score - a.score;
@@ -499,11 +1265,13 @@ var vm = new Vue({
             //高分羁绊
             var combine = [];
             for (var i = 0; i < 3; i++) {
-                var my_card = my_cards[i];
+                var score = my_cards[i].score;
+                var my_card = my_cards[i].card;
                 var card = {};
                 for (key in my_card) {
                     card[key] = my_card[key];
                 }
+                card.score = score;
                 combine.push(card);
             }
             self.levels.combine = combine;
@@ -530,9 +1298,11 @@ var vm = new Vue({
                 }
                 this.batch.export = JSON.stringify({
                     'user-defined': data,
-                    'pre-defined': []
+                    'pre-defined': [],
+                    'company': this.company
                 });
             } else if (this.batch.source == 'excel') {
+                data.push(['公司属性', this.company.decisiveness, this.company.creativity, this.company.kindness, this.company.activity].join("\t"));
                 for (var i = 0; i < list.length; i++) {
                     var arr = list[i].name.split('·');
                     data.push([arr[1], list[i].decisiveness, list[i].creativity, list[i].kindness, list[i].activity].join("\t"));
@@ -553,6 +1323,18 @@ var vm = new Vue({
                 } catch (e) {
                     self.show_msg('数据格式错误');
                     return false;
+                }
+
+                if(data.company){
+                    list.push({
+                        name: '公司属性',
+                        decisiveness: data.company.decisiveness,
+                        decisiveness: data.company.creativity,
+                        decisiveness: data.company.kindness,
+                        decisiveness: data.company.activity
+                    });
+
+                    self.company = data.company;
                 }
 
                 if (!self.empty(data['pre-defined'])) {
@@ -589,6 +1371,12 @@ var vm = new Vue({
                     if (self.empty(arr) || arr.length < 5) {
                         continue;
                     }
+                    if(arr[0] == '公司属性'){
+                        self.company.decisiveness = arr[1];
+                        self.company.creativity = arr[2];
+                        self.company.kindness = arr[3];
+                        self.company.activity = arr[4];
+                    }
                     list.push({
                         name: arr[0],
                         decisiveness: arr[1],
@@ -617,6 +1405,7 @@ var vm = new Vue({
                     if (res.status == 1) {
                         self.batch.data = '';
                         self.batch.fail = res.fail;
+                        self.merge(res.success);
                         self.load();
                         $('#batch').modal('hide');
                     } else if (res.info) {
@@ -630,6 +1419,29 @@ var vm = new Vue({
                     $('#import_data').button('reset');
                 }
             });
+        },
+        //导入数据合并
+        merge: function(data){
+            var ids = this.my_cards;
+            var list = this.list;
+            for(var i = 0; i < data.length; i++){
+                var card = data[i];
+                if(ids.indexOf(card.card_id) < 0){
+                    list.push(card);
+                } else {
+                    list[ids.indexOf(card.card_id)] = card;
+                }
+            }
+            list.sort(function(a,b){
+                return b.total - a.total;
+            });
+            var my_cards = [];
+            for(var i = 0; i < list.length; i++){
+                my_cards.push(list[i].card_id);
+            }
+
+            this.list = list;
+            this.my_cards = my_cards;
         },
         //批量导入
         show_batch: function(option) {
@@ -731,8 +1543,12 @@ var vm = new Vue({
                     },
                     success: function(res) {
                         if (res.status == 1) {
-                            self.my_cards = [];
+                            self.company = {};
                             self.list = [];
+                            self.my_cards = [];
+                            self.levels.list = [];
+                            self.levels.level = {};
+                            self.levels.cards = [];
                         } else if (res.info) {
                             show_msg(res.info);
                         }
@@ -866,7 +1682,8 @@ var vm = new Vue({
                 type: 'post',
                 data: {
                     name: self.login.name,
-                    code: self.login.code
+                    code: self.login.code,
+                    list: self.get_json_list(),
                 },
                 success: function(res) {
                     if (res.status == 1) {
@@ -905,6 +1722,33 @@ var vm = new Vue({
                 }
             });
         },
+        //羁绊导入JSON
+        get_json_list: function(){
+            var list = this.list;
+            if(this.empty(list)){
+                return '';
+            }
+
+            var json = [];
+            json.push({
+                name: '公司属性',
+                decisiveness: this.company.decisiveness,
+                creativity: this.company.creativity,
+                kindness: this.company.kindness,
+                activity: this.company.activity
+            });
+            for(var i = 0; i < list.length; i++){
+                json.push({
+                    name: list[i].name,
+                    decisiveness: list[i].decisiveness,
+                    creativity: list[i].creativity,
+                    kindness: list[i].kindness,
+                    activity: list[i].activity
+                });
+            }
+
+            return JSON.stringify(json);
+        },
         //注销
         logout: function() {
             //历史记录
@@ -918,13 +1762,6 @@ var vm = new Vue({
             //本地存储
             $.LS.set('name', '');
             $.LS.set('code', '');
-
-            this.company = {};
-            this.list = [];
-            this.my_cards = [];
-            this.levels.list = [];
-            this.levels.level = {};
-            this.levels.cards = [];
         },
         //显示提示信息
         show_msg: function(msg) {
@@ -1019,6 +1856,17 @@ var vm = new Vue({
             }
             return ret;
         },
+        //票房主题
+        get_ticket_name: function(ticket_id){
+            var ret = '';
+            for(var i = 0; i < this.ticket.length; i++){
+                if(this.ticket[i].id == ticket_id){
+                    ret = this.ticket[i].name;
+                    break;
+                }
+            }
+            return ret;
+        },
         //星级
         get_star_print: function(star) {
             var ret = '';
@@ -1056,7 +1904,7 @@ var vm = new Vue({
         },
         //获取接口请求token
         get_token: function() {
-            return btoa(encodeURIComponent(JSON.stringify(this.user)));
+            return this.empty(this.user.name) ? '' : btoa(encodeURIComponent(JSON.stringify(this.user)));
         },
         //判断数据或对象为空（增加判断0或''）
         empty: function(value) {
@@ -1096,6 +1944,15 @@ var vm = new Vue({
                             }
                         }
 
+                        if (res.ticket) {
+                            self.ticket = res.ticket;
+                        }
+
+                        if (res.today && self.empty(self.today)){
+                            self.today = res.today;
+                            self.ticket_combine();
+                        }
+
                         if (!self.dom_init) {
                             $('.typeahead').typeahead({
                                 source: self.card_list
@@ -1132,11 +1989,32 @@ var vm = new Vue({
                                 }
                             });
 
+                            $('#battle_typeahead').change(function() {
+                                var name = $(this).val();
+
+                                if (self.card_list.indexOf(name) >= 0) {
+                                    for (id in self.cards) {
+                                        if (self.cards[id].name == name) {
+                                            self.tickets.select.card_id = id;
+                                            self.tickets.select.category = self.cards[id].category;
+                                            self.tickets.select.type = self.cards[id].type;
+                                            self.tickets.select.name = self.cards[id].name;
+                                            break;
+                                        }
+                                    }
+                                    self.update_battle_select();
+                                }
+                            });
+
                             $('#navbar-menu ul li a').click(function() {
                                 $('#navbar-menu').collapse('hide');
                             });
 
                             self.dom_init = true;
+                        }
+
+                        if(self.empty(self.list)){
+                            self.nav = 'card';
                         }
                     } else if (res.info) {
                         self.show_msg(res.info);
