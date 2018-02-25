@@ -9,6 +9,7 @@
     <meta name="keywords" content="calculator">
     <meta name="author" content="Darina">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-cal.css" />
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="css/cal_style.css" />
     <script type='text/javascript' charset="utf-8" src='js/jquery.js'></script>
     <script type='text/javascript' charset="utf-8" src='js/storage.js'></script>
@@ -931,8 +932,8 @@
                                     <input type="text" class="form-control" v-model="login.name">
                                 </div>
                                 <div class="col-xs-12 col-sm-6">
-                                    <label class="label-above">密码保护</label>
-                                    <input type="text" class="form-control" v-model="login.code">
+                                    <label class="label-above">密码保护 <i class="fa" :class="{'fa-eye': login.eye, 'fa-eye-slash': !login.eye}" aria-hidden="true" @click="login.eye = !login.eye"></i></label>
+                                    <input :type="login.eye ? 'text' : 'password'" class="form-control" v-model="login.code">
                                 </div>
                                 <p class="col-xs-12 help-block">公司名称不能重复，密码保护可为空，设置密码可防止数据被他人修改</p>
                                 <p class="col-xs-12 help-block" v-show="!empty(login.history) && login.option == 'user_login'">

@@ -24,7 +24,8 @@ var vm = new Vue({
             code: '',
             warning: '',
             history: {},
-            option: 'create_user'
+            option: 'create_user',
+            eye: false
         },
         user: { // 用户信息
             name: $.LS.get('name') || '',
