@@ -96,7 +96,7 @@
                     <div v-else>
                         <h4>在线保存</h4>
                         <p>
-                            当前数据保存在浏览器，退出前请注意导出，防止数据丢失。<br>
+                            当前数据保存在浏览器，
                             <a href="javascript:;" @click="show_login('create_user')">创建</a>或<a href="javascript:;" @click="show_login('user_login')">登录</a>公司，在线保存个人数据。
                         </p>
                     </div>
@@ -1332,7 +1332,8 @@
                                     <div class="col-xs-3 col-md-2">
                                         <a href="javascript:;" class="btn btn-default" @click="reset_reverse()">重置</a>
                                     </div>
-                                </div>                                <p v-show="has_reverse_scores()">公司属性：{{reverse.scores.decisiveness}} / {{reverse.scores.creativity}} / {{reverse.scores.kindness}} / {{reverse.scores.activity}}</p>
+                                </div>
+                                <p v-show="has_reverse_scores()">公司属性：{{reverse.scores.decisiveness}} / {{reverse.scores.creativity}} / {{reverse.scores.kindness}} / {{reverse.scores.activity}}</p>
                             </div>
                         </div>
                         <div class="modal-footer">
