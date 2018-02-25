@@ -217,7 +217,10 @@ var vm = new Vue({
             }
         },
         double: {
-            cards: []
+            cards: [],
+            option: 'all',
+            my: [],
+            sort: -1
         }
     },
     watch: {
@@ -401,6 +404,9 @@ var vm = new Vue({
             this.ticket_cards();
             this.double_cards();
         },
+        'levels.category': function(newVal, oldVal){
+            this.double_cards();
+        },
         //票房反推
         'reverse.separate.decisiveness': function(newVal, oldVal){
             this.reverse.separate.decisiveness = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
@@ -437,13 +443,31 @@ var vm = new Vue({
     },
     methods: {
         //卡组分析
+        get_double_tag: function(key){
+            var arr = key.split('_');
+            return this.get_prop_tag(arr[0]) + '<br>' + this.get_prop_tag(arr[1]);
+        },
         sort_double: function(attr){
             this.levels.sort = attr;
             this.double.cards.sort(function(a, b){
                 return b[attr] - a[attr];
             });
         },
+        sort_double_total: function(){
+            var self = this;
+
+            if(self.double.sort == 0){
+                self.double.sort = -1;
+            } else {
+                self.double.sort *= -1;
+            }
+
+            self.double.my.sort(function(a, b){
+                return self.double.sort * (b.total - a.total);
+            });
+        },
         show_double: function(){
+            // this.double.sort = 0;
             this.levels.config = false;
             this.levels.card = 'all';
             this.levels.r = 'evolved';
@@ -459,6 +483,7 @@ var vm = new Vue({
             var factor = self.levels.factor.sort(function(a,b){
                 return b - a;
             });
+            var my = {};
 
             for (id in cards) {
                 var card = cards[id];
@@ -472,6 +497,10 @@ var vm = new Vue({
                 } else if (card.type == 5) {
                     config = self.levels.ssr;
                 } else {
+                    continue;
+                }
+
+                if(self.levels.category != 0 && self.levels.category != card.category){
                     continue;
                 }
 
@@ -500,22 +529,11 @@ var vm = new Vue({
                     card.total += data[prop[i]];
                 }
 
-                // var idx = self.my_cards.indexOf(card.card_id);
-                // if (idx >= 0) {
-                //     var my_card = self.list[idx];
-                //     if (config == 'remain' || (self.levels.card == 'my' && my_card.total > card.total)) {
-                //         card.evolved = my_card.evolved;
-                //         card.star = my_card.star;
-                //         card.level = my_card.level;
-                //         card.decisiveness = my_card.decisiveness;
-                //         card.creativity = my_card.creativity;
-                //         card.kindness = my_card.kindness;
-                //         card.activity = my_card.activity;
-                //         card.total = my_card.total;
-                //     }
-                // }
-
                 var double = {};
+                var idx = self.my_cards.indexOf(card.card_id);
+                if (idx >= 0) {
+                    var my_card = self.list[idx];
+                }
                 for(var i = 0; i < 4; i++){
                     for(var j = 0; j < 4; j++){
                         if(j != i){
@@ -526,12 +544,36 @@ var vm = new Vue({
                                 }
                             }
 
-                            double[prop[i] + '_' + prop[j]] = Math.round(
+                            var key = prop[i] + '_' + prop[j];
+                            double[key] = Math.round(
                                 card[prop[i]] * factor[0] + 
                                 card[prop[j]] * factor[1] + 
                                 Math.max(remain[0], remain[1]) * factor[2] + 
-                                Math.max(remain[0], remain[1]) * factor[3]
+                                Math.min(remain[0], remain[1]) * factor[3]
                             );
+
+                            if(!my[key]){
+                                my[key] = [];
+                            }
+
+                            if(idx >= 0){
+                                remain = [];
+                                for(var k = 0; k < 4; k++){
+                                    if(k != i & k != j){
+                                        remain.push(my_card[prop[k]]);
+                                    }
+                                }
+                                var score = Math.round(
+                                    my_card[prop[i]] * factor[0] + 
+                                    my_card[prop[j]] * factor[1] + 
+                                    Math.max(remain[0], remain[1]) * factor[2] + 
+                                    Math.min(remain[0], remain[1]) * factor[3]
+                                );
+                                my[key].push({
+                                    card: my_card,
+                                    score: score
+                                });
+                            }
                         }
                     }
                 }
@@ -568,7 +610,44 @@ var vm = new Vue({
                 return b[sort] - a[sort];
             });
 
+            var double_my = [];
+            for(key in my){
+                my[key].sort(function(a, b){
+                    return b.score - a.score;
+                });
+
+                var top = my[key].slice(0, 3);
+                var my_top = [];
+                var total = 0;
+                for(var i = 0; i < top.length; i++){
+                    var card = top[i].card;
+                    my_top.push({
+                        card_id: card.card_id,
+                        name: card.name,
+                        type: card.type,
+                        category: card.category,
+                        evolved: card.evolved,
+                        star: card.star,
+                        level: card.level,
+                        gain: card.gain,
+                        decisiveness: card.decisiveness,
+                        creativity: card.creativity,
+                        kindness: card.kindness,
+                        activity: card.activity,
+                        total: card.total,
+                        score: top[i].score
+                    });
+                    total += top[i].score;
+                }
+                double_my.push({
+                    key: key,
+                    total: total,
+                    top: my_top
+                });
+            }
+
             self.double.cards = my_cards;
+            self.double.my = double_my;
         },
         //票房
         add_to_table: function(){
@@ -620,8 +699,6 @@ var vm = new Vue({
 
                     var score = this.get_ticket_reverse_prop_score(prop[i], 'match');
                     var attr = (total - score) / factor[prop[i]];
-
-                    console.log(total, score, factor[prop[i]], attr);
 
                     this.reverse.scores[prop[i]] = Math.round(attr);
                 }

@@ -749,7 +749,7 @@
                                 <input type="radio" v-model="levels.category" value="4"> 白起
                             </label>
                         </div>
-                        <div class="radio">
+                        <div class="radio" v-show="double.option == 'all'">
                             <span>R：</span>
                             <label>
                                 <input type="radio" v-model="levels.r" value="hidden"> 隐藏
@@ -761,7 +761,7 @@
                                 <input type="radio" v-model="levels.r" value="evolved"> 进化后
                             </label>
                         </div>
-                        <div class="radio">
+                        <div class="radio" v-show="double.option == 'all'">
                             <span>SR：</span>
                             <label>
                                 <input type="radio" v-model="levels.sr" value="hidden"> 隐藏
@@ -773,7 +773,7 @@
                                 <input type="radio" v-model="levels.sr" value="evolved"> 进化后
                             </label>
                         </div>
-                        <div class="radio">
+                        <div class="radio" v-show="double.option == 'all'">
                             <span>SSR：</span>
                             <label>
                                 <input type="radio" v-model="levels.ssr" value="hidden"> 隐藏
@@ -785,7 +785,7 @@
                                 <input type="radio" v-model="levels.ssr" value="evolved"> 进化后
                             </label>
                         </div>
-                        <div class="checkbox">
+                        <div class="checkbox" v-show="double.option == 'all'">
                             <span>显示：</span>
                             <label>
                                 <input type="checkbox" v-model="levels.cols" value="value"> 属性值
@@ -810,8 +810,13 @@
                             </label>
                         </div>
                     </div>
-                    <p class="help-block">点击设置自定义显示项目；紫色为已获得羁绊。</p>
-                    <table class="table table-bordered table-hover table-score">
+                    <p class="help-block" v-show="double.option == 'all'">点击设置自定义显示项目；紫色为已获得羁绊。</p>
+
+                    <ul class="nav nav-tabs" style="margin-top: 10px;">
+                        <li role="presentation" :class="{active: double.option == 'all'}"><a href="javascript:;" @click="double.option = 'all'">全部羁绊</a></li>
+                        <li role="presentation" :class="{active: double.option == 'my'}"><a href="javascript:;" @click="double.option = 'my'">我的羁绊</a></li>
+                    </ul>
+                    <table class="table table-bordered table-hover table-score" v-show="double.option == 'all'">
                         <thead>
                             <tr>
                                 <th>名称</th>
@@ -876,6 +881,35 @@
 
                                 <td v-show="levels.cols.indexOf('gain') >= 0">{{get_gain_tag(item.gain)}}</td>
                             </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-bordered table-hover table-score" v-show="double.option == 'my'">
+                        <thead>
+                            <tr>
+                                <th>属性组合</th>
+                                <th>高分卡组</th>
+                                <th>得分</th>
+                                <th @click="sort_double_total()">总分
+                                    <span v-show="double.sort == 1">▼</span>
+                                    <span v-show="double.sort == -1">▲</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template v-for="item in double.my">
+                                <tr v-if="empty(item.top)">
+                                    <th v-html="get_double_tag(item.key)"></th>
+                                    <td>暂无</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr v-for="(card, idx) in item.top">
+                                    <th v-html="get_double_tag(item.key)" :rowspan="item.top.length" v-if="idx == 0"></th>
+                                    <td>{{card.name}} <sub>{{get_type_tag(card.type)}}</sub></td>
+                                    <td>{{card.score}}</td>
+                                    <td :rowspan="item.top.length" v-if="idx == 0">{{item.total}}</td>
+                                </tr>
+                            </template>
                         </tbody>
                     </table>
                 </div>
