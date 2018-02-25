@@ -294,19 +294,26 @@ var vm = new Vue({
         //过关羁绊
         'levels.select.card_id': function(newVal, oldVal) {
             var card_id = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
-            if (this.my_cards.indexOf(card_id) >= 0) {
-                for (var i = 0; i < this.list.length; i++) {
-                    if (card_id == this.list[i].card_id) {
-                        this.levels.select.name = this.list[i].name;
-                        this.levels.select.evolved = this.list[i].evolved;
-                        this.levels.select.star = this.list[i].star;
-                        this.levels.select.level = this.list[i].level;
-                        this.levels.select.type = this.list[i].type;
-                        this.levels.select.category = this.list[i].category;
-                        break;
-                    }
-                }
+            var card = this.cards[card_id];
+            if(card){
+                this.levels.select.name = card.name;
+                this.levels.select.type = card.type;
+                this.levels.select.category = card.category;
             }
+            
+            // if (this.my_cards.indexOf(card_id) >= 0) {
+            //     for (var i = 0; i < this.list.length; i++) {
+            //         if (card_id == this.list[i].card_id) {
+            //             this.levels.select.name = this.list[i].name;
+            //             this.levels.select.evolved = this.list[i].evolved;
+            //             this.levels.select.star = this.list[i].star;
+            //             this.levels.select.level = this.list[i].level;
+            //             this.levels.select.type = this.list[i].type;
+            //             this.levels.select.category = this.list[i].category;
+            //             break;
+            //         }
+            //     }
+            // }
             this.update_combine_select();
         },
         'levels.select.evolved': function(newVal, oldVal) {
@@ -324,19 +331,25 @@ var vm = new Vue({
         //票房羁绊
         'tickets.select.card_id': function(newVal, oldVal) {
             var card_id = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
-            if (this.my_cards.indexOf(card_id) >= 0) {
-                for (var i = 0; i < this.list.length; i++) {
-                    if (card_id == this.list[i].card_id) {
-                        this.tickets.select.name = this.list[i].name;
-                        this.tickets.select.evolved = this.list[i].evolved;
-                        this.tickets.select.star = this.list[i].star;
-                        this.tickets.select.level = this.list[i].level;
-                        this.tickets.select.type = this.list[i].type;
-                        this.tickets.select.category = this.list[i].category;
-                        break;
-                    }
-                }
+            var card = this.cards[card_id];
+            if(card){
+                this.tickets.select.name = card.name;
+                this.tickets.select.type = card.type;
+                this.tickets.select.category = card.category;
             }
+            // if (this.my_cards.indexOf(card_id) >= 0) {
+            //     for (var i = 0; i < this.list.length; i++) {
+            //         if (card_id == this.list[i].card_id) {
+            //             this.tickets.select.name = this.list[i].name;
+            //             this.tickets.select.evolved = this.list[i].evolved;
+            //             this.tickets.select.star = this.list[i].star;
+            //             this.tickets.select.level = this.list[i].level;
+            //             this.tickets.select.type = this.list[i].type;
+            //             this.tickets.select.category = this.list[i].category;
+            //             break;
+            //         }
+            //     }
+            // }
             this.update_battle_select();
         },
         'tickets.select.evolved': function(newVal, oldVal) {
@@ -664,7 +677,7 @@ var vm = new Vue({
             $('#ticket').modal();
         },
         show_ticket: function(){
-            if(!this.empty(this.today)){
+            if(!this.empty(this.today) && this.list.length >= 3){
                 this.tickets.ticket_id = this.today.ticket_id;
                 this.tickets.category = this.today.category;
                 this.tickets.star = this.today.star;
@@ -688,6 +701,11 @@ var vm = new Vue({
         },
         ticket_cards: function(){
             var self = this;
+
+            if(self.list.length < 3){
+                return false;
+            }
+
             var my_cards = [];
             var list = [];
             var factor = self.get_ticket_factor(self.tickets.ticket.ticket_id);
@@ -1176,6 +1194,11 @@ var vm = new Vue({
         //关卡羁绊得分计算
         level_cards: function() {
             var self = this;
+
+            if(self.list.length < 3){
+                return false;
+            }
+
             var my_cards = [];
             var list = [];
 
