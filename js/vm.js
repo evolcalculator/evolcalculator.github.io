@@ -68,6 +68,10 @@ var vm = new Vue({
             sr: 'remain',
             ssr: 'remain',
             config: false,
+            cols: ['decisiveness','creativity','kindness','activity','gain'],
+            sort: 'decisiveness_creativity',
+            category: 0,
+            factor: [0.9, 0.6, 0.3, 0.2],
             company: {
                 decisiveness: 0,
                 creativity: 0,
@@ -211,6 +215,9 @@ var vm = new Vue({
                 kindness: '',
                 activity: ''
             }
+        },
+        double: {
+            cards: []
         }
     },
     watch: {
@@ -377,18 +384,22 @@ var vm = new Vue({
             }
             this.level_cards();
             this.ticket_cards();
+            // this.double_cards();
         },
         'levels.r': function(newVal, oldVal) {
             this.level_cards();
             this.ticket_cards();
+            this.double_cards();
         },
         'levels.sr': function(newVal, oldVal) {
             this.level_cards();
             this.ticket_cards();
+            this.double_cards();
         },
         'levels.ssr': function(newVal, oldVal) {
             this.level_cards();
             this.ticket_cards();
+            this.double_cards();
         },
         //票房反推
         'reverse.separate.decisiveness': function(newVal, oldVal){
@@ -425,6 +436,140 @@ var vm = new Vue({
         },
     },
     methods: {
+        //卡组分析
+        sort_double: function(attr){
+            this.levels.sort = attr;
+            this.double.cards.sort(function(a, b){
+                return b[attr] - a[attr];
+            });
+        },
+        show_double: function(){
+            this.levels.config = false;
+            this.levels.card = 'all';
+            this.levels.r = 'evolved';
+            this.levels.sr = 'evolved';
+            this.levels.ssr = 'evolved';
+            this.double_cards();
+            this.nav = 'double';
+        },
+        double_cards: function(){
+            var self = this;
+            var my_cards = [];
+            var cards = self.cards;
+            var factor = self.levels.factor.sort(function(a,b){
+                return b - a;
+            });
+
+            for (id in cards) {
+                var card = cards[id];
+                var prop = self.prop;
+
+                var config = '';
+                if (card.type == 3) {
+                    config = self.levels.r;
+                } else if (card.type == 4) {
+                    config = self.levels.sr;
+                } else if (card.type == 5) {
+                    config = self.levels.ssr;
+                } else {
+                    continue;
+                }
+
+                if (config == 'hidden') {
+                    continue;
+                } else if (config == 'ordinary') {
+                    card.evolved = 0;
+                    card.star = card.type;
+                    card.level = (card.type - 1) * 10;
+                } else if (config == 'evolved') {
+                    card.evolved = 1;
+                    card.star = card.type + 1;
+                    card.level = card.type * 10;
+                }
+
+                // if (card.type == 1 || card.type == 2) {
+                //     card.evolved = 0;
+                //     card.star = 1;
+                //     card.level = card.type * 5;
+                // }
+
+                var data = self.predict_card(card.card_id, card.evolved, card.star, card.level);
+                card.total = 0;
+                for (var i = 0; i < prop.length; i++) {
+                    card[prop[i]] = data[prop[i]];
+                    card.total += data[prop[i]];
+                }
+
+                // var idx = self.my_cards.indexOf(card.card_id);
+                // if (idx >= 0) {
+                //     var my_card = self.list[idx];
+                //     if (config == 'remain' || (self.levels.card == 'my' && my_card.total > card.total)) {
+                //         card.evolved = my_card.evolved;
+                //         card.star = my_card.star;
+                //         card.level = my_card.level;
+                //         card.decisiveness = my_card.decisiveness;
+                //         card.creativity = my_card.creativity;
+                //         card.kindness = my_card.kindness;
+                //         card.activity = my_card.activity;
+                //         card.total = my_card.total;
+                //     }
+                // }
+
+                var double = {};
+                for(var i = 0; i < 4; i++){
+                    for(var j = 0; j < 4; j++){
+                        if(j != i){
+                            var remain = [];
+                            for(var k = 0; k < 4; k++){
+                                if(k != i & k != j){
+                                    remain.push(card[prop[k]]);
+                                }
+                            }
+
+                            double[prop[i] + '_' + prop[j]] = Math.round(
+                                card[prop[i]] * factor[0] + 
+                                card[prop[j]] * factor[1] + 
+                                Math.max(remain[0], remain[1]) * factor[2] + 
+                                Math.max(remain[0], remain[1]) * factor[3]
+                            );
+                        }
+                    }
+                }
+
+                var item = {
+                    card_id: card.card_id,
+                    name: card.name,
+                    type: card.type,
+                    category: card.category,
+                    evolved: card.evolved,
+                    star: card.star,
+                    level: card.level,
+                    gain: card.gain,
+                    decisiveness: card.decisiveness,
+                    creativity: card.creativity,
+                    kindness: card.kindness,
+                    activity: card.activity,
+                    total: card.total,
+                    decisiveness_rate: Math.round(card.decisiveness / card.total * 100),
+                    creativity_rate: Math.round(card.creativity / card.total * 100),
+                    kindness_rate: Math.round(card.kindness / card.total * 100),
+                    activity_rate: Math.round(card.activity / card.total * 100)
+                };
+
+                for(key in double){
+                    item[key] = double[key];
+                }
+
+                my_cards.push(item);
+            }
+
+            var sort = self.levels.sort;
+            my_cards.sort(function(a, b) {
+                return b[sort] - a[sort];
+            });
+
+            self.double.cards = my_cards;
+        },
         //票房
         add_to_table: function(){
             var prop = this.prop;

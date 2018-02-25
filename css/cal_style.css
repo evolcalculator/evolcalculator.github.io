@@ -224,18 +224,35 @@ h4 span,
     margin-top: 10px;
 }
 
-.radio {
+.radio, .checkbox, .input {
     text-align: left;
     font-size: small;
 }
 
-.radio label {
+.radio label, .checkbox label {
     padding-right: 10px;
 }
 
 .radio span {
     display: inline-block;
     width: 40px;
+}
+
+.input {
+    margin: 10px 0;
+}
+
+.input input {
+    display: inline-block;
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.input button {
+    padding: 0 10px;
+    border: 1px solid #ccc;
 }
 
 .modal-body textarea {
@@ -270,4 +287,12 @@ h4 span,
 
 .item_body {
     padding-bottom: 40px;
+}
+
+.table-score tbody tr td {
+    min-width: 60px;
+}
+
+.purple {
+    background-color: #f3e5f5 !important;
 }

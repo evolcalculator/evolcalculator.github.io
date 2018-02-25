@@ -35,6 +35,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li :class="{active: nav == 'level'}"><a href="javascript:;" @click="nav = 'level'">关卡计算</a></li>
                         <li :class="{active: nav == 'ticket'}"><a href="javascript:;" @click="nav = 'ticket'">票房争夺战</a></li>
+                        <li :class="{active: nav == 'double'}"><a href="javascript:;" @click="show_double()">卡组分析</a></li>
                         <li :class="{active: nav == 'card'}"><a href="javascript:;" @click="nav = 'card'">我的羁绊</a></li>
                     </ul>
                 </div>
@@ -47,7 +48,9 @@
                     <h3>恋与制作人计算器v2.0</h3>
                     <p>
                         <h4>使用说明</h4>
-                        首次使用请先<a href="javascript:;" @click="nav = 'card'">添加羁绊</a>，支持<a href="javascript:;" @click="show_batch('import_data')">导入/导出</a>和<a href="javascript:;" @click="show_login('create_user')">在线保存</a>。功能：<a href="javascript:;" @click="nav = 'level'">关卡计算</a>、<a href="javascript:;" @click="nav = 'ticket'">票房争夺战</a>。
+                        首次使用请先<a href="javascript:;" @click="nav = 'card'">添加羁绊</a>，支持<a href="javascript:;" @click="show_batch('import_data')">导入/导出</a>和<a href="javascript:;" @click="show_login('create_user')">在线保存</a>。
+                        <br>
+                        功能：<a href="javascript:;" @click="nav = 'level'">关卡计算</a>、<a href="javascript:;" @click="nav = 'ticket'">票房争夺战</a>、<a href="javascript:;" @click="show_double()">卡组分析</a>。
                         <br>
 
                         <h4>数据来源</h4> 权重数据来源 <a href="https://weibo.com/unnamedgroup" target="_blank">@恋与制作人未命名攻略组</a>
@@ -403,7 +406,7 @@
                 <!--关卡计算-->
 
                 <!--今日票房-->
-                <div class="mycard" v-show="nav == 'ticket' || nav == 'level'">
+                <div class="mycard" v-show="nav == 'ticket'">
                     <h4>今日票房</h4>
                     <p><a href="javascript:;" @click="show_today()">设置</a></p>
                     <table class="table table-bordered table-hover table-condensed">
@@ -706,6 +709,177 @@
                 </div>
                 <!-- 票房计算 -->
 
+                <!-- 卡组分析 -->
+                <div class="mycard" v-show="nav == 'double'">
+                    <h4>卡组分析</h4>
+                    <a href="javascript:;" @click="levels.config = !levels.config">设置</a>
+                    <div v-show="levels.config">
+                        <!-- <div class="radio">
+                            <span>筛选：</span>
+                            <label>
+                                <input type="radio" v-model="levels.card" value="my"> 我的羁绊
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.card" value="all"> 所有羁绊
+                            </label>
+                        </div> -->
+                        <div class="input">
+                            权重：
+                            <input type="number" v-model="levels.factor[0]">
+                            <input type="number" v-model="levels.factor[1]">
+                            <input type="number" v-model="levels.factor[2]">
+                            <input type="number" v-model="levels.factor[3]">
+                            <button @click="double_cards()">更新</button>
+                        </div>
+                        <div class="radio">
+                            <span>人物：</span>
+                            <label>
+                                <input type="radio" v-model="levels.category" value="0"> 全部
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.category" value="1"> 李泽言
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.category" value="2"> 许墨
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.category" value="3"> 周棋洛
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.category" value="4"> 白起
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <span>R：</span>
+                            <label>
+                                <input type="radio" v-model="levels.r" value="hidden"> 隐藏
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.r" value="ordinary"> 进化前
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.r" value="evolved"> 进化后
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <span>SR：</span>
+                            <label>
+                                <input type="radio" v-model="levels.sr" value="hidden"> 隐藏
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.sr" value="ordinary"> 进化前
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.sr" value="evolved"> 进化后
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <span>SSR：</span>
+                            <label>
+                                <input type="radio" v-model="levels.ssr" value="hidden"> 隐藏
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.ssr" value="ordinary"> 进化前
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.ssr" value="evolved"> 进化后
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <span>显示：</span>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="value"> 属性值
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="rate"> 属性比
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="decisiveness"> 决策组
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="creativity"> 创造组
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="kindness"> 亲和组
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="activity"> 行动组
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="gain"> 获取
+                            </label>
+                        </div>
+                    </div>
+                    <p class="help-block">点击设置自定义显示项目；紫色为已获得羁绊。</p>
+                    <table class="table table-bordered table-hover table-score">
+                        <thead>
+                            <tr>
+                                <th>名称</th>
+
+                                <th v-show="levels.cols.indexOf('value') >= 0" @click="sort_double('decisiveness')">决策 <span v-show="levels.sort == 'decisiveness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('value') >= 0" @click="sort_double('creativity')">创造 <span v-show="levels.sort == 'creativity'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('value') >= 0" @click="sort_double('kindness')">亲和 <span v-show="levels.sort == 'kindness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('value') >= 0" @click="sort_double('activity')">行动 <span v-show="levels.sort == 'activity'">▼</span></th>
+
+                                <th v-show="levels.cols.indexOf('rate') >= 0" @click="sort_double('decisiveness_rate')">决策 <span v-show="levels.sort == 'decisiveness_rate'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('rate') >= 0" @click="sort_double('creativity_rate')">创造 <span v-show="levels.sort == 'creativity_rate'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('rate') >= 0" @click="sort_double('kindness_rate')">亲和 <span v-show="levels.sort == 'kindness_rate'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('rate') >= 0" @click="sort_double('activity_rate')">行动 <span v-show="levels.sort == 'activity_rate'">▼</span></th>
+
+                                <th v-show="levels.cols.indexOf('decisiveness') >= 0" @click="sort_double('decisiveness_creativity')">决策<br>创造 <span v-show="levels.sort == 'decisiveness_creativity'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('decisiveness') >= 0" @click="sort_double('decisiveness_kindness')">决策<br>亲和 <span v-show="levels.sort == 'decisiveness_kindness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('decisiveness') >= 0" @click="sort_double('decisiveness_activity')">决策<br>行动 <span v-show="levels.sort == 'decisiveness_activity'">▼</span></th>
+
+                                <th v-show="levels.cols.indexOf('creativity') >= 0" @click="sort_double('creativity_decisiveness')">创造<br>决策 <span v-show="levels.sort == 'creativity_decisiveness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('creativity') >= 0" @click="sort_double('creativity_kindness')">创造<br>亲和 <span v-show="levels.sort == 'creativity_kindness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('creativity') >= 0" @click="sort_double('creativity_activity')">创造<br>行动 <span v-show="levels.sort == 'creativity_activity'">▼</span></th>
+                                
+                                <th v-show="levels.cols.indexOf('kindness') >= 0" @click="sort_double('kindness_decisiveness')">亲和<br>决策 <span v-show="levels.sort == 'kindness_decisiveness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('kindness') >= 0" @click="sort_double('kindness_creativity')">亲和<br>创造 <span v-show="levels.sort == 'kindness_creativity'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('kindness') >= 0" @click="sort_double('kindness_activity')">亲和<br>行动 <span v-show="levels.sort == 'kindness_activity'">▼</span></th>
+                                
+                                <th v-show="levels.cols.indexOf('activity') >= 0" @click="sort_double('activity_decisiveness')">行动<br>决策 <span v-show="levels.sort == 'activity_decisiveness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('activity') >= 0" @click="sort_double('activity_creativity')">行动<br>创造 <span v-show="levels.sort == 'activity_creativity'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('activity') >= 0" @click="sort_double('activity_kindness')">行动<br>亲和 <span v-show="levels.sort == 'activity_kindness'">▼</span></th>
+
+                                <th v-show="levels.cols.indexOf('gain') >= 0">获取</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in double.cards" :class="{purple: my_cards.indexOf(item.card_id) >= 0}" v-show="levels.category == 0 || levels.category == item.category">
+                                <td style="min-width: 200px;">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></td>
+                                <td v-show="levels.cols.indexOf('value') >= 0">{{item.decisiveness}}</td>
+                                <td v-show="levels.cols.indexOf('value') >= 0">{{item.creativity}}</td>
+                                <td v-show="levels.cols.indexOf('value') >= 0">{{item.kindness}}</td>
+                                <td v-show="levels.cols.indexOf('value') >= 0">{{item.activity}}</td>
+
+                                <td v-show="levels.cols.indexOf('rate') >= 0">{{item.decisiveness_rate}}%</td>
+                                <td v-show="levels.cols.indexOf('rate') >= 0">{{item.creativity_rate}}%</td>
+                                <td v-show="levels.cols.indexOf('rate') >= 0">{{item.kindness_rate}}%</td>
+                                <td v-show="levels.cols.indexOf('rate') >= 0">{{item.activity_rate}}%</td>
+
+                                <td v-show="levels.cols.indexOf('decisiveness') >= 0">{{item.decisiveness_creativity}}</td>
+                                <td v-show="levels.cols.indexOf('decisiveness') >= 0">{{item.decisiveness_kindness}}</td>
+                                <td v-show="levels.cols.indexOf('decisiveness') >= 0">{{item.decisiveness_activity}}</td>
+
+                                <td v-show="levels.cols.indexOf('creativity') >= 0">{{item.creativity_decisiveness}}</td>
+                                <td v-show="levels.cols.indexOf('creativity') >= 0">{{item.creativity_kindness}}</td>
+                                <td v-show="levels.cols.indexOf('creativity') >= 0">{{item.creativity_activity}}</td>
+                                
+                                <td v-show="levels.cols.indexOf('kindness') >= 0">{{item.kindness_decisiveness}}</td>
+                                <td v-show="levels.cols.indexOf('kindness') >= 0">{{item.kindness_creativity}}</td>
+                                <td v-show="levels.cols.indexOf('kindness') >= 0">{{item.kindness_activity}}</td>
+                                
+                                <td v-show="levels.cols.indexOf('activity') >= 0">{{item.activity_decisiveness}}</td>
+                                <td v-show="levels.cols.indexOf('activity') >= 0">{{item.activity_creativity}}</td>
+                                <td v-show="levels.cols.indexOf('activity') >= 0">{{item.activity_kindness}}</td>
+
+                                <td v-show="levels.cols.indexOf('gain') >= 0">{{get_gain_tag(item.gain)}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--卡组分析-->
             </div>
 
             <!--登录弹窗-->
