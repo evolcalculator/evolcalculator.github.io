@@ -840,6 +840,7 @@ var vm = new Vue({
                 success: function(res) {
                     if (res.status == 1) {
                         self.today = data;
+                        self.ticket_combine();
 
                         $('#today').modal('hide');
                     } else if (res.info) {
@@ -855,7 +856,7 @@ var vm = new Vue({
             });
         },
         ticket_combine: function(){
-            if(this.list.length < 3){
+            if(this.list.length < 3 || this.empty(this.today)){
                 return false;
             }
 
@@ -1948,7 +1949,7 @@ var vm = new Vue({
                             self.ticket = res.ticket;
                         }
 
-                        if (res.today && self.empty(self.today)){
+                        if (!self.empty(res.today) && self.empty(self.today)){
                             self.today = res.today;
                             self.ticket_combine();
                         }
