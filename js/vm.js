@@ -925,7 +925,7 @@ var vm = new Vue({
         ticket_cards: function(){
             var self = this;
 
-            if(self.list.length < 3){
+            if(self.list.length < 3 || self.empty(self.tickets.ticket)){
                 return false;
             }
 
@@ -1418,7 +1418,7 @@ var vm = new Vue({
         level_cards: function() {
             var self = this;
 
-            if(self.list.length < 3){
+            if(self.list.length < 3 || self.empty(self.level)){
                 return false;
             }
 
