@@ -1632,9 +1632,9 @@ var vm = new Vue({
                     list.push({
                         name: '公司属性',
                         decisiveness: data.company.decisiveness,
-                        decisiveness: data.company.creativity,
-                        decisiveness: data.company.kindness,
-                        decisiveness: data.company.activity
+                        creativity: data.company.creativity,
+                        kindness: data.company.kindness,
+                        activity: data.company.activity
                     });
 
                     self.company = data.company;
