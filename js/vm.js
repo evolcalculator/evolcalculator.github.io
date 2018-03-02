@@ -11,14 +11,19 @@ var vm = new Vue({
         level: 0, // 关卡
         cards: {}, // 全羁绊信息
         card_list: [], // 全羁绊名称
+        all_cards: [], //全部羁绊列表
+        list_filtered: [], //过滤后
+        all_cards_filtered: [], //过滤后
+        card_limit: 5, //我的羁绊显示数量
+        all_card_limit: 5, //全部羁绊显示数量
         company: $.LS.get('company') ? JSON.parse($.LS.get('company')) : { //我的公司
             decisiveness: 0,
             creativity: 0,
             kindness: 0,
             activity: 0
         },
-        list: $.LS.get('list') ? JSON.parse($.LS.get('list')) : [], // 我的羁绊
-        my_cards: $.LS.get('my_cards') ? JSON.parse($.LS.get('my_cards')) : [], //我的羁绊ID
+        list: [], // 我的羁绊
+        my_cards: [], //我的羁绊ID
         login: { // 登录信息
             name: '',
             code: '',
@@ -44,10 +49,17 @@ var vm = new Vue({
         },
         //羁绊筛选
         card_filter: {
-            category: 0,
-            type: 0,
+            category: '0',
+            type: '0',
             name: ''
         },
+        card_expand: false,
+        all_card_filter: {
+            category: '0',
+            type: '0',
+            name: ''
+        },
+        all_card_expand: false,
         //批量导入
         batch: {
             option: 'import_data',
@@ -230,6 +242,10 @@ var vm = new Vue({
             $.LS.set('list', JSON.stringify(newVal));
 
             this.ticket_combine();
+            this.update_list_filtered();
+        },
+        all_cards: function(newVal, oldVal){
+            this.update_all_cards_filtered();
         },
         my_cards: function(newVal, oldVal){
             $.LS.set('my_cards', JSON.stringify(newVal));
@@ -262,6 +278,25 @@ var vm = new Vue({
             if (!this.select[this.category][chapter][this.level]) {
                 this.level = 0;
             }
+        },
+        //羁绊筛选
+        'card_filter.name': function(newVal, oldVal){
+            this.update_list_filtered();
+        },
+        'card_filter.category': function(newVal, oldVal){
+            this.update_list_filtered();
+        },
+        'card_filter.type': function(newVal, oldVal){
+            this.update_list_filtered();
+        },
+        'all_card_filter.name': function(newVal, oldVal){
+            this.update_all_cards_filtered();
+        },
+        'all_card_filter.category': function(newVal, oldVal){
+            this.update_all_cards_filtered();
+        },
+        'all_card_filter.type': function(newVal, oldVal){
+            this.update_all_cards_filtered();
         },
         //羁绊选择
         'card_select.name': function(newVal, oldVal) {
@@ -441,6 +476,13 @@ var vm = new Vue({
             this.reverse.addup.activity = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             this.update_reverse_scores();
         },
+        'batch.option': function(newVal, oldVal){
+            if(newVal == 'export_data'){
+                if(this.batch.source == 'all'){
+                    this.batch.source = 'calculator';
+                }
+            }
+        }
     },
     methods: {
         //卡组分析
@@ -1562,7 +1604,21 @@ var vm = new Vue({
             var self = this;
             var data = self.batch.data;
             var list = [];
-            if (self.batch.source == 'calculator') {
+            if (self.batch.source == 'all'){
+                var names = [];
+                for(id in this.cards){
+                    var card = this.cards[id];
+                    if(card.type < 3){
+                        continue;
+                    }
+
+                    var arr = card.name.split('·');
+                    names.push(arr[1]);
+                    data = JSON.stringify({'user-defined':[],'pre-defined':names});
+                }
+            } 
+
+            if (self.batch.source == 'calculator' || self.batch.source == 'all') {
                 //测试数据：
                 //{"user-defined":[{"name":"新年大吉","rarity":"R","character":"周棋洛","decision":0,"creativity":0,"appetency":0,"action":0,"way":"自定义","id":1519353885350},{"name":"星空之吻","rarity":"SR","character":"白起","decision":55,"creativity":2554,"appetency":1132,"action":2830,"way":"自定义","id":1519353993354},{"name":"你的模样","rarity":"R","character":"周棋洛","decision":39,"creativity":1314,"appetency":1597,"action":1211,"way":"自定义","id":1519354093529}],"pre-defined":["交缠视线","记忆裂痕"]}
                 try {
@@ -1664,6 +1720,7 @@ var vm = new Vue({
                 },
                 complete: function() {
                     $('#import_data').button('reset');
+                    self.batch.source = 'calculator';
                 }
             });
         },
@@ -1697,15 +1754,111 @@ var vm = new Vue({
             $('#batch').modal();
         },
         //筛选
+        update_list_filtered: function(){
+            var list = this.list;
+            var filter = this.card_filter;
+
+            this.list_filtered = [];
+            for(var i = 0; i < list.length; i++){
+                if(this.use_filter(filter, list[i])){
+                    this.list_filtered.push(list[i]);
+                }
+            }
+        },
+        update_all_cards_filtered: function(){
+            var list = this.all_cards;
+            var filter = this.all_card_filter;
+
+            this.all_cards_filtered = [];
+            for(var i = 0; i < list.length; i++){
+                if(this.use_filter(filter, list[i])){
+                    this.all_cards_filtered.push(list[i]);
+                }
+            }
+        },
         use_filter: function(filter, item) {
             var ret = true;
             for (f in filter) {
-                if (!this.empty(filter[f]) && (typeof(item[f]) == 'string' ? item[f].indexOf(filter[f]) < 0 : item[f] != filter[f])) {
+                if ((filter[f] != '' && filter[f] != '0') && (typeof(item[f]) == 'string' ? item[f].indexOf(filter[f]) < 0 : item[f] != filter[f])) {
                     ret = false;
                     break;
                 }
             }
             return ret;
+        },
+        //添加羁绊
+        add_all_card: function(){
+            this.batch.source = 'all';
+            this.import_data();
+        },
+        add_custom_card(card_id){
+            var card = this.cards[card_id];
+            this.card_select.card_id = card.card_id;
+            this.card_select.name = card.name;
+            this.show_card();
+        },
+        add_my_card(card_id, option){
+            var self = this;
+            var card = this.cards[card_id];
+            var evolved = option == 'evolved' ? 1 : 0;
+            var star = option == 'evolved' ? card.type + 1 : card.type;
+            var level = card.type >= 3 ? (star - 1) * 10 : card.type * 5;
+
+            var user_correct = 0;
+            var data = self.predict_card(card.card_id, evolved, star, level);
+            var prop = self.prop;
+
+            $.ajax({
+                url: self.base_url + 'save_card',
+                type: 'post',
+                data: {
+                    token: self.get_token(),
+                    card_id: card.card_id,
+                    evolved: evolved,
+                    star: star,
+                    level: level,
+                    decisiveness: data.decisiveness,
+                    creativity: data.creativity,
+                    kindness: data.kindness,
+                    activity: data.activity,
+                    user_correct: user_correct
+                },
+                success: function(res) {
+                    if (res.status == 1) {
+                        var card = res.card;
+                        var card_id = card.card_id;
+                        if (card.predict) {
+                            self.cards[card_id].predict = card.predict;
+                            delete card.predict;
+                        }
+                        if (card.correction) {
+                            self.cards[card_id].correction = card.correction;
+                            delete card.correction;
+                        }
+
+                        var idx = self.my_cards.indexOf(card_id);
+                        if (idx >= 0) {
+                            self.list[idx] = card;
+                        } else {
+                            self.list.push(card);
+                        }
+                        self.list.sort(function(a, b) {
+                            return b.total - a.total;
+                        });
+
+                        var my_cards = [];
+                        for (var i = 0; i < self.list.length; i++) {
+                            my_cards.push(self.list[i].card_id);
+                        }
+                        self.my_cards = my_cards;
+                    } else if (res.info) {
+                        show_msg(res.info);
+                    }
+                },
+                error: function(res) {
+                    self.show_msg('请求失败');
+                }
+            });
         },
         //保存羁绊
         save_card: function() {
@@ -2173,10 +2326,15 @@ var vm = new Vue({
                         self.cards = res.cards;
 
                         self.card_list = [];
+                        self.all_cards = [];
                         for (id in self.cards) {
                             var card = self.cards[id];
                             self.card_list.push(card.name);
+                            self.all_cards.push(card);
                         }
+                        self.all_cards.sort(function(a, b){
+                            return (b.type * 100 + b.category) - (a.type * 100 + a.category);
+                        });
 
                         if (res.company) {
                             self.company = res.company;
@@ -2279,6 +2437,8 @@ var vm = new Vue({
         }
     },
     mounted: function() {
+        this.list = $.LS.get('list') ? JSON.parse($.LS.get('list')) : [];
+        this.my_cards = $.LS.get('my_cards') ? JSON.parse($.LS.get('my_cards')) : [];
         this.load();
     }
 });
