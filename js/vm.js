@@ -1670,7 +1670,7 @@ var vm = new Vue({
                 // 你的样子    39  1314    1597    1211
                 data = data.split("\n");
                 for (var i = 0; i < data.length; i++) {
-                    var arr = data[i].split("\t");
+                    var arr = data[i].split(/[ \t]/);
                     if (self.empty(arr) || arr.length < 5) {
                         continue;
                     }
