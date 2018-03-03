@@ -81,7 +81,8 @@ var vm = new Vue({
             sr: 'remain',
             ssr: 'remain',
             config: false,
-            cols: ['decisiveness','creativity','kindness','activity','gain'],
+            // cols: ['decisiveness','creativity','kindness','activity','gain'],
+            cols: ['value','gain'],
             sort: 'decisiveness_creativity',
             category: 0,
             factor: [0.9, 0.6, 0.3, 0.2],
@@ -251,19 +252,40 @@ var vm = new Vue({
             $.LS.set('my_cards', JSON.stringify(newVal));
         },
         'company.decisiveness': function(newVal, oldVal){
-            this.company.decisiveness = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            var max = 5000;
+            var val = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            if(val && val > max){
+                val = max;
+            }
+            this.company.decisiveness = val;
+
             $.LS.set('company', JSON.stringify(this.company));
         },
         'company.creativity': function(newVal, oldVal){
-            this.company.creativity = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            var max = 5000;
+            var val = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            if(val && val > max){
+                val = max;
+            }
+            this.company.creativity = val;
             $.LS.set('company', JSON.stringify(this.company));
         },
         'company.kindness': function(newVal, oldVal){
-            this.company.kindness = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            var max = 5000;
+            var val = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            if(val && val > max){
+                val = max;
+            }
+            this.company.kindness = val;
             $.LS.set('company', JSON.stringify(this.company));
         },
         'company.activity': function(newVal, oldVal){
-            this.company.activity = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            var max = 5000;
+            var val = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            if(val && val > max){
+                val = max;
+            }
+            this.company.activity = val;
             $.LS.set('company', JSON.stringify(this.company));
         },
         //关卡级联选择
@@ -485,6 +507,18 @@ var vm = new Vue({
         }
     },
     methods: {
+        get_pass: function(line, score){
+            var ret = '';
+            if(score >= line){
+                ret = '√';
+            } else {
+                ret = '×';
+            }
+            if(line == 0){
+                ret = '';
+            }
+            return ret;
+        },
         //卡组分析
         get_double_tag: function(key){
             var arr = key.split('_');
@@ -1670,7 +1704,7 @@ var vm = new Vue({
                 // 你的样子    39  1314    1597    1211
                 data = data.split("\n");
                 for (var i = 0; i < data.length; i++) {
-                    var arr = data[i].split("\t");
+                    var arr = data[i].split(/[ \t]/);
                     if (self.empty(arr) || arr.length < 5) {
                         continue;
                     }
@@ -1791,13 +1825,13 @@ var vm = new Vue({
             this.batch.source = 'all';
             this.import_data();
         },
-        add_custom_card(card_id){
+        add_custom_card: function(card_id){
             var card = this.cards[card_id];
             this.card_select.card_id = card.card_id;
             this.card_select.name = card.name;
             this.show_card();
         },
-        add_my_card(card_id, option){
+        add_my_card: function(card_id, option){
             var self = this;
             var card = this.cards[card_id];
             var evolved = option == 'evolved' ? 1 : 0;
@@ -2437,6 +2471,7 @@ var vm = new Vue({
         }
     },
     mounted: function() {
+        $('#tips').hide();
         this.list = $.LS.get('list') ? JSON.parse($.LS.get('list')) : [];
         this.my_cards = $.LS.get('my_cards') ? JSON.parse($.LS.get('my_cards')) : [];
         this.load();
