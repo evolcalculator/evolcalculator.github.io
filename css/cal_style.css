@@ -1,138 +1,145 @@
 .mycontainer {
-	/*position: relative;*/
-	overflow: hidden;
-	margin-left: auto;
-	margin-right: auto;
-	/*background-color: rgba(242, 246, 255, 0.6);*/
-	z-index: 10;
-	text-align: center;
-	/*width: 80%;*/
+    /*position: relative;*/
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    /*background-color: rgba(242, 246, 255, 0.6);*/
+    z-index: 10;
+    text-align: center;
+    /*width: 80%;*/
 }
 
 
 .header {
-	margin-left: auto;
-	margin-right: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 
 .item_body {
-	width: 100%;
-	float: left;
-	overflow: auto;
-	margin-top: 70px;
-	/*padding-top: 70px;*/
+    width: 100%;
+    float: left;
+    overflow: auto;
+    margin-top: 70px;
+    /*padding-top: 70px;*/
 }
 
 
 .footer {
-	width: 400px;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
-	/*color: darkslategray;*/
-}
-
-.mycard {
-	margin-left: auto;
-	margin-right: auto;
-	width: 96%;
-	overflow: auto;
-	background-color: rgba(256, 256, 256, 0.8);
-	/*background-color: rgba(230, 241, 235, 0.8);*/
-	border: 1px solid #dddddd;
-	/*border: 1px solid darkslategray;*/
-	-webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
-    box-shadow:1px 1px 2px #aaaaaa;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
     /*color: darkslategray;*/
 }
 
-#section2 th{
-	text-align: center;
-	vertical-align: middle;
+.mycard {
+    margin-left: auto;
+    margin-right: auto;
+    width: 96%;
+    overflow: auto;
+    background-color: rgba(256, 256, 256, 0.8);
+    /*background-color: rgba(230, 241, 235, 0.8);*/
+    border: 1px solid #dddddd;
+    /*border: 1px solid darkslategray;*/
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 1px 1px 2px #aaaaaa;
+    text-align: center;
+    /*color: darkslategray;*/
 }
 
-td{
-	color: #353535;
-	text-align: center;
-	vertical-align: middle;
-	word-break: break-all;
+#section2 th {
+    text-align: center;
+    vertical-align: middle;
 }
 
-#section3 th{
-	text-align: center;
-	vertical-align: middle;
+td {
+    color: #353535;
+    text-align: center;
+    vertical-align: middle;
+    word-break: break-all;
 }
 
-#section4 th{
-	text-align: center;
-	vertical-align: middle;
+#section3 th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+#section4 th {
+    text-align: center;
+    vertical-align: middle;
 }
 
 .import-form {
-	text-align: left;
-	margin:0 auto;
+    text-align: left;
+    margin: 0 auto;
 }
 
-*{
-	margin:0;
-	padding:0;
+* {
+    margin: 0;
+    padding: 0;
 }
+
+
+
 /*.nav-title{
    font-family: 'Abril Fatface', cursive; 
 }*/
+
 .navbar-header .nav-title:hover,
-.navbar-header .nav-title:focus{
-  background:#fff;
-  color:#000;
-  padding-top: auto;
-  padding-bottom: auto;
-/*  background: rgba(256, 256, 256);
+.navbar-header .nav-title:focus {
+    background: #fff;
+    color: #000;
+    padding-top: auto;
+    padding-bottom: auto;
+    /*  background: rgba(256, 256, 256);
   color: rgba(125, 86, 154, 1);*/
 }
+
+
 
 /*.cative{
   font-family:'Comfortaa', cursive;
 }*/
+
 .navbar-collapse .navbar-nav li a:hover,
-.navbar-collapse .navbar-nav li a:focus{
-  color:#000;
-  background:#fff;
-/*  background: rgba(256, 256, 256);
+.navbar-collapse .navbar-nav li a:focus {
+    color: #000;
+    background: #fff;
+    /*  background: rgba(256, 256, 256);
   color: rgba(125, 86, 154, 1);*/
 }
 
 #point1 {
-	padding-top: 70px;
-	margin-top: -70px;
+    padding-top: 70px;
+    margin-top: -70px;
 }
 
 #point2 {
-	padding-top: 70px;
-	margin-top: -70px;
+    padding-top: 70px;
+    margin-top: -70px;
 }
 
 #point3 {
-	padding-top: 70px;
-	margin-top: -70px;
+    padding-top: 70px;
+    margin-top: -70px;
 }
 
 #point4 {
-	padding-top: 70px;
-	margin-top: -70px;
+    padding-top: 70px;
+    margin-top: -70px;
 }
 
 #point5 {
-	padding-top: 70px;
-	margin-top: -70px;
+    padding-top: 70px;
+    margin-top: -70px;
 }
 
 #point6 {
-	padding-top: 70px;
-	margin-top: -70px;
+    padding-top: 70px;
+    margin-top: -70px;
 }
 
 
@@ -150,4 +157,142 @@ a.hs-totop-link {
     color: #fff;
     cursor: pointer;
     text-align: center;
+}
+
+
+.mycard {
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 100%;
+}
+
+.label-above {
+    display: inline-block;
+    width: 100%;
+    text-align: left;
+    font-size: small;
+}
+
+.table thead tr th,
+.table tbody tr th,
+.table tbody tr td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.form-group {
+    padding-right: 15px;
+    padding-bottom: 15px;
+}
+
+.form-group .btn.form-control {
+    margin-top: 25px;
+}
+
+.link {
+    text-decoration: underline;
+}
+
+h4 span,
+.form-group span {
+    display: inline-block;
+    padding: 0 10px;
+}
+
+.form-group div {
+    padding-right: 0;
+}
+
+.modal-main {
+    padding-top: 10px;
+}
+
+.modal-main .label-above {
+    margin-top: 10px;
+}
+
+.help-block {
+    font-size: small;
+    text-align: left;
+}
+
+.help-block a {
+    margin: 0 5px;
+}
+
+.modal-main .help-block {
+    margin-top: 10px;
+}
+
+.radio, .checkbox, .input {
+    text-align: left;
+    font-size: small;
+}
+
+.radio label, .checkbox label {
+    padding-right: 10px;
+}
+
+.radio span {
+    display: inline-block;
+    width: 40px;
+}
+
+.input {
+    margin: 10px 0;
+}
+
+.input input {
+    display: inline-block;
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.input button {
+    padding: 0 10px;
+    border: 1px solid #ccc;
+}
+
+.modal-body textarea {
+    height: 150px;
+}
+
+.modal-body .alert {
+    padding: 5px;
+    font-size: small;
+    margin-bottom: 0;
+}
+
+.pd15 {
+    padding: 15px;
+}
+
+.typeahead {
+    max-width: 300px;
+}
+
+.cell {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cell.cell-all {
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.item_body {
+    padding-bottom: 40px;
+}
+
+.table-score tbody tr td {
+    min-width: 60px;
+}
+
+.purple {
+    background-color: #f3e5f5 !important;
 }

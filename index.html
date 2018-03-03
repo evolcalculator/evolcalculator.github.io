@@ -2,304 +2,1421 @@
 <html>
 
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <title>恋与制作人计算器</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="evol calculator">
     <meta name="keywords" content="calculator">
     <meta name="author" content="Darina">
-    <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> -->
-    <!-- <link rel="shortcut icon" href="img/favicon.ico"> -->
-
-    <!-- CSS | STYLE -->
-    <link rel="stylesheet" type="text/css" href="css/cal_style.css" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap-cal.css" />
-    <!-- <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" /> -->
-    <!-- END CSS | STYLE -->
-
-    <script type='text/javascript' charset="UTF-8" src='js/jquery.js'></script>
-    <script type='text/javascript' charset="UTF-8" src='js/bootstrap.js'></script>
-    <script type='text/javascript' charset="UTF-8" src='data/weights.js'></script>
-    <script type='text/javascript' charset="UTF-8" src='data/bonds.js'></script>
-    <script type='text/javascript' charset="UTF-8" src='js/calculator.js'></script>
-    <script type='text/javascript' charset="UTF-8" src='js/cardsAndBonds.js'></script>
-    <script type='text/javascript' charset="UTF-8" src='js/drawui.js'></script>
-
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/cal_style.css" />
+    <script type='text/javascript' charset="utf-8" src='js/jquery.js'></script>
+    <script type='text/javascript' charset="utf-8" src='js/storage.js'></script>
+    <script type='text/javascript' charset="utf-8" src='js/bootstrap.js'></script>
+    <script type='text/javascript' charset="utf-8" src='js/bootstrap3-typeahead.min.js'></script>
+    <script type='text/javascript' charset="utf-8" src='js/vue.min.js'></script>
 </head>
 
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
-            <span class="sr-only">切换导航</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          </button>
-          <a href="#" class="navbar-brand nav-title"><img src="img/logo-s.png" alt="header"/></a>
-        </div>
-        <div class="collapse navbar-collapse" id="navbar-menu">
-          <ul class="nav navbar-nav navbar-right">
-            <li class="cative"><a href="#point1">说明</a></li>
-            <li class="cative"><a href="#point2">得分计算</a></li>
-            <li class="cative"><a href="#point3">我的羁绊信息</a></li>
-            <li class="cative"><a href="#point4">添加羁绊</a></li>
-            <li class="cative"><a href="#point5">自定义羁绊</a></li>
-            <li class="cative"><a href="#point6">导出/导入</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav> 
+    <div id="app">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                        <span class="sr-only">切换导航</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="javascript:;" class="navbar-brand nav-title"><img src="img/logo-s.png" alt="header"/></a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-menu">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li :class="{active: nav == 'level'}"><a href="javascript:;" @click="nav = 'level'">关卡计算</a></li>
+                        <li :class="{active: nav == 'ticket'}"><a href="javascript:;" @click="nav = 'ticket'">票房争夺战</a></li>
+                        <li :class="{active: nav == 'double'}"><a href="javascript:;" @click="show_double()">卡组分析</a></li>
+                        <li :class="{active: nav == 'card'}"><a href="javascript:;" @click="nav = 'card'">我的羁绊</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="item_body">
+                <!--说明-->
+                <div class="mycard">
+                    <h3>恋与制作人计算器v2.0</h3>
+                    <p>
+                        <h4>使用说明</h4>
+                        首次使用请先<a href="javascript:;" @click="nav = 'card'">添加羁绊</a>，支持<a href="javascript:;" @click="show_batch('import_data')">导入/导出</a>和<a href="javascript:;" @click="show_login('create_user')">在线保存</a>。
+                        <br>
+                        功能：<a href="javascript:;" @click="nav = 'level'">关卡计算</a>、<a href="javascript:;" @click="nav = 'ticket'">票房争夺战</a>、<a href="javascript:;" @click="show_double()">卡组分析</a>。
+                        <br>
 
-    <!-- Go To Top Button -->
-    <!-- <a href="#hs-menu" class="hs-totop-link"><i class="fa fa-chevron-up"></i></a> -->
-    <!-- End Go To Top Button -->
+                        <h4>数据来源</h4> 权重数据来源 <a href="https://weibo.com/unnamedgroup" target="_blank">@恋与制作人未命名攻略组</a>
+                        <br> 计算器制作 @达尔娜 @清澄 @鱼骨头
+                    </p>
+                </div>
+                <!--说明-->
 
-    <div class="container-fluid">
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-10 mycontainer" id="Container">
+                <!--公司-->
+                <div class="mycard" v-show="nav == 'card'">
+                    <h4>公司属性</h4>
+                    <div class="form-group clearfix">
+                        <div class="col-xs-3 col-md-2">
+                            <label class="label-above">决策</label>
+                            <input type="number" class="form-control" v-model="company.decisiveness">
+                        </div>
+                        <div class="col-xs-3 col-md-2">
+                            <label class="label-above">创造</label>
+                            <input type="number" class="form-control" v-model="company.creativity">
+                        </div>
+                        <div class="col-xs-3 col-md-2">
+                            <label class="label-above">亲和</label>
+                            <input type="number" class="form-control" v-model="company.kindness">
+                        </div>
+                        <div class="col-xs-3 col-md-2">
+                            <label class="label-above">行动</label>
+                            <input type="number" class="form-control" v-model="company.activity">
+                        </div>
+                        <div class="col-xs-3 col-sm-2 col-lg-1" v-show="!empty(user.name)">
+                            <button id="update_company" type="button" data-loading-text="保存中..." class="btn btn-primary form-control" autocomplete="off" @click="update_company()">保存</button>
+                        </div>
+                    </div>
+                    <div v-if="!empty(user.name)">
+                        <h4>
+                            <span>{{user.name}}</span>
+                            <a href="javascript:;" @click="show_login('user_login')">切换</a>
+                            <a href="javascript:;" @click="logout()">注销</a>
+                        </h4>
+                        <p>
+                            当前数据在线保存，请记住账号密码，以便下次登录使用。
+                        </p>
+                    </div>
+                    <div v-else>
+                        <h4>在线保存</h4>
+                        <p>
+                            当前数据保存在浏览器，
+                            <a href="javascript:;" @click="show_login('create_user')">创建</a>或<a href="javascript:;" @click="show_login('user_login')">登录</a>公司，在线保存个人数据。
+                        </p>
+                    </div>
+                </div>
+                <!--公司-->
 
-        <div class="item_body">
+                <!--羁绊-->
+                <div class="mycard" v-show="nav == 'card'">
+                    <div>
+                        <h4>添加羁绊</h4>
+                        <div class="pd15">
+                            <label class="label-above">输入关键字，添加或修改羁绊</label>
+                            <input id="card_typeahead" type="text" class="typeahead form-control" data-provide="typeahead" autocomplete="off">
+                            <p class="help-block">添加时先输入等级，自动推算属性值</p>
+                        </div>
+                        <div class="form-group">
+                            <a href="javascript:;" class="btn btn-default" @click="show_batch('export_data')">导出</a>
+                            <a href="javascript:;" class="btn btn-primary" @click="show_batch('import_data')">导入</a>
+                        </div>
+                        <div class="alert alert-warning" role="alert" v-show="!empty(batch.fail)">
+                            以下导入失败，请检查名称是否正确：
+                            <br>
+                            <template v-for="item in batch.fail">
+                                <small style="margin: 0 5px;">{{item.name}}</small>
+                            </template>
+                            <button type="button" class="close" aria-label="Close" @click="batch.fail = []"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                    </div>
+                    <h4 style="margin-top: 50px;">我的羁绊</h4>
+                    <p v-show="list.length > 1"><a href="javascript:;" @click="remove_all()">清空数据</a></p>
+                    <div class="form-group clearfix">
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">人物</label>
+                            <select class="form-control" v-model="card_filter.category">
+                                <option value="0">全部</option>
+                                <option value="1">李泽言</option>
+                                <option value="2">许墨</option>
+                                <option value="3">周棋洛</option>
+                                <option value="4">白起</option>
+                                <option value="5">其他</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">稀有度</label>
+                            <select class="form-control" v-model="card_filter.type">
+                                <option value="0">全部</option>
+                                <option value="5">SSR</option>
+                                <option value="4">SR</option>
+                                <option value="3">R</option>
+                                <option value="2">NH</option>
+                                <option value="1">N</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">筛选</label>
+                            <input type="text" class="form-control" v-model="card_filter.name">
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-hover" v-show="!empty(list)">
+                        <thead>
+                            <tr>
+                                <th>名称</th>
+                                <th>等级</th>
+                                <th class="hidden-xs">决策</th>
+                                <th class="hidden-xs">创造</th>
+                                <th class="hidden-xs">亲和</th>
+                                <th class="hidden-xs">行动</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, idx) in list_filtered" v-show="card_expand || idx < card_limit">
+                                <td>{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></td>
+                                <td>lv.{{item.level}} {{get_star_print(item.star)}} {{get_evolved_tag(item.evolved)}}</td>
+                                <td class="hidden-xs">{{item.decisiveness}}</td>
+                                <td class="hidden-xs">{{item.creativity}}</td>
+                                <td class="hidden-xs">{{item.kindness}}</td>
+                                <td class="hidden-xs">{{item.activity}}</td>
+                                <td>
+                                    <a href="javascript:;" @click="show_card(item.card_id)">修改</a>
+                                    <a href="javascript:;" @click="remove_card(item.card_id)">删除</a>
+                                </td>
+                            </tr>
+                            <tr v-show="!card_expand && list_filtered.length > card_limit">
+                                <td colspan="7"><a href="javascript:;" @click="card_expand = true">展开▼</a></td>
+                            </tr>
+                            <tr v-show="card_expand && list_filtered.length > card_limit">
+                                <td colspan="7"><a href="javascript:;" @click="card_expand = false">收起▲</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-            <div id="point1"></div>
-            <div class="mycard" id="section1">
-                <h3>恋与制作人计算器v1.0</h3><br/>
-                <p>
-                    <!-- 傻瓜版羁绊选择和竞技场算分功能持续更新中……<br/><br/> -->
-                    <h4>使用说明</h4>
-                    1.请先<a href="#point4">添加羁绊</a>，或者<a href="#point5">输入</a>/<a href="#point6">导入</a>拥有的羁绊信息，然后再开始<a href="#point2">计算</a><br/>
-                    2.<a href="#point4">"添加羁绊"</a>中的羁绊数据为满星满级的羁绊数据，未达到满星满级请<a href="#point5">自定义输入羁绊信息</a><br/>
-                    3.为保证使用体验，清理浏览器cookie前请保存羁绊记录(点击最下方<a href="#point6">"导出羁绊记录"</a>)<br/>
-                    <h4>数据来源</h4>
-                    权重数据来源 <a href="https://weibo.com/unnamedgroup">@恋与制作人未命名攻略组</a><br/>
-<!--                     图片来源 <a href="http://evol.papegames.cn/index.html">恋与制作人官网</a><br/> -->
-                    计算器制作 @达尔娜 @清澄<br/>
-                </p>
+                    <h4 style="margin-top: 50px;">全部羁绊</h4>
+                    <p><a href="javascript:;" @click="add_all_card()">添加全部(满级)</a></p>
+                    <div class="form-group clearfix">
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">人物</label>
+                            <select class="form-control" v-model="all_card_filter.category">
+                                <option value="0">全部</option>
+                                <option value="1">李泽言</option>
+                                <option value="2">许墨</option>
+                                <option value="3">周棋洛</option>
+                                <option value="4">白起</option>
+                                <option value="5">其他</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">稀有度</label>
+                            <select class="form-control" v-model="all_card_filter.type">
+                                <option value="0">全部</option>
+                                <option value="5">SSR</option>
+                                <option value="4">SR</option>
+                                <option value="3">R</option>
+                                <option value="2">NH</option>
+                                <option value="1">N</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">筛选</label>
+                            <input type="text" class="form-control" v-model="all_card_filter.name">
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-hover" v-show="!empty(all_cards)">
+                        <thead>
+                            <tr>
+                                <th>名称</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, idx) in all_cards_filtered" v-show="all_card_expand || idx < all_card_limit">
+                                <td>
+                                    {{item.name}} <sub>{{get_type_tag(item.type)}}</sub>
+                                </td>
+                                <td v-if="my_cards.indexOf(item.card_id) >= 0">
+                                    已添加
+                                </td>
+                                <td v-else>
+                                    <a href="javascript:;" @click="add_my_card(item.card_id, 'evolved')" v-show="item.type >= 3">添加满级</a>
+                                    <a href="javascript:;" @click="add_my_card(item.card_id, 'normal')">添加未进化</a>
+                                    <a href="javascript:;" @click="add_custom_card(item.card_id)">添加自定义</a>
+                                </td>
+                            </tr>
+                            <tr v-show="!all_card_expand && all_cards_filtered.length > all_card_limit">
+                                <td colspan="2"><a href="javascript:;" @click="all_card_expand = true">展开▼</a></td>
+                            </tr>
+                            <tr v-show="all_card_expand && all_cards_filtered.length > all_card_limit">
+                                <td colspan="2"><a href="javascript:;" @click="all_card_expand = false">收起▲</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--羁绊-->
+
+                <!-- 关卡计算 -->
+                <div class="mycard" v-show="nav == 'level'">
+                    <h4>关卡计算</h4>
+                    <div class="form-group" v-show="list.length < 3">
+                        <a href="javascript:;" @click="nav = 'card'">添加</a>三张以上羁绊开启
+                    </div>
+                    <div class="form-group clearfix" v-if="!empty(select)">
+                        <div class="col-xs-4 col-sm-3 col-md-2">
+                            <label class="label-above">类别</label>
+                            <select class="form-control" v-model="category">
+                                <option :value="key" v-for="(item, key) in select">{{get_category_tag(key)}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-sm-3 col-md-2">
+                            <label class="label-above">章节</label>
+                            <select class="form-control" v-model="chapter">
+                                <option :value="key" v-for="(item, key) in select[category]">第{{key}}章</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-sm-3 col-md-2">
+                            <label class="label-above">关卡</label>
+                            <select class="form-control" v-model="level">
+                                <option value="0">全部</option>
+                                <option :value="key" v-for="(item, key) in select[category][chapter]">{{chapter}}-{{key}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-sm-2 col-md-1" v-show="list.length >= 3">
+                            <button id="get_levels" type="button" data-loading-text="加载中..." class="btn btn-primary form-control" autocomplete="off" @click="get_levels()">计算</button>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-hover table-condensed" v-show="!empty(levels.list)">
+                        <thead>
+                            <tr>
+                                <th>关卡</th>
+                                <th class="hidden-xs hidden-sm">掉落</th>
+                                <th class="hidden-xs">实力需求</th>
+                                <th class="hidden-xs">特殊要求</th>
+                                <th class="hidden-xs">推荐</th>
+                                <th>高分羁绊</th>
+                                <th>得分</th>
+                                <th>评级</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template v-for="item in levels.list">
+                                <tr v-for="i in [1, 2, 3]">
+                                    <td rowspan="3" v-if="i == 1"><a href="javascript:;" class="link" @click="get_level(item.id)">{{item.chapter}}-{{item.level}}</a></td>
+                                    <td rowspan="3" class="hidden-xs hidden-sm" v-if="i == 1">{{item.drops}}</td>
+                                    <td rowspan="3" class="hidden-xs" v-if="i == 1">{{get_card_demand(item)}}</td>
+                                    <td class="hidden-xs">{{item['request'+i]}}</td>
+                                    <td class="hidden-xs cell" :class="{'cell-all': levels.overflow}" @click="levels.overflow = !levels.overflow">{{item['recommend'+i]}}</td>
+                                    <td>{{item.combine[i-1]}}</td>
+                                    <td rowspan="3" v-if="i == 1">{{item.score}}</td>
+                                    <td rowspan="3" v-if="i == 1">{{get_rank_tag(item, item.score)}}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                    <div v-show="!empty(levels.level)">
+                        <table class="table table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>关卡掉落</th>
+                                    <th>实力需求</th>
+                                    <th>特殊要求</th>
+                                    <th>推荐</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(i, idx) in levels.level.loop">
+                                    <td :rowspan="levels.level.count" v-if="idx == 0">{{levels.level.drops}}</td>
+                                    <td :rowspan="levels.level.count" v-if="idx == 0">{{get_card_demand(levels.level)}}</td>
+                                    <td>{{levels.level['request'+i]}}</td>
+                                    <td class="cell" :class="{'cell-all': levels.overflow}" @click="levels.overflow = !levels.overflow">{{levels.level['recommend'+i]}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed">
+                            <tbody>
+                                <tr>
+                                    <th>公司得分</th>
+                                    <td>
+                                        <a href="javascript:;" @click="show_special()">{{levels.company.decisiveness}} / {{levels.company.creativity}} / {{levels.company.kindness}} / {{levels.company.activity}}</a>
+                                    </td>
+                                    <td>{{get_company_score()}}</td>
+                                </tr>
+                                <tr>
+                                    <th>专家得分</th>
+                                    <td><a href="javascript:;" @click="show_special()">Normal * {{levels.multiple}}</a></td>
+                                    <td>{{get_special_score()}}</td>
+                                </tr>
+                                <tr v-for="(item, idx) in levels.combine">
+                                    <th rowspan="3" v-if="idx == 0">羁绊得分</th>
+                                    <td>
+                                        <a href="javascript:;" @click="show_combine(idx)">
+                                            {{item.name}} <sub>{{get_type_tag(item.type)}}</sub>
+                                            <!-- <sub class="hidden-xs">（lv.{{item.level}} {{get_star_print(item.star)}} {{get_evolved_tag(item.evolved)}})</sub> -->
+                                        </a>
+                                    </td>
+                                    <td>{{item.score}}</td>
+                                </tr>
+                                <tr>
+                                    <th>总分</th>
+                                    <td><small style="color: #737373;">点击上方更改</small></td>
+                                    <td>{{get_total_score()}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed" v-show="levels.level.pass_score > 0">
+                            <thead>
+                                <tr>
+                                    <th>一星</th>
+                                    <th>二星</th>
+                                    <th>三星</th>
+                                    <th>评级</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{levels.level.pass_score}}</td>
+                                    <td>{{levels.level.half_score}}</td>
+                                    <td>{{levels.level.full_score}}</td>
+                                    <td>{{get_rank_tag(levels.level, get_total_score())}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-group">
+                            <p class="help-block">注：过关分数存在误差仅供参考，压线过关需谨慎</p>
+                        </div>
+                    </div>
+                    <div v-show="!empty(levels.cards)">
+                        <h4>
+                            <span>羁绊分析</span>
+                            <a href="javascript:;" @click="levels.config = !levels.config">设置</a>
+                        </h4>
+                        <div v-show="levels.config">
+                            <div class="radio">
+                                <span>筛选：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.card" value="my"> 我的羁绊
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.card" value="all"> 所有羁绊
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <span>R：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="hidden"> 隐藏
+                                </label>
+                                <label v-show="levels.card == 'my'">
+                                    <input type="radio" v-model="levels.r" value="remain"> 不改变
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="ordinary"> 进化前
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="evolved"> 进化后
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <span>SR：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="hidden"> 隐藏
+                                </label>
+                                <label v-show="levels.card == 'my'">
+                                    <input type="radio" v-model="levels.sr" value="remain"> 不改变
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="ordinary"> 进化前
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="evolved"> 进化后
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <span>SSR：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="hidden"> 隐藏
+                                </label>
+                                <label v-show="levels.card == 'my'">
+                                    <input type="radio" v-model="levels.ssr" value="remain"> 不改变
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="ordinary"> 进化前
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="evolved"> 进化后
+                                </label>
+                            </div>
+                        </div>
+                        <p class="help-block">点击设置更改羁绊属性，可进行过关分析</p>
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>等级</th>
+                                    <th class="hidden-xs">决策</th>
+                                    <th class="hidden-xs">创造</th>
+                                    <th class="hidden-xs">亲和</th>
+                                    <th class="hidden-xs">行动</th>
+                                    <th>得分</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in levels.cards">
+                                    <td>{{item.card.name}} <sub>{{get_type_tag(item.card.type)}}</sub></td>
+                                    <td>lv.{{item.card.level}} {{get_star_print(item.card.star)}} {{get_evolved_tag(item.card.evolved)}}</td>
+                                    <td class="hidden-xs">{{item.card.decisiveness}}</td>
+                                    <td class="hidden-xs">{{item.card.creativity}}</td>
+                                    <td class="hidden-xs">{{item.card.kindness}}</td>
+                                    <td class="hidden-xs">{{item.card.activity}}</td>
+                                    <td>{{item.score}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--关卡计算-->
+
+                <!--今日票房-->
+                <div class="mycard" v-show="nav == 'ticket'">
+                    <h4>今日票房</h4>
+                    <p><a href="javascript:;" @click="show_today()">设置</a></p>
+                    <table class="table table-bordered table-hover table-condensed">
+                        <thead>
+                            <th>主题</th>
+                            <th>实力需求</th>
+                            <th>嘉宾</th>
+                        </thead>
+                        <tbody  v-if="!empty(today)">
+                            <td>{{get_ticket_name(today.ticket_id)}}</td>
+                            <td>{{get_card_demand(get_ticket_factor(today.ticket_id))}}</td>
+                            <td>{{get_character_tag(today.category)}} {{get_star_print(today.star)}}</td>
+                        </tbody>
+                        <tbody v-else>
+                            <td colspan="3"><a href="javascript:;" @click="show_today()">未设置</a></td>
+                        </tbody>
+                    </table>
+
+                    <table class="table table-bordered table-hover table-condensed" v-if="!empty(tickets.combine)">
+                        <tbody>
+                            <tr v-for="(item, idx) in tickets.combine">
+                                <th rowspan="3" v-if="idx == 0">推荐</th>
+                                <td>{{item}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p><a href="javascript:;" class="btn btn-primary" @click="show_ticket()">胜率分析</a></p>
+                </div>
+                <!--今日票房-->
+
+                <!--票房计算-->
+                <div class="mycard" v-show="nav == 'ticket'">
+                    <h4>票房计算</h4>
+
+                    <p v-show="list.length < 3">
+                        <a href="javascript:;" @click="nav = 'card'">添加</a>三张以上羁绊开启
+                    </p>
+
+                    <div class="form-group clearfix" v-if="!empty(ticket)">
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">主题</label>
+                            <select class="form-control" v-model="tickets.ticket_id">
+                                <option :value="item.id" v-for="item in ticket">{{item.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">嘉宾</label>
+                            <select class="form-control" v-model="tickets.category">
+                                <option value="1">李泽言</option>
+                                <option value="2">许墨</option>
+                                <option value="3">周棋洛</option>
+                                <option value="4">白起</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">星级</label>
+                            <select class="form-control" v-model="tickets.star">
+                                <option :value="i" v-for="i in [3,4,5]">{{i}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-sm-2 col-md-1" v-show="list.length >= 3">
+                            <button id="get_levels" type="button" data-loading-text="加载中..." class="btn btn-primary form-control" autocomplete="off" @click="get_tickets()">计算</button>
+                        </div>
+                    </div>
+                    <div v-show="!empty(tickets.ticket)">
+                        <table class="table table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>主题</th>
+                                    <th>实力需求</th>
+                                    <th>嘉宾</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{get_ticket_name(tickets.ticket.ticket_id)}}</td>
+                                    <td>{{get_card_demand(get_ticket_factor(tickets.ticket.ticket_id))}}</td>
+                                    <td>{{get_character_tag(tickets.ticket.category)}} {{get_star_print(tickets.ticket.star)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" :class="{active: tickets.option == 'my'}"><a href="javascript:;" @click="tickets.option = 'my'">我的阵容</a></li>
+                            <li role="presentation" :class="{active: tickets.option == 'match'}"><a href="javascript:;" @click="tickets.option = 'match'">对手阵容</a></li>
+                        </ul>
+                        <table class="table table-bordered table-hover table-condensed" v-show="tickets.option == 'my'">
+                            <tbody>
+                                <tr>
+                                    <th>公司得分</th>
+                                    <td>
+                                        <a href="javascript:;" @click="show_ticket_company('my')">{{tickets.my_company.decisiveness}} / {{tickets.my_company.creativity}} / {{tickets.my_company.kindness}} / {{tickets.my_company.activity}}</a>
+                                    </td>
+                                    <td>{{get_ticket_company_score('my')}}</td>
+                                </tr>
+                                <tr v-for="(item, idx) in tickets.my">
+                                    <th rowspan="3" v-if="idx == 0">羁绊得分</th>
+                                    <td><a href="javascript:;" @click="show_battle(idx, 'my')">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></a></td>
+                                    <td>{{item.score}}</td>
+                                </tr>
+                                <tr>
+                                    <th>总分</th>
+                                    <td><small style="color: #737373;">点击上方更改</small></td>
+                                    <td>{{get_ticket_total_score('my')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed" v-show="tickets.option == 'match'">
+                            <tbody>
+                                <tr>
+                                    <th>公司得分</th>
+                                    <td>
+                                        <a href="javascript:;" @click="show_ticket_company('match')">{{tickets.match_company.decisiveness}} / {{tickets.match_company.creativity}} / {{tickets.match_company.kindness}} / {{tickets.match_company.activity}}</a>
+                                    </td>
+                                    <td>{{get_ticket_company_score('match')}}</td>
+                                </tr>
+                                <tr v-for="(item, idx) in tickets.match">
+                                    <th rowspan="3" v-if="idx == 0">羁绊得分</th>
+                                    <td v-if="item.card_id > 0"><a href="javascript:;" @click="show_battle(idx, 'match')">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></a></td>
+                                    <td v-else><a href="javascript:;" @click="show_battle(idx, 'match')">未设置</a></td>
+                                    <td>{{item.score || 0}}</td>
+                                </tr>
+                                <tr>
+                                    <th>总分</th>
+                                    <td><small style="color: #737373;">点击上方更改</small></td>
+                                    <td>{{get_ticket_total_score('match')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>实力对比</th>
+                                    <th>决策</th>
+                                    <th>创造</th>
+                                    <th>亲和</th>
+                                    <th>行动</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>自己</th>
+                                    <td>{{get_ticket_prop('decisiveness', 'my')}}</td>
+                                    <td>{{get_ticket_prop('creativity', 'my')}}</td>
+                                    <td>{{get_ticket_prop('kindness', 'my')}}</td>
+                                    <td>{{get_ticket_prop('activity', 'my')}}</td>
+                                </tr>
+                                <tr v-if="get_ticket_empty('match') < 0">
+                                    <th>对手</th>
+                                    <td>{{get_ticket_prop('decisiveness', 'match')}}</td>
+                                    <td>{{get_ticket_prop('creativity', 'match')}}</td>
+                                    <td>{{get_ticket_prop('kindness', 'match')}}</td>
+                                    <td>{{get_ticket_prop('activity', 'match')}}</td>
+                                </tr>
+                                <tr v-else>
+                                    <th>对手</th>
+                                    <td colspan="4"><a href="javascript:;" @click="set_ticket_empty('match')">未设置</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed" v-if="get_ticket_empty('match') < 0">
+                            <thead>
+                                <tr>
+                                    <th>得分对比</th>
+                                    <th>自己</th>
+                                    <th>对手</th>
+                                    <th>分数差</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>决策</th>
+                                    <td>{{get_ticket_prop_score('decisiveness', 'my')}}</td>
+                                    <td>{{get_ticket_prop_score('decisiveness', 'match')}}</td>
+                                    <td :class="{'text-success': get_ticket_prop_score_diff('decisiveness', 'my', 'match') > 0, 'text-danger': get_ticket_prop_score_diff('decisiveness', 'my', 'match') < 0}">{{get_ticket_prop_score_diff('decisiveness', 'my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>创造</th>
+                                    <td>{{get_ticket_prop_score('creativity', 'my')}}</td>
+                                    <td>{{get_ticket_prop_score('creativity', 'match')}}</td>
+                                    <td :class="{'text-success': get_ticket_prop_score_diff('creativity', 'my', 'match') > 0, 'text-danger': get_ticket_prop_score_diff('creativity', 'my', 'match') < 0}">{{get_ticket_prop_score_diff('creativity', 'my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>亲和</th>
+                                    <td>{{get_ticket_prop_score('kindness', 'my')}}</td>
+                                    <td>{{get_ticket_prop_score('kindness', 'match')}}</td>
+                                    <td :class="{'text-success': get_ticket_prop_score_diff('kindness', 'my', 'match') > 0, 'text-danger': get_ticket_prop_score_diff('kindness', 'my', 'match') < 0}">{{get_ticket_prop_score_diff('kindness', 'my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>行动</th>
+                                    <td>{{get_ticket_prop_score('activity', 'my')}}</td>
+                                    <td>{{get_ticket_prop_score('activity', 'match')}}</td>
+                                    <td :class="{'text-success': get_ticket_prop_score_diff('activity', 'my', 'match') > 0, 'text-danger': get_ticket_prop_score_diff('activity', 'my', 'match') < 0}">{{get_ticket_prop_score_diff('activity', 'my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>嘉宾</th>
+                                    <td>{{get_ticket_character_score('my')}}</td>
+                                    <td>{{get_ticket_character_score('match')}}</td>
+                                    <td :class="{'text-success': get_ticket_character_score('my', 'match') > 0, 'text-danger': get_ticket_character_score('my', 'match') < 0}">{{get_ticket_character_score_diff('my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>总分</th>
+                                    <td>{{get_ticket_total_score('my')}}</td>
+                                    <td>{{get_ticket_total_score('match')}}</td>
+                                    <td style="font-weight: bold;" :class="{'text-success': get_ticket_total_score_diff('my', 'match') > 0, 'text-danger': get_ticket_total_score_diff('my', 'match') < 0}">{{get_ticket_total_score_diff('my', 'match')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-group">
+                            <p class="help-block">注：默认双方公司属性相同，结果供参考。如有需要，可根据得分<a href="javascript:;" @click="show_reverse()">推算对手公司属性</a>。</p>
+                        </div>
+                    </div>
+                    <div v-show="!empty(tickets.cards)">
+                        <h4>
+                            <span>羁绊分析</span>
+                            <a href="javascript:;" @click="levels.config = !levels.config">设置</a>
+                        </h4>
+                        <div v-show="levels.config">
+                            <div class="radio">
+                                <span>筛选：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.card" value="my"> 我的羁绊
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.card" value="all"> 所有羁绊
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <span>R：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="hidden"> 隐藏
+                                </label>
+                                <label v-show="levels.card == 'my'">
+                                    <input type="radio" v-model="levels.r" value="remain"> 不改变
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="ordinary"> 进化前
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="evolved"> 进化后
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <span>SR：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="hidden"> 隐藏
+                                </label>
+                                <label v-show="levels.card == 'my'">
+                                    <input type="radio" v-model="levels.sr" value="remain"> 不改变
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="ordinary"> 进化前
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="evolved"> 进化后
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <span>SSR：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="hidden"> 隐藏
+                                </label>
+                                <label v-show="levels.card == 'my'">
+                                    <input type="radio" v-model="levels.ssr" value="remain"> 不改变
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="ordinary"> 进化前
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="evolved"> 进化后
+                                </label>
+                            </div>
+                        </div>
+                        <p class="help-block">点击设置更改羁绊属性，可进行过关分析</p>
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>等级</th>
+                                    <th class="hidden-xs">决策</th>
+                                    <th class="hidden-xs">创造</th>
+                                    <th class="hidden-xs">亲和</th>
+                                    <th class="hidden-xs">行动</th>
+                                    <th>得分</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in tickets.cards">
+                                    <td>{{item.card.name}} <sub>{{get_type_tag(item.card.type)}}</sub></td>
+                                    <td>lv.{{item.card.level}} {{get_star_print(item.card.star)}} {{get_evolved_tag(item.card.evolved)}}</td>
+                                    <td class="hidden-xs">{{item.card.decisiveness}}</td>
+                                    <td class="hidden-xs">{{item.card.creativity}}</td>
+                                    <td class="hidden-xs">{{item.card.kindness}}</td>
+                                    <td class="hidden-xs">{{item.card.activity}}</td>
+                                    <td>{{item.score}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- 票房计算 -->
+
+                <!-- 卡组分析 -->
+                <div class="mycard" v-show="nav == 'double'">
+                    <h4>卡组分析</h4>
+                    <a href="javascript:;" @click="levels.config = !levels.config">设置</a>
+                    <div v-show="levels.config">
+                        <!-- <div class="radio">
+                            <span>筛选：</span>
+                            <label>
+                                <input type="radio" v-model="levels.card" value="my"> 我的羁绊
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.card" value="all"> 所有羁绊
+                            </label>
+                        </div> -->
+                        <div class="input">
+                            权重：
+                            <input type="number" v-model="levels.factor[0]">
+                            <input type="number" v-model="levels.factor[1]">
+                            <input type="number" v-model="levels.factor[2]">
+                            <input type="number" v-model="levels.factor[3]">
+                            <button @click="double_cards()">更新</button>
+                        </div>
+                        <div class="radio">
+                            <span>人物：</span>
+                            <label>
+                                <input type="radio" v-model="levels.category" value="0"> 全部
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.category" value="1"> 李泽言
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.category" value="2"> 许墨
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.category" value="3"> 周棋洛
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.category" value="4"> 白起
+                            </label>
+                        </div>
+                        <div class="radio" v-show="double.option == 'all'">
+                            <span>R：</span>
+                            <label>
+                                <input type="radio" v-model="levels.r" value="hidden"> 隐藏
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.r" value="ordinary"> 进化前
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.r" value="evolved"> 进化后
+                            </label>
+                        </div>
+                        <div class="radio" v-show="double.option == 'all'">
+                            <span>SR：</span>
+                            <label>
+                                <input type="radio" v-model="levels.sr" value="hidden"> 隐藏
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.sr" value="ordinary"> 进化前
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.sr" value="evolved"> 进化后
+                            </label>
+                        </div>
+                        <div class="radio" v-show="double.option == 'all'">
+                            <span>SSR：</span>
+                            <label>
+                                <input type="radio" v-model="levels.ssr" value="hidden"> 隐藏
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.ssr" value="ordinary"> 进化前
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.ssr" value="evolved"> 进化后
+                            </label>
+                        </div>
+                        <div class="checkbox" v-show="double.option == 'all'">
+                            <span>显示：</span>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="value"> 属性值
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="rate"> 属性比
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="decisiveness"> 决策组
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="creativity"> 创造组
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="kindness"> 亲和组
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="activity"> 行动组
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="gain"> 获取
+                            </label>
+                        </div>
+                    </div>
+                    <p class="help-block" v-show="double.option == 'all'">点击设置自定义显示项目；紫色为已获得羁绊。</p>
+
+                    <ul class="nav nav-tabs" style="margin-top: 10px;">
+                        <li role="presentation" :class="{active: double.option == 'all'}"><a href="javascript:;" @click="double.option = 'all'">全部羁绊</a></li>
+                        <li role="presentation" :class="{active: double.option == 'my'}"><a href="javascript:;" @click="double.option = 'my'">我的羁绊</a></li>
+                    </ul>
+                    <table class="table table-bordered table-hover table-score" v-show="double.option == 'all'">
+                        <thead>
+                            <tr>
+                                <th>名称</th>
+
+                                <th v-show="levels.cols.indexOf('value') >= 0" @click="sort_double('decisiveness')">决策 <span v-show="levels.sort == 'decisiveness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('value') >= 0" @click="sort_double('creativity')">创造 <span v-show="levels.sort == 'creativity'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('value') >= 0" @click="sort_double('kindness')">亲和 <span v-show="levels.sort == 'kindness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('value') >= 0" @click="sort_double('activity')">行动 <span v-show="levels.sort == 'activity'">▼</span></th>
+
+                                <th v-show="levels.cols.indexOf('rate') >= 0" @click="sort_double('decisiveness_rate')">决策 <span v-show="levels.sort == 'decisiveness_rate'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('rate') >= 0" @click="sort_double('creativity_rate')">创造 <span v-show="levels.sort == 'creativity_rate'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('rate') >= 0" @click="sort_double('kindness_rate')">亲和 <span v-show="levels.sort == 'kindness_rate'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('rate') >= 0" @click="sort_double('activity_rate')">行动 <span v-show="levels.sort == 'activity_rate'">▼</span></th>
+
+                                <th v-show="levels.cols.indexOf('decisiveness') >= 0" @click="sort_double('decisiveness_creativity')">决策<br>创造 <span v-show="levels.sort == 'decisiveness_creativity'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('decisiveness') >= 0" @click="sort_double('decisiveness_kindness')">决策<br>亲和 <span v-show="levels.sort == 'decisiveness_kindness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('decisiveness') >= 0" @click="sort_double('decisiveness_activity')">决策<br>行动 <span v-show="levels.sort == 'decisiveness_activity'">▼</span></th>
+
+                                <th v-show="levels.cols.indexOf('creativity') >= 0" @click="sort_double('creativity_decisiveness')">创造<br>决策 <span v-show="levels.sort == 'creativity_decisiveness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('creativity') >= 0" @click="sort_double('creativity_kindness')">创造<br>亲和 <span v-show="levels.sort == 'creativity_kindness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('creativity') >= 0" @click="sort_double('creativity_activity')">创造<br>行动 <span v-show="levels.sort == 'creativity_activity'">▼</span></th>
+                                
+                                <th v-show="levels.cols.indexOf('kindness') >= 0" @click="sort_double('kindness_decisiveness')">亲和<br>决策 <span v-show="levels.sort == 'kindness_decisiveness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('kindness') >= 0" @click="sort_double('kindness_creativity')">亲和<br>创造 <span v-show="levels.sort == 'kindness_creativity'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('kindness') >= 0" @click="sort_double('kindness_activity')">亲和<br>行动 <span v-show="levels.sort == 'kindness_activity'">▼</span></th>
+                                
+                                <th v-show="levels.cols.indexOf('activity') >= 0" @click="sort_double('activity_decisiveness')">行动<br>决策 <span v-show="levels.sort == 'activity_decisiveness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('activity') >= 0" @click="sort_double('activity_creativity')">行动<br>创造 <span v-show="levels.sort == 'activity_creativity'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('activity') >= 0" @click="sort_double('activity_kindness')">行动<br>亲和 <span v-show="levels.sort == 'activity_kindness'">▼</span></th>
+
+                                <th v-show="levels.cols.indexOf('gain') >= 0">获取</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in double.cards" :class="{purple: my_cards.indexOf(item.card_id) >= 0}" v-show="levels.category == 0 || levels.category == item.category">
+                                <td style="min-width: 200px;">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></td>
+                                <td v-show="levels.cols.indexOf('value') >= 0">{{item.decisiveness}}</td>
+                                <td v-show="levels.cols.indexOf('value') >= 0">{{item.creativity}}</td>
+                                <td v-show="levels.cols.indexOf('value') >= 0">{{item.kindness}}</td>
+                                <td v-show="levels.cols.indexOf('value') >= 0">{{item.activity}}</td>
+
+                                <td v-show="levels.cols.indexOf('rate') >= 0">{{item.decisiveness_rate}}%</td>
+                                <td v-show="levels.cols.indexOf('rate') >= 0">{{item.creativity_rate}}%</td>
+                                <td v-show="levels.cols.indexOf('rate') >= 0">{{item.kindness_rate}}%</td>
+                                <td v-show="levels.cols.indexOf('rate') >= 0">{{item.activity_rate}}%</td>
+
+                                <td v-show="levels.cols.indexOf('decisiveness') >= 0">{{item.decisiveness_creativity}}</td>
+                                <td v-show="levels.cols.indexOf('decisiveness') >= 0">{{item.decisiveness_kindness}}</td>
+                                <td v-show="levels.cols.indexOf('decisiveness') >= 0">{{item.decisiveness_activity}}</td>
+
+                                <td v-show="levels.cols.indexOf('creativity') >= 0">{{item.creativity_decisiveness}}</td>
+                                <td v-show="levels.cols.indexOf('creativity') >= 0">{{item.creativity_kindness}}</td>
+                                <td v-show="levels.cols.indexOf('creativity') >= 0">{{item.creativity_activity}}</td>
+                                
+                                <td v-show="levels.cols.indexOf('kindness') >= 0">{{item.kindness_decisiveness}}</td>
+                                <td v-show="levels.cols.indexOf('kindness') >= 0">{{item.kindness_creativity}}</td>
+                                <td v-show="levels.cols.indexOf('kindness') >= 0">{{item.kindness_activity}}</td>
+                                
+                                <td v-show="levels.cols.indexOf('activity') >= 0">{{item.activity_decisiveness}}</td>
+                                <td v-show="levels.cols.indexOf('activity') >= 0">{{item.activity_creativity}}</td>
+                                <td v-show="levels.cols.indexOf('activity') >= 0">{{item.activity_kindness}}</td>
+
+                                <td v-show="levels.cols.indexOf('gain') >= 0">{{get_gain_tag(item.gain)}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-bordered table-hover table-score" v-show="double.option == 'my'">
+                        <thead>
+                            <tr>
+                                <th>属性组合</th>
+                                <th>高分卡组</th>
+                                <th>得分</th>
+                                <th @click="sort_double_total()">总分
+                                    <span v-show="double.sort == 1">▼</span>
+                                    <span v-show="double.sort == -1">▲</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template v-for="item in double.my">
+                                <tr v-if="empty(item.top)">
+                                    <th v-html="get_double_tag(item.key)"></th>
+                                    <td>暂无</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr v-for="(card, idx) in item.top">
+                                    <th v-html="get_double_tag(item.key)" :rowspan="item.top.length" v-if="idx == 0"></th>
+                                    <td>{{card.name}} <sub>{{get_type_tag(card.type)}}</sub></td>
+                                    <td>{{card.score}}</td>
+                                    <td :rowspan="item.top.length" v-if="idx == 0">{{item.total}}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+                <!--卡组分析-->
             </div>
-            <!-- SELF INTRODUCE -->
-            <br/>
-            <div id="point2"></div>
-            <div class="mycard" id="section2">
-                <h4>得分计算</h4>
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>关卡类别</th>
-                            <th>关卡名</th>
-                            <th colspan="2">附加要求</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <select id="stage-category">
-                                    <option value ="normal">普通</option>
-                                    <option value ="hard">精英</option>
-                                    <option value="instance">拍摄副本</option>
-                                    <option value="arena">票房争夺战</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select id="stage-name">
-                                </select>
-                            </td>
-                            <td id="div-character">
-                                <select id="stage-character">
-                                </select>
-                            </td>
-                            <!-- <td id="stage-decision"></td>
-                            <td id="stage-creativity"></td>
-                            <td id="stage-appetency"></td>
-                            <td id="stage-action"></td> -->
-                        </tr>
-                    </tbody>
-                </table>
-                <button class="btn btn-default" id="btn-start">一键攻略</button>
-                <br/><br/>
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>关卡掉落</th>
-                            <td id="stage-goods"></td>
-                        </tr>
-                        <tr>
-                            <th>特殊要求</th>
-                            <th>专家推荐</th>
-                        </tr>
-                    </thead>
-                    <tbody id="div-request">
-                    </tbody>
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th colspan="5">推荐羁绊&nbsp;&nbsp;
-                                <select id="num-cards">
-                                    <option value ="-1">显示全部</option>
-                                    <option value ="3">前 3 张</option>
-                                    <option value="5">前 5 张</option>
-                                    <option value="10">前 10 张</option>
-                                </select>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>羁绊名</th>
-                            <th>稀有度</th>
-                            <th>人物</th>
-                            <th>获取途径</th>
-                            <th>得分</th>
-                        </tr>
-                    </thead>
-                    <tbody id="recommendation">
-                    </tbody>
-                </table>
+
+            <!--登录弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="company">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <ul class="nav nav-tabs">
+                                <li role="presentation" :class="{active: login.option == 'create_user'}"><a href="javascript:;" @click="login.option = 'create_user'">创建公司</a></li>
+                                <li role="presentation" :class="{active: login.option == 'user_login'}"><a href="javascript:;" @click="login.option = 'user_login'">进入公司</a></li>
+                            </ul>
+                            <div class="modal-main clearfix">
+                                <div class="col-xs-12 col-sm-6">
+                                    <label class="label-above">公司名称</label>
+                                    <input type="text" class="form-control" v-model="login.name">
+                                </div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <label class="label-above">密码保护 <i class="fa" :class="{'fa-eye': login.eye, 'fa-eye-slash': !login.eye}" aria-hidden="true" @click="login.eye = !login.eye"></i></label>
+                                    <input :type="login.eye ? 'text' : 'password'" class="form-control" v-model="login.code">
+                                </div>
+                                <p class="col-xs-12 help-block">公司名称不能重复，密码保护可为空，设置密码可防止数据被他人修改</p>
+                                <p class="col-xs-12 help-block" v-show="!empty(login.history) && login.option == 'user_login'">
+                                    历史记录：
+                                    <a href="javascript:;" v-for="(item, key) in login.history" @click="login.name=key;login.code=item;">{{key}}</a>
+                                </p>
+                            </div>
+                            <div class="alert alert-warning" role="alert" v-show="login.warning">
+                                {{login.warning}}
+                                <button type="button" class="close" aria-label="Close" @click="login.warning = ''"><span aria-hidden="true">&times;</span></button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button id="user_login" type="button" class="btn btn-primary" data-loading-text="确认中..." autocomplete="off" @click="user_login()">确认</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <br/>
-            <div id="point3"></div>
-            <div class="mycard" id="section3">
-                <h4>我的羁绊信息</h4>
-                <p><a href="javascript:void(0);" onclick="deleteAll()">删除全部</a></p>
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>羁绊名</th>
-                            <th>稀有度 &nbsp;&nbsp;
-                                <select id="mycard-rarity">
-                                    <option value ="all">全部</option>
-                                    <option value ="SSR">SSR</option>
-                                    <option value="SR">SR</option>
-                                    <option value="R">R</option>
-                                </select>
-                            </th>
-                            <th>人物 &nbsp;&nbsp;
-                                <select id="mycard-character">
-                                    <option value ="all">全部</option>
-                                    <option value ="李泽言">李泽言</option>
-                                    <option value="许墨">许墨</option>
-                                    <option value="周棋洛">周棋洛</option>
-                                    <option value="白起">白起</option>
-                                </select>
-                            </th>
-                            <th>四维</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody id="card-table">
-                    </tbody>
-                </table>
+            <!--登录弹窗-->
+
+            <!--羁绊弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="card">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">{{card_select.name}}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group clearfix">
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">进化</label>
+                                    <select class="form-control" v-model="card_select.evolved">
+                                        <option value="0">未进化</option>
+                                        <option value="1">进化</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">星级</label>
+                                    <input type="number" class="form-control" v-model="card_select.star">
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">等级</label>
+                                    <input type="number" class="form-control" v-model="card_select.level">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">决策</label>
+                                    <input type="number" class="form-control" v-model="card_select.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">创造</label>
+                                    <input type="number" class="form-control" v-model="card_select.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">亲和</label>
+                                    <input type="number" class="form-control" v-model="card_select.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">行动</label>
+                                    <input type="number" class="form-control" v-model="card_select.activity">
+                                </div>
+                            </div>
+                            <p class="help-block">数据为自动推算，可能存在误差，如有需要请对照修改</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" id="save_card" class="btn btn-primary" data-loading-text="保存中..." @click="save_card()">保存</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <br/>
-            <div id="point4"></div>
-            <div class="mycard" id="section4">
-                <h4>添加羁绊</h4>
-                <p>(以下属性均为满星满级，未满星满级请移步<a href="#point5">自定义羁绊</a>)</p>
-                <p><a href="javascript:void(0);" onclick="addAll()">添加全部</a></p>
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>羁绊名</th>
-                            <th>稀有度 &nbsp;&nbsp;
-                                <select id="select-rarity">
-                                    <option value ="all">全部</option>
-                                    <option value ="SSR">SSR</option>
-                                    <option value="SR">SR</option>
-                                    <option value="R">R</option>
-                                </select>
-                            </th>
-                            <th>人物 &nbsp;&nbsp;
-                                <select id="select-character">
-                                    <option value ="all">全部</option>
-                                    <option value ="李泽言">李泽言</option>
-                                    <option value="许墨">许墨</option>
-                                    <option value="周棋洛">周棋洛</option>
-                                    <option value="白起">白起</option>
-                                </select>
-                            </th>
-                            <th>获取途径</th>
-                            <th>操作</button>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="bonds-table">
-                    </tbody>
-                </table>
+            <!--羁绊弹窗-->
+
+            <!--关卡羁绊弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="combine">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="pd15">
+                                <label class="label-above">羁绊名</label>
+                                <input type="text" id="combine_typeahead" class="typeahead form-control" data-provide="typeahead" autocomplete="off">
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">进化</label>
+                                    <select class="form-control" v-model="levels.select.evolved">
+                                        <option value="0">未进化</option>
+                                        <option value="1">进化</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">星级</label>
+                                    <input type="number" class="form-control" v-model="levels.select.star">
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">等级</label>
+                                    <input type="number" class="form-control" v-model="levels.select.level">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">决策</label>
+                                    <input type="number" class="form-control" v-model="levels.select.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">创造</label>
+                                    <input type="number" class="form-control" v-model="levels.select.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">亲和</label>
+                                    <input type="number" class="form-control" v-model="levels.select.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">行动</label>
+                                    <input type="number" class="form-control" v-model="levels.select.activity">
+                                </div>
+                            </div>
+                            <p>得分：{{levels.select.score}}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" @click="save_combine()">保存</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <br/>
-            <div id="point5"></div>
-            <div class="mycard" id="section5">
-                <h4>自定义羁绊</h4>
-                <div class="form-inline">
-                    <label for="card-name" class="control-label">羁绊名</label>
-                    <input type="text" class="form-control" id="card-name" name="card-name">
+            <!--关卡羁绊弹窗-->
+
+            <!--关卡公司弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="special">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">决策</label>
+                                    <input type="number" class="form-control" v-model="levels.company.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">创造</label>
+                                    <input type="number" class="form-control" v-model="levels.company.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">亲和</label>
+                                    <input type="number" class="form-control" v-model="levels.company.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">行动</label>
+                                    <input type="number" class="form-control" v-model="levels.company.activity">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">Normal倍数</label>
+                                    <input type="number" class="form-control" v-model="levels.multiple">
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above" style="text-align: center;">公司得分</label>
+                                    <span>{{get_company_score()}}</span>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above" style="text-align: center;">专家得分</label>
+                                    <span>{{get_special_score()}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+                        </div>
+                    </div>
                 </div>
-                <br/>
-                <div class="form-inline">
-                    <label for="card-rarity" class="control-label">稀有度</label>
-                    <select id="card-rarity" name="card-rarity">
-                        <option value ="SSR">SSR</option>
-                        <option value ="SR">SR</option>
-                        <option value="R">R</option>
-                        <option value="NH">NH</option>
-                        <option value="N">N</option>
-                    </select>
-                </div>
-                <br/>
-                <div class="form-inline">
-                    <label for="card-character" class="control-label">人物</label>
-                    <select id="card-character" name="card-character">
-                        <option value ="白起">白起</option>
-                        <option value ="李泽言">李泽言</option>
-                        <option value="许墨">许墨</option>
-                        <option value="周棋洛">周棋洛</option>
-                    </select>
-                </div>
-                <br/>
-                <div class="form-inline">
-                    <label for="card-decision" class="control-label">决策力</label>
-                    <input type="text" class="form-control" id="card-decision" name="card-decision">
-                </div>
-                <br/>
-                <div class="form-inline">
-                    <label for="card-creativity" class="control-label">创造力</label>
-                    <input type="text" class="form-control" id="card-creativity" name="card-creativity">
-                </div>
-                <br/>
-                <div class="form-inline">
-                    <label for="card-appetency" class="control-label">亲和力</label>
-                    <input type="text" class="form-control" id="card-appetency" name="card-appetency">
-                </div>
-                <br/>
-                <div class="form-inline">
-                    <label for="card-action" class="control-label">行动力</label>
-                    <input type="text" class="form-control" id="card-action" name="card-action">
-                </div>
-                <br/>
-                <button class="btn btn-default" onclick="addCard();">添加</button>
-                <br/><br/>
             </div>
-            <br/>
-            <div id="point6"></div>
-            <div class="mycard" id="section6">
-                <h4>批量导出/导入</h4>
-                <div class="form-group">
-                    <textarea id="import-text" class="form-control" rows="8" style="width:90%; margin:0 auto;"></textarea><br/>
-                    <button id="export-button" class='btn btn-default' onclick="exportCard()">导出</button>&nbsp;&nbsp;
-                    <button id="import-button" class='btn btn-primary' onclick="importCard();">导入</button>
+            <!--关卡公司弹窗-->
+
+            <!--票房公司弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="ticket">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">决策</label>
+                                    <input type="number" class="form-control" v-model="tickets.company.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">创造</label>
+                                    <input type="number" class="form-control" v-model="tickets.company.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">亲和</label>
+                                    <input type="number" class="form-control" v-model="tickets.company.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">行动</label>
+                                    <input type="number" class="form-control" v-model="tickets.company.activity">
+                                </div>
+                            </div>
+                            <p>得分：{{get_select_company_score()}}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" @click="save_ticket_company()">确定</button>
+                        </div>
+                    </div>
                 </div>
-                <a href="#">返回顶部</a><br/><br/>
             </div>
-            <br/><br/>
-        </div>
-        <div class="col-md-1">
+            <!--票房公司弹窗-->
+
+            <!--票房羁绊弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="battle">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="pd15">
+                                <label class="label-above">羁绊名</label>
+                                <input type="text" id="battle_typeahead" class="typeahead form-control" data-provide="typeahead" autocomplete="off">
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">进化</label>
+                                    <select class="form-control" v-model="tickets.select.evolved">
+                                        <option value="0">未进化</option>
+                                        <option value="1">进化</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">星级</label>
+                                    <input type="number" class="form-control" v-model="tickets.select.star">
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">等级</label>
+                                    <input type="number" class="form-control" v-model="tickets.select.level">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">决策</label>
+                                    <input type="number" class="form-control" v-model="tickets.select.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">创造</label>
+                                    <input type="number" class="form-control" v-model="tickets.select.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">亲和</label>
+                                    <input type="number" class="form-control" v-model="tickets.select.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">行动</label>
+                                    <input type="number" class="form-control" v-model="tickets.select.activity">
+                                </div>
+                            </div>
+                            <p>得分：{{tickets.select.score}}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" @click="save_battle()">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--票房羁绊弹窗-->
+
+            <!--导入导出弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="batch">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <ul class="nav nav-tabs">
+                                <li role="presentation" :class="{active: batch.option == 'import_data'}"><a href="javascript:;" @click="batch.option = 'import_data'">批量导入</a></li>
+                                <li role="presentation" :class="{active: batch.option == 'export_data'}"><a href="javascript:;" @click="batch.option = 'export_data'">批量导出</a></li>
+                            </ul>
+                            <div class="modal-main">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" v-model="batch.source" value="calculator"> 计算器
+                                    </label>
+                                    <label>
+                                        <input type="radio" v-model="batch.source" value="excel"> Excel
+                                    </label>
+                                    <!-- <label v-show="batch.option == 'import_data'">
+                                        <input type="radio" v-model="batch.source" value="all"> 所有羁绊
+                                    </label> -->
+                                </div>
+                                <textarea class="form-control" v-model="batch.data" v-show="batch.option == 'import_data'" :disabled="batch.source == 'all'"></textarea>
+                                <textarea class="form-control" v-model="batch.export" v-show="batch.option == 'export_data'"></textarea>
+                                <p class="help-block" v-show="batch.option == 'import_data' && batch.source == 'calculator'">贴入计算器导出的JSON数据</p>
+                                <p class="help-block" v-show="batch.option == 'import_data' && batch.source == 'excel'">贴入从表格复制的数据，第一列为羁绊名，后四列为羁绊属性</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer" v-show="batch.option == 'import_data'">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" id="import_data" class="btn btn-primary" data-loading-text="导入中..." @click="import_data()">导入</button>
+                        </div>
+                        <div class="modal-footer" v-show="batch.option == 'export_data'">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" @click="export_data()">导出</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--导入导出弹窗-->
+
+            <!--今日票房弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="today">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-group clearfix">
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">主题</label>
+                                    <select class="form-control" v-model="ticket_select.ticket_id">
+                                        <option :value="item.id" v-for="item in ticket">{{item.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">嘉宾</label>
+                                    <select class="form-control" v-model="ticket_select.category">
+                                        <option value="1">李泽言</option>
+                                        <option value="2">许墨</option>
+                                        <option value="3">周棋洛</option>
+                                        <option value="4">白起</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">星级</label>
+                                    <select class="form-control" v-model="ticket_select.star">
+                                        <option :value="i" v-for="i in [3,4,5]">{{i}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button id="save_today" type="button" class="btn btn-primary" data-loading="设置中..." @click="save_today()">设置</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--今日票房弹窗-->
+
+            <!--票房反推弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="reverse">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <ul class="nav nav-tabs">
+                                <li role="presentation" :class="{active: reverse.option == 'separate'}"><a href="javascript:;" @click="reverse.option = 'separate'">分段数据</a></li>
+                                <li role="presentation" :class="{active: reverse.option == 'addup'}"><a href="javascript:;" @click="reverse.option = 'addup'">累加数据</a></li>
+                            </ul>
+                            <div class="modal-main">
+                                <div v-show="reverse.option == 'separate'">
+                                    <p class="help-block">中间显示的为分段数据</p>
+
+                                    <div class="form-group clearfix">
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <label class="label-above">决策</label>
+                                            <input type="number" class="form-control" v-model="reverse.separate.decisiveness">
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <label class="label-above">创造</label>
+                                            <input type="number" class="form-control" v-model="reverse.separate.creativity">
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <label class="label-above">亲和</label>
+                                            <input type="number" class="form-control" v-model="reverse.separate.kindness">
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <label class="label-above">行动</label>
+                                            <input type="number" class="form-control" v-model="reverse.separate.activity">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-show="reverse.option == 'addup'">
+                                    <p class="help-block">右上角显示的为累加数据</p>
+
+                                    <div class="form-group clearfix">
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <label class="label-above">决策</label>
+                                            <input type="number" class="form-control" v-model="reverse.addup.decisiveness">
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <label class="label-above">创造</label>
+                                            <input type="number" class="form-control" v-model="reverse.addup.creativity">
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <label class="label-above">亲和</label>
+                                            <input type="number" class="form-control" v-model="reverse.addup.kindness">
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <label class="label-above">行动</label>
+                                            <input type="number" class="form-control" v-model="reverse.addup.activity">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-3 col-md-2">
+                                        <a href="javascript:;" class="btn btn-default" @click="reset_reverse()">重置</a>
+                                    </div>
+                                </div>
+                                <p v-show="has_reverse_scores()">公司属性：{{reverse.scores.decisiveness}} / {{reverse.scores.creativity}} / {{reverse.scores.kindness}} / {{reverse.scores.activity}}</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" :disabled="!has_reverse_scores()" @click="add_to_table()">添加到表格</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--票房反推弹窗-->
         </div>
     </div>
-    </div>
-
-    <!-- PLUGIN SCRIPTS -->
-    <script type='text/javascript' charset="UTF-8" src='js/main.js'></script>
-    <!-- END PLUGIN SCRIPTS -->
-
+    <script type="text/javascript" src="js/vm.js"></script>
 </body>
+
 </html>
