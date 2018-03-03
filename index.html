@@ -59,7 +59,7 @@
                 <div class="mycard">
                     <h3>恋与制作人计算器v2.0</h3>
                     <p>
-                        若v2版出现兼容性问题，请使用 <a href="https://evolcalculator.github.io/index-v1.html">v1版本</a>
+                        <a href="https://evolcalculator.github.io/index-v1.html">v1版本</a>
                         <br>
                         <h4>使用说明</h4>
                         首次使用请先<a href="javascript:;" @click="nav = 'card'">添加羁绊</a>，支持<a href="javascript:;" @click="show_batch('import_data')">导入/导出</a>和<a href="javascript:;" @click="show_login('create_user')">在线保存</a>。
@@ -1439,10 +1439,10 @@
         </div>
     </div>
     <p id="tips">加载中...</p>
-    <script type="text/javascript" src="js/vm.js"></script>
+    <script type="text/javascript" src="js/vm?v=2.0.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://app.coderprepares.com/calculator/">使用1.0版本</a>');
+            $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
         });
     </script>
 </body>
