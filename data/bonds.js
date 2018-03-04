@@ -1612,11 +1612,31 @@ var bonds = [
     {
         "name": "\u7ea2\u5305", 
         "character": "\u674e\u6cfd\u8a00", 
-        "decision": "0", 
-        "creativity": "0", 
-        "appetency": "0", 
+        "decision": "1384", 
+        "creativity": "40", 
+        "appetency": "1519", 
         "rarity": "R", 
         "way": "2018.2\u6708\u7b7e\u5230", 
-        "action": "0"
+        "action": "1216"
+    }, 
+    {
+        "name": "\u6e29\u67d4\u706f\u706b", 
+        "character": "\u674e\u6cfd\u8a00", 
+        "decision": "63", 
+        "creativity": "2892", 
+        "appetency": "1125", 
+        "rarity": "SR", 
+        "way": "2018\u5143\u5bb5\u8282\u9650\u5b9a", 
+        "action": "2491"
+    }, 
+    {
+        "name": "\u65b0\u5e74\u5927\u5409", 
+        "character": "\u5468\u68cb\u6d1b", 
+        "decision": "43", 
+        "creativity": "1171", 
+        "appetency": "1648", 
+        "rarity": "R", 
+        "way": "2018\u65b0\u5e74\u5151\u6362\u7801", 
+        "action": "1299"
     }
-];
+]
