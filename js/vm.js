@@ -239,7 +239,7 @@ var vm = new Vue({
     },
     watch: {
         //数据本地存储
-        multiple: function(newVal, oldVal){
+        'levels.multiple': function(newVal, oldVal){
             $.LS.set('multiple', newVal);
         },
         list: function(newVal, oldVal){
