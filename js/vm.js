@@ -73,7 +73,7 @@ var vm = new Vue({
             level: {},
             list: [],
             overflow: false,
-            multiple: 2,
+            multiple: $.LS.get('multiple') || 2,
             cards: [],
             combine: [],
             card: 'my',
@@ -239,6 +239,9 @@ var vm = new Vue({
     },
     watch: {
         //数据本地存储
+        multiple: function(newVal, oldVal){
+            $.LS.set('multiple', newVal);
+        },
         list: function(newVal, oldVal){
             $.LS.set('list', JSON.stringify(newVal));
 
@@ -1355,7 +1358,7 @@ var vm = new Vue({
         get_levels: function() {
             var self = this;
             self.levels.overflow = false;
-            self.levels.multiple = 2;
+            // self.levels.multiple = 2;
             self.levels.level = {};
             self.levels.cards = [];
 
