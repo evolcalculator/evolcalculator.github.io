@@ -357,12 +357,13 @@
                                 </tr>
                                 <tr v-for="(item, idx) in levels.combine">
                                     <th rowspan="3" v-if="idx == 0">羁绊得分</th>
-                                    <td>
+                                    <td v-if="item.card_id > 0">
                                         <a href="javascript:;" @click="show_combine(idx)">
                                             {{item.name}} <sub>{{get_type_tag(item.type)}}</sub>
                                             <!-- <sub class="hidden-xs">（lv.{{item.level}} {{get_star_print(item.star)}} {{get_evolved_tag(item.evolved)}})</sub> -->
                                         </a>
                                     </td>
+                                    <td v-else><a href="javascript:;" @click="show_combine(idx)">未设置</a></td>
                                     <td>{{item.score}}</td>
                                 </tr>
                                 <tr>
@@ -1438,7 +1439,7 @@
         </div>
     </div>
     <p id="tips">加载中...</p>
-    <script type="text/javascript" src="js/vm.js?v=2.0.1"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.0.2"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
