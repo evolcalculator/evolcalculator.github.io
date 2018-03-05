@@ -100,7 +100,7 @@ var vm = new Vue({
                 decisiveness: 0,
                 creativity: 0,
                 kindness: 0,
-                creativity: 0,
+                activity: 0,
                 idx: 0,
                 score: 0,
                 total: 0,
@@ -194,7 +194,7 @@ var vm = new Vue({
                 decisiveness: 0,
                 creativity: 0,
                 kindness: 0,
-                creativity: 0,
+                activity: 0,
                 idx: 0,
                 score: 0,
                 total: 0,
@@ -348,6 +348,22 @@ var vm = new Vue({
                     }
                 }
             }
+
+            this.card_select.evolved = this.card_select.type < 3 ? 0 : this.card_select.evolved;
+            var max_star = this.card_select.evolved == 0 ? this.card_select.type : this.card_select.type + 1;
+            var max_level = this.card_select.evolved == 0 ? (max_star - 1) * 10 : max_star * 10;
+            if(this.card_select.type < 3){
+                max_star = 1;
+                max_level = this.card_select.type == 2 ? 10 : 5;
+            }
+
+            if(this.card_select.star > max_star){
+                this.card_select.star = max_star;
+            }
+            if(this.card_select.level > max_level){
+                this.card_select.level = max_level;
+            }
+            
             this.update_card_select();
         },
         'card_select.evolved': function(newVal, oldVal) {
@@ -370,6 +386,21 @@ var vm = new Vue({
                 this.levels.select.name = card.name;
                 this.levels.select.type = card.type;
                 this.levels.select.category = card.category;
+
+                this.levels.select.evolved = this.levels.select.type < 3 ? 0 : this.levels.select.evolved;
+                var max_star = this.levels.select.evolved == 0 ? this.levels.select.type : this.levels.select.type + 1;
+                var max_level = this.levels.select.evolved == 0 ? (max_star - 1) * 10 : max_star * 10;
+                if(this.levels.select.type < 3){
+                    max_star = 1;
+                    max_level = this.levels.select.type == 2 ? 10 : 5;
+                }
+
+                if(this.levels.select.star > max_star){
+                    this.levels.select.star = max_star;
+                }
+                if(this.levels.select.level > max_level){
+                    this.levels.select.level = max_level;
+                }
             }
             
             // if (this.my_cards.indexOf(card_id) >= 0) {
@@ -407,6 +438,21 @@ var vm = new Vue({
                 this.tickets.select.name = card.name;
                 this.tickets.select.type = card.type;
                 this.tickets.select.category = card.category;
+
+                this.tickets.select.evolved = this.tickets.select.type < 3 ? 0 : this.tickets.select.evolved;
+                var max_star = this.tickets.select.evolved == 0 ? this.tickets.select.type : this.tickets.select.type + 1;
+                var max_level = this.tickets.select.evolved == 0 ? (max_star - 1) * 10 : max_star * 10;
+                if(this.tickets.select.type < 3){
+                    max_star = 1;
+                    max_level = this.tickets.select.type == 2 ? 10 : 5;
+                }
+
+                if(this.tickets.select.star > max_star){
+                    this.tickets.select.star = max_star;
+                }
+                if(this.tickets.select.level > max_level){
+                    this.tickets.select.level = max_level;
+                }
             }
             // if (this.my_cards.indexOf(card_id) >= 0) {
             //     for (var i = 0; i < this.list.length; i++) {
@@ -1247,18 +1293,21 @@ var vm = new Vue({
         show_combine: function(idx) {
             this.levels.select.idx = idx;
             var card = this.levels.combine[idx];
-            this.levels.select.card_id = card.card_id;
-            // this.levels.select.type = card.type;
-            // this.levels.select.category = card.category;
-            this.levels.select.evolved = card.evolved;
-            this.levels.select.star = card.star;
-            this.levels.select.level = card.level;
-            this.levels.select.decisiveness = card.decisiveness;
-            this.levels.select.creativity = card.creativity;
-            this.levels.select.kindness = card.kindness;
-            this.levels.select.activity = card.activity;
-            // this.levels.select.name = card.name;
-            $('#combine_typeahead').val(card.name);
+
+            if(card.card_id > 0){
+                this.levels.select.card_id = card.card_id;
+                // this.levels.select.type = card.type;
+                // this.levels.select.category = card.category;
+                this.levels.select.evolved = card.evolved;
+                this.levels.select.star = card.star;
+                this.levels.select.level = card.level;
+                this.levels.select.decisiveness = card.decisiveness;
+                this.levels.select.creativity = card.creativity;
+                this.levels.select.kindness = card.kindness;
+                this.levels.select.activity = card.activity;
+                // this.levels.select.name = card.name;
+                $('#combine_typeahead').val(card.name);
+            }
 
             $('#combine').modal();
         },
@@ -1410,8 +1459,12 @@ var vm = new Vue({
                             item.combine = [];
                             var total = 0;
                             for (var j = 0; j < 3; j++) {
-                                item.combine.push(my_cards[j].name);
-                                total += my_cards[j].score;
+                                if(my_cards.length > j){
+                                    item.combine.push(my_cards[j].name);
+                                    total += my_cards[j].score;
+                                } else {
+                                    item.combine.push('未设置');
+                                }
                             }
 
                             var prop = self.prop;
@@ -1591,14 +1644,32 @@ var vm = new Vue({
             //高分羁绊
             var combine = [];
             for (var i = 0; i < 3; i++) {
-                var score = my_cards[i].score;
-                var my_card = my_cards[i].card;
-                var card = {};
-                for (key in my_card) {
-                    card[key] = my_card[key];
+                if(my_cards.length > i){
+                    var score = my_cards[i].score;
+                    var my_card = my_cards[i].card;
+                    var card = {};
+                    for (key in my_card) {
+                        card[key] = my_card[key];
+                    }
+                    card.score = score;
+                    combine.push(card);
+                } else {
+                    combine.push({
+                        card_id: 0,
+                        evolved: 0,
+                        star: 1,
+                        level: 1,
+                        decisiveness: 0,
+                        creativity: 0,
+                        kindness: 0,
+                        activity: 0,
+                        name: '',
+                        type: 0,
+                        category: 0,
+                        total: 0,
+                        score: 0
+                    });
                 }
-                card.score = score;
-                combine.push(card);
             }
             self.levels.combine = combine;
         },
