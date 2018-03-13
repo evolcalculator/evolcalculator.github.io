@@ -351,7 +351,7 @@ var vm = new Vue({
 
             this.card_select.evolved = this.card_select.type < 3 ? 0 : this.card_select.evolved;
             var max_star = this.card_select.evolved == 0 ? this.card_select.type : this.card_select.type + 1;
-            var max_level = this.card_select.evolved == 0 ? (max_star - 1) * 10 : max_star * 10;
+            var max_level = this.card_select.evolved == 0 ? (this.card_select.type - 1) * 10 : this.card_select.type * 10;
             if(this.card_select.type < 3){
                 max_star = 1;
                 max_level = this.card_select.type == 2 ? 10 : 5;
@@ -389,7 +389,7 @@ var vm = new Vue({
 
                 this.levels.select.evolved = this.levels.select.type < 3 ? 0 : this.levels.select.evolved;
                 var max_star = this.levels.select.evolved == 0 ? this.levels.select.type : this.levels.select.type + 1;
-                var max_level = this.levels.select.evolved == 0 ? (max_star - 1) * 10 : max_star * 10;
+                var max_level = this.levels.select.evolved == 0 ? (this.levels.select.type - 1) * 10 : this.levels.select.type * 10;
                 if(this.levels.select.type < 3){
                     max_star = 1;
                     max_level = this.levels.select.type == 2 ? 10 : 5;
@@ -441,7 +441,7 @@ var vm = new Vue({
 
                 this.tickets.select.evolved = this.tickets.select.type < 3 ? 0 : this.tickets.select.evolved;
                 var max_star = this.tickets.select.evolved == 0 ? this.tickets.select.type : this.tickets.select.type + 1;
-                var max_level = this.tickets.select.evolved == 0 ? (max_star - 1) * 10 : max_star * 10;
+                var max_level = this.tickets.select.evolved == 0 ? (this.tickets.select.type - 1) * 10 : this.tickets.select.type * 10;
                 if(this.tickets.select.type < 3){
                     max_star = 1;
                     max_level = this.tickets.select.type == 2 ? 10 : 5;
