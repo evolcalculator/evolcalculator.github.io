@@ -1022,8 +1022,9 @@ var vm = new Vue({
         get_challenge_total_score: function(option){
             var score = 0;
             var prop = this.prop;
-            score += this.get_challenge_company_score(option);
+
             score += this.get_challenge_bonus_score(option);
+
             for(var i = 0; i < this.prop.length; i++){
                 score += this.get_challenge_prop_score(prop[i], option);
             }
