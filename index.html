@@ -813,7 +813,7 @@
                             </select>
                         </div>
                         <div class="col-xs-4 col-sm-2 col-md-1">
-                            <button id="get_levels" type="button" data-loading-text="加载中..." class="btn btn-primary form-control" autocomplete="off" @click="get_challenges()">计算</button>
+                            <button id="get_levels" type="button" data-loading-text="加载中..." class="btn btn-primary form-control" autocomplete="off" @click="get_challenges()">过关分析</button>
                         </div>
                     </div>
                     <div v-show="!empty(challenges.challenge)">
@@ -834,7 +834,37 @@
                         <ul class="nav nav-tabs">
                             <li role="presentation" :class="{active: challenges.option == 'my'}"><a href="javascript:;" @click="challenges.option = 'my'">我的阵容</a></li>
                             <li role="presentation" :class="{active: challenges.option == 'match'}"><a href="javascript:;" @click="challenges.option = 'match'">对手阵容</a></li>
+                            <li role="presentation" :class="{active: challenges.option == 'record'}" v-show="challenges.record.length > 0 || challenges.ready"><a href="javascript:;" @click="challenges.option = 'record'">损耗记录</a></li>
                         </ul>
+                        <table class="table table-bordered table-hover table-condensed" v-show="challenges.option == 'record'">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>羁绊</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-show="challenges.ready" class="purple">
+                                    <td>当前</td>
+                                    <td>
+                                        <template v-for="item in challenges.my_damaged">
+                                            <small v-show="item.card_id > 0">{{item.name}}（{{get_damage_rate(item)}}）</small><br v-if="item.card_id > 0">
+                                        </template>
+                                    </td>
+                                    <td><a href="javascript:;" @click="challenge_record()">记录损耗</a></td>
+                                </tr>
+                                <tr v-for="(record,idx) in challenges.record">
+                                    <td>{{record.idx}}</td>
+                                    <td>
+                                        <template v-for="item in record.my_damaged">
+                                            <small v-show="item.card_id > 0">{{item.name}}（{{get_damage_rate(item)}}）</small><br v-if="item.card_id > 0">
+                                        </template>
+                                    </td>
+                                    <td><a href="javascript:;" @click="challenge_record_retract()" v-if="idx == 0">撤回损耗</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <table class="table table-bordered table-hover table-condensed" v-show="challenges.option == 'my'">
                             <tbody>
                                 <tr>
@@ -847,9 +877,9 @@
                                 <tr v-for="(item, idx) in challenges.my">
                                     <th rowspan="3" v-if="idx == 0">羁绊得分</th>
                                     <td v-if="item.card_id > 0">
-                                        <a href="javascript:;" @click="show_challenge_card(idx, 'my')">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></a>
+                                        <a href="javascript:;" @click="show_challenge_card_select(idx, 'my')">{{item.name}}（{{get_damage_rate(item)}}）</a>
                                     </td>
-                                    <td v-else><a href="javascript:;" @click="show_challenge_card(idx, 'my')">未设置</a></td>
+                                    <td v-else><a href="javascript:;" @click="show_challenge_card_select(idx, 'my')">未设置</a></td>
                                     <td>{{item.score || 0}}</td>
                                 </tr>
                                 <tr>
@@ -863,7 +893,7 @@
                                 </tr>
                                 <tr>
                                     <th>总分</th>
-                                    <td><a href="javascript:;" @click="clear_challenge_card('my')">清空</a></td>
+                                    <td><a href="javascript:;" @click="clear_challenge_card('my')">清空上阵羁绊</a></td>
                                     <td>{{get_challenge_total_score('my')}}</td>
                                 </tr>
                             </tbody>
@@ -880,7 +910,7 @@
                                 <tr v-for="(item, idx) in challenges.match">
                                     <th rowspan="3" v-if="idx == 0">羁绊得分</th>
                                     <td v-if="item.card_id > 0">
-                                        <a href="javascript:;" @click="show_challenge_card(idx, 'match')">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></a>
+                                        <a href="javascript:;" @click="show_challenge_card(idx, 'match')">{{item.name}}（{{get_damage_rate(item)}}）</a>
                                     </td>
                                     <td v-else><a href="javascript:;" @click="show_challenge_card(idx, 'match')">未设置</a></td>
                                     <td>{{item.score || 0}}</td>
@@ -896,7 +926,7 @@
                                 </tr>
                                 <tr>
                                     <th>总分</th>
-                                    <td><a href="javascript:;" @click="clear_challenge_card('match')">清空</a></td>
+                                    <td><a href="javascript:;" @click="clear_challenge_card('match')">清空上阵羁绊</a></td>
                                     <td>{{get_challenge_total_score('match')}}</td>
                                 </tr>
                             </tbody>
@@ -1018,31 +1048,34 @@
                             </tbody>
                         </table>
                     </div>
-                    <div v-show="!empty(challenges.cards)">
+                    <div v-show="!empty(challenges.challenge)">
                         <h4>
-                            <span>羁绊分析</span>
-                            <!-- <a href="javascript:;">重置</a> -->
+                            <span>我的羁绊</span>
+                            <small v-show="challenges.record.length > 0"><a href="javascript:;" @click="challenge_reset()">重置损耗</a></small>
                         </h4>
-                        <table class="table table-bordered table-hover">
+                        <p v-show="challenges.cards.length < 30"><a href="javascript:;" @click="nav = 'card'">添加更多羁绊</a></p>
+                        <table class="table table-bordered table-hover" v-show="!empty(challenges.cards)">
                             <thead>
                                 <tr>
                                     <th>名称</th>
-                                    <th>等级</th>
+                                    <th class="hidden-xs">等级</th>
                                     <th class="hidden-xs">决策</th>
                                     <th class="hidden-xs">创造</th>
                                     <th class="hidden-xs">亲和</th>
                                     <th class="hidden-xs">行动</th>
+                                    <th>受损</th>
                                     <th>得分</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="item in challenges.cards">
                                     <td>{{item.card.name}} <sub>{{get_type_tag(item.card.type)}}</sub></td>
-                                    <td>lv.{{item.card.level}} {{get_star_print(item.card.star)}} {{get_evolved_tag(item.card.evolved)}}</td>
+                                    <td class="hidden-xs">lv.{{item.card.level}} {{get_star_print(item.card.star)}} {{get_evolved_tag(item.card.evolved)}}</td>
                                     <td class="hidden-xs">{{item.card.decisiveness}}</td>
                                     <td class="hidden-xs">{{item.card.creativity}}</td>
                                     <td class="hidden-xs">{{item.card.kindness}}</td>
                                     <td class="hidden-xs">{{item.card.activity}}</td>
+                                    <td>{{get_damage_rate(item.card)}}</td>
                                     <td>{{item.score}}</td>
                                 </tr>
                             </tbody>
@@ -1492,13 +1525,56 @@
                             <p class="help-block">公司数据未知，可根据总实力平均分配</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                             <button type="button" class="btn btn-primary" @click="save_challenge_company()">确定</button>
                         </div>
                     </div>
                 </div>
             </div>
             <!--24小时公司弹窗-->
+
+            <!--24小时羁绊选择-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="field">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span>选择上阵羁绊</span>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>名称</th>
+                                        <th class="hidden-xs">受损</th>
+                                        <!-- <th class="hidden-xs">决策</th>
+                                        <th class="hidden-xs">创造</th>
+                                        <th class="hidden-xs">亲和</th>
+                                        <th class="hidden-xs">行动</th> -->
+                                        <th>得分</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="item in challenges.cards">
+                                        <td>{{item.card.name}} <sub>{{get_type_tag(item.card.type)}}</sub></td>
+                                        <td class="hidden-xs">{{get_damage_rate(item.card)}}</td>
+                                        <!-- <td class="hidden-xs">{{item.card.decisiveness}}</td>
+                                        <td class="hidden-xs">{{item.card.creativity}}</td>
+                                        <td class="hidden-xs">{{item.card.kindness}}</td>
+                                        <td class="hidden-xs">{{item.card.activity}}</td> -->
+                                        <td>{{item.score}}</td>
+                                        <td><a href="javascript:;" @click="select_challenge_card(item)" v-if="item.score > 0">上阵</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--24小时羁绊选择-->
 
             <!--24小时羁绊弹窗-->
             <div class="modal fade" tabindex="-1" role="dialog" id="24hour">
@@ -1544,7 +1620,7 @@
                                     <input type="number" class="form-control" v-model="challenges.select.activity">
                                 </div>
                             </div>
-                            <p class="help-block"><a href="javascript:;" @click="challenges.select.show_head = !challenges.select.show_head">显示头像</a></p>
+                            <p class="help-block"><a href="javascript:;" @click="challenges.select.show_head = !challenges.select.show_head">显示头像▼</a></p>
                             <div v-show="challenges.select.show_head">
                                 <div class="form-group clearfix">
                                     <div class="col-xs-4 col-md-3 col-lg-2">
@@ -1833,7 +1909,7 @@
         </div>
     </div>
     <p id="tips">加载中...</p>
-    <script type="text/javascript" src="js/vm.js?v=2.1.3"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.2.0"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
