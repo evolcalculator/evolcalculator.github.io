@@ -244,7 +244,57 @@ var vm = new Vue({
             match_bonus: 0,
             combine: [],
             challenge: {},
-            my: [],
+            record: $.LS.get('challenges.record') ? JSON.parse($.LS.get('challenges.record')) : [],
+            my_damaged: [],
+            match_damaged: [],
+            ready: false,
+            my: [
+                {
+                    card_id: 0,
+                    evolved: 0,
+                    star: 1,
+                    level: 1,
+                    decisiveness: 0,
+                    creativity: 0,
+                    kindness: 0,
+                    activity: 0,
+                    name: '',
+                    type: 0,
+                    category: 0,
+                    total: 0,
+                    score: 0
+                },
+                {
+                    card_id: 0,
+                    evolved: 0,
+                    star: 1,
+                    level: 1,
+                    decisiveness: 0,
+                    creativity: 0,
+                    kindness: 0,
+                    activity: 0,
+                    name: '',
+                    type: 0,
+                    category: 0,
+                    total: 0,
+                    score: 0
+                },
+                {
+                    card_id: 0,
+                    evolved: 0,
+                    star: 1,
+                    level: 1,
+                    decisiveness: 0,
+                    creativity: 0,
+                    kindness: 0,
+                    activity: 0,
+                    name: '',
+                    type: 0,
+                    category: 0,
+                    total: 0,
+                    score: 0
+                }
+            ],
             match: [
                 {
                     card_id: 0,
@@ -333,7 +383,8 @@ var vm = new Vue({
                 rare: 5,
                 color: 1,
                 show_head: false
-            }
+            },
+            cards: $.LS.get('challenges.cards') ? JSON.parse($.LS.get('challenges.cards')) : []
         },
         challenge_select: {
             library: 1,
@@ -342,6 +393,12 @@ var vm = new Vue({
     },
     watch: {
         //数据本地存储
+        'challenges.cards': function(newVal, oldVal){
+            $.LS.set('challenges.cards', JSON.stringify(newVal));
+        },
+        'challenges.record': function(newVal, oldVal){
+            $.LS.set('challenges.record', JSON.stringify(newVal));
+        },
         'levels.multiple': function(newVal, oldVal){
             $.LS.set('multiple', newVal);
         },
@@ -701,7 +758,7 @@ var vm = new Vue({
         get_challenges: function(){
             for (key in this.company) {
                 this.challenges.my_company[key] = this.company[key];
-                this.challenges.match_company[key] = this.company[key];
+                // this.challenges.match_company[key] = this.company[key];
             }
             this.challenge_cards();
         },
@@ -732,13 +789,22 @@ var vm = new Vue({
             var factor = self.get_challenge_factor(self.challenge_select);
             self.challenges.challenge = factor;
 
+            var cards = self.challenges.cards;
+            var card_ids = [];
+
+            for(var i = 0; i < cards.length; i++){
+                var card = cards[i].card;
+                list.push(card);
+                card_ids.push(card.card_id);
+            }
+
             for (id in self.cards) {
                 id = parseInt(id, 10);
                 var idx = self.my_cards.indexOf(id);
-                if (idx < 0 || self.list[idx].level < 20) {
+                if (idx < 0 || self.list[idx].level < 20 || card_ids.indexOf(id) >= 0) {
                     continue;
                 }
-                list.push(self.list[idx]);
+                list.push(self.copy(self.list[idx]));
             }
 
             for (var i = 0; i < list.length; i++) {
@@ -752,7 +818,7 @@ var vm = new Vue({
                 }
 
                 my_cards.push({
-                    card: self.copy(card),
+                    card: card,
                     score: Math.round(score)
                 });
             }
@@ -761,38 +827,154 @@ var vm = new Vue({
             });
 
             self.challenges.cards = my_cards;
+        },
+        challenge_get_damaged: function(option1, option2){
+            var prop = this.prop;
 
-            //高分羁绊
-            var combine = [];
-            for (var i = 0; i < 3; i++) {
-                if(i < my_cards.length){
-                    var score = my_cards[i].score;
-                    var my_card = my_cards[i].card;
-                    var card = {};
-                    for (key in my_card) {
-                        card[key] = my_card[key];
-                    }
-                    card.score = score;
-                } else {
-                    var card = {
-                        card_id: 0,
-                        evolved: 0,
-                        star: 1,
-                        level: 1,
-                        decisiveness: 0,
-                        creativity: 0,
-                        kindness: 0,
-                        activity: 0,
-                        name: '',
-                        type: 0,
-                        category: 0,
-                        total: 0,
-                        score: 0
-                    };
-                }
-                combine.push(card);
+            var list = [];
+            var cards = this.challenges[option1];
+            for(var i = 0; i < cards.length; i++){
+                list.push(this.copy(cards[i]));
             }
-            self.challenges.my = combine;
+
+            for(var i = 0; i < prop.length; i++){
+                var damage = this.get_challenge_card_loss(prop[i], option1, option2);
+                for(var k = 0; k < list.length; k++){
+                    if(list[k].card_id > 0 && damage > 0){
+                        var p = list[k][prop[i]];
+                        if(p >= damage){
+                            list[k][prop[i]] = p - damage;
+                            damage = 0;
+                        } else {
+                            list[k][prop[i]] = 0;
+                            damage -= p;
+                        }
+                    }
+                }
+            }
+
+            for(var i = 0; i < list.length; i++){
+                list[i].score = this.get_challenge_score(list[i]);
+            }
+
+            return list;
+        },
+        get_damage_rate: function(card){
+            var total = 0;
+            var prop = this.prop;
+            for(var i = 0; i < prop.length; i++){
+                total += card[prop[i]];
+            }
+            return Math.ceil((card.total - total) / card.total * 100) + '%';
+        },
+        challenge_reset: function(){
+            this.clear_challenge_card('my');
+            this.clear_challenge_card('match');
+            this.challenges.record = [];
+            this.challenges.cards = [];
+            this.get_challenges();
+        },
+        challenge_record: function(){
+            var list_my = [];
+            var list_match = [];
+            for(var i = 0; i < this.challenges.my.length; i++){
+                list_my.push(this.copy(this.challenges.my[i]));
+            }
+            for(var i = 0; i < this.challenges.match.length; i++){
+                list_match.push(this.copy(this.challenges.match[i]));
+            }
+
+            var record = {
+                idx: this.challenges.record.length + 1,
+                my: list_my,
+                match: list_match,
+                my_damaged: this.challenge_get_damaged('my','match'),
+                match_damaged: this.challenge_get_damaged('match','my')
+            };
+            this.challenges.record.push(record);
+            this.challenges.record.sort(function(a,b){
+                return b.idx - a.idx;
+            });
+
+            var list = this.challenge_get_damaged('match','my');
+            this.clear_challenge_card('match');
+            this.challenges.match = list;
+
+            var prop = this.prop;
+            for(var k = 0; k < record.my_damaged.length; k++){
+                var my_card = record.my_damaged[k];
+                for(var i = 0; i < this.challenges.cards.length; i++){
+                    var card = this.challenges.cards[i].card;
+                    if(card.card_id == my_card.card_id){
+                        for(var j = 0; j < prop.length; j++){
+                            card[prop[j]] = my_card[prop[j]];
+                        }
+                        break;
+                    }
+                }
+            }
+            this.clear_challenge_card('my');
+            this.get_challenges();
+        },
+        challenge_record_retract: function(){
+            var record = this.challenges.record.splice(0, 1);
+            var list = [];
+            for(var i = 0; i < record[0].match.length; i++){
+                list.push(this.copy(record[0].match[i]));
+            }
+            this.clear_challenge_card('match');
+            // this.challenges.match = list;
+
+            // this.challenges.option = 'match';
+
+            var prop = this.prop;
+            for(var k = 0; k < record[0].my.length; k++){
+                var my_card = record[0].my[k];
+                for(var i = 0; i < this.challenges.cards.length; i++){
+                    var card = this.challenges.cards[i].card;
+                    if(card.card_id == my_card.card_id){
+                        for(var j = 0; j < prop.length; j++){
+                            card[prop[j]] = my_card[prop[j]];
+                        }
+                        break;
+                    }
+                }
+            }
+            this.clear_challenge_card('my');
+            this.get_challenges();
+
+            this.challenges.option = 'my';
+        },
+        challenge_ready: function(){
+            var my_ready = false;
+            var match_ready = false;
+
+            for(var i = 0; i < this.challenges.my.length; i++){
+                if(this.challenges.my[i].card_id > 0){
+                    my_ready = true;
+                    break;
+                }
+            }
+
+            for(var i = 0; i < this.challenges.match.length; i++){
+                if(this.challenges.match[i].card_id > 0){
+                    match_ready = true;
+                    break;
+                }
+            }
+
+            console.log(my_ready, match_ready);
+
+            var ret = my_ready && match_ready;
+
+            if(ret){
+                this.challenges.my_damaged = this.challenge_get_damaged('my','match');
+                this.challenges.match_damaged = this.challenge_get_damaged('match','my');
+            }
+
+            this.challenges.ready = ret;
+
+            return ret;
         },
         clear_challenge_card: function(option){
             var list = [];
@@ -814,6 +996,8 @@ var vm = new Vue({
                 };
             }
             this.challenges[option] = list;
+
+            this.challenge_ready();
         },
         show_challenge_card: function(idx, option) {
             this.challenges.select.idx = idx;
@@ -849,6 +1033,34 @@ var vm = new Vue({
 
             $('#24hour').modal();
         },
+        show_challenge_card_select: function(idx, option){
+            this.challenges.select.idx = idx;
+            this.challenges.select.option = option;
+
+            $('#field').modal();
+        },
+        select_challenge_card: function(select){
+            var option = this.challenges.select.option;
+            var card = this.challenges[option][this.challenges.select.idx];
+
+            card.card_id = select.card.card_id;
+            card.evolved = select.card.evolved;
+            card.star = select.card.star;
+            card.level = select.card.level;
+            card.decisiveness = parseInt(select.card.decisiveness, 10);
+            card.creativity = parseInt(select.card.creativity, 10);
+            card.kindness = parseInt(select.card.kindness, 10);
+            card.activity = parseInt(select.card.activity, 10);
+            card.name = select.card.name;
+            card.type = select.card.type;
+            card.category = select.card.category;
+            card.total = select.card.total;
+            card.score = this.get_challenge_score(card);
+
+            this.challenge_ready();
+
+            $('#field').modal('hide');
+        },
         use_challenge_card: function(card_id){
             var card = this.cards[card_id];
             $('#challenge_typeahead').val(card.name);
@@ -872,9 +1084,23 @@ var vm = new Vue({
             card.type = select.type;
             card.category = select.category;
             card.total = select.total;
-            card.score = select.score;
+            card.score = this.get_challenge_score(card);
+
+            this.challenge_ready();
 
             $('#24hour').modal('hide');
+        },
+        get_challenge_score: function(card){
+            var prop = this.prop;
+            var score = 0;
+
+            var factor = this.challenges.challenge;
+
+            for (var i = 0; i < prop.length; i++) {
+                score += card[prop[i]] * factor[prop[i]];
+            }
+
+            return Math.round(score);
         },
         //更新羁绊选择
         update_challenge_select: function() {
@@ -1464,7 +1690,7 @@ var vm = new Vue({
             card.type = select.type;
             card.category = select.category;
             card.total = select.total;
-            card.score = select.score;
+            card.score = this.get_battle_score(card);
 
             $('#battle').modal('hide');
         },
@@ -1646,6 +1872,23 @@ var vm = new Vue({
             this.tickets.select.total = total;
             this.tickets.select.score = Math.round(score);
         },
+        get_battle_score: function(card){
+            var prop = this.prop;
+            var score = 0;
+
+            var factor = this.get_ticket_factor(this.tickets.ticket.ticket_id);
+            var weight = this.get_ticket_weight(this.tickets.ticket.star);
+
+            for (var i = 0; i < prop.length; i++) {
+                score += card[prop[i]] * factor[prop[i]];
+            }
+
+            if(card.category == this.tickets.ticket.category){
+                score *= weight;
+            }
+
+            return Math.round(score);
+        },
         show_today: function(){
             if(this.today){
                 this.ticket_select.ticket_id = this.today.ticket_id;
@@ -1792,7 +2035,7 @@ var vm = new Vue({
             card.type = select.type;
             card.category = select.category;
             card.total = select.total;
-            card.score = select.score;
+            card.score = this.get_combine_score(card);
 
             $('#combine').modal('hide');
         },
@@ -2592,6 +2835,16 @@ var vm = new Vue({
 
             this.levels.select.total = total;
             this.levels.select.score = Math.round(score);
+        },
+        get_combine_score: function(card){
+            var prop = this.prop;
+            var score = 0;
+
+            for (var i = 0; i < prop.length; i++) {
+                score += card[prop[i]] * this.levels.level[prop[i]];
+            }
+
+            return Math.round(score);
         },
         //更新羁绊选择
         update_card_select: function() {
