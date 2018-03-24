@@ -44,6 +44,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li :class="{active: nav == 'level'}"><a href="javascript:;" @click="nav = 'level'">关卡计算</a></li>
                         <li :class="{active: nav == 'ticket'}"><a href="javascript:;" @click="nav = 'ticket'">票房争夺战</a></li>
+                        <li :class="{active: nav == 'challenge'}"><a href="javascript:;" @click="nav = 'challenge'">24小时挑战</a></li>
                         <li :class="{active: nav == 'double'}"><a href="javascript:;" @click="show_double()">卡组分析</a></li>
                         <li :class="{active: nav == 'card'}"><a href="javascript:;" @click="nav = 'card'">我的羁绊</a></li>
                         <li><a href="javascript:;" @click="show_login('user_login')" v-show="empty(user.name)">登录账号</a></li>
@@ -63,7 +64,7 @@
                         <h4>使用说明</h4>
                         首次使用请先<a href="javascript:;" @click="nav = 'card'">添加羁绊</a>，支持<a href="javascript:;" @click="show_batch('import_data')">导入/导出</a>和<a href="javascript:;" @click="show_login('create_user')">在线保存</a>。
                         <br>
-                        功能：<a href="javascript:;" @click="nav = 'level'">关卡计算</a>、<a href="javascript:;" @click="nav = 'ticket'">票房争夺战</a>、<a href="javascript:;" @click="show_double()">卡组分析</a>。
+                        功能：<a href="javascript:;" @click="nav = 'level'">关卡计算</a>、<a href="javascript:;" @click="nav = 'ticket'">票房争夺战</a>、<a href="javascript:;" @click="show_double()">卡组分析</a>、<a href="javascript:;" @click="nav = 'challenge'">24小时挑战</a>。
                         <br>
 
                         <h4>数据来源</h4> 权重数据来源 <a href="https://weibo.com/unnamedgroup" target="_blank">@恋与制作人未命名攻略组</a>
@@ -794,6 +795,262 @@
                 </div>
                 <!-- 票房计算 -->
 
+                <!--24小时挑战-->
+                <div class="mycard" v-show="nav == 'challenge'">
+                    <h4>24小时挑战</h4>
+
+                    <div class="form-group clearfix" v-if="!empty(ticket)">
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">首关</label>
+                            <select class="form-control" v-model="challenge_select.library">
+                                <option :value="item.library" v-for="item in challenge" v-if="item.level == 1">{{item.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">主题</label>
+                            <select class="form-control" v-model="challenge_select.level">
+                                <option :value="item.level" v-for="item in challenge" v-if="item.library == challenge_select.library">{{item.level}}. {{item.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-sm-2 col-md-1" v-show="list.length >= 3">
+                            <button id="get_levels" type="button" data-loading-text="加载中..." class="btn btn-primary form-control" autocomplete="off" @click="get_challenges()">计算</button>
+                        </div>
+                    </div>
+                    <div v-show="!empty(challenges.challenge)">
+                        <table class="table table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>主题</th>
+                                    <th>实力需求</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{challenges.challenge.name}}</td>
+                                    <td>{{get_card_demand(challenges.challenge)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" :class="{active: challenges.option == 'my'}"><a href="javascript:;" @click="challenges.option = 'my'">我的阵容</a></li>
+                            <li role="presentation" :class="{active: challenges.option == 'match'}"><a href="javascript:;" @click="challenges.option = 'match'">对手阵容</a></li>
+                        </ul>
+                        <table class="table table-bordered table-hover table-condensed" v-show="challenges.option == 'my'">
+                            <tbody>
+                                <tr>
+                                    <th>公司得分</th>
+                                    <td>
+                                        <a href="javascript:;" @click="show_challenge_company('my')">{{challenges.my_company.decisiveness}} / {{challenges.my_company.creativity}} / {{challenges.my_company.kindness}} / {{challenges.my_company.activity}}</a>
+                                    </td>
+                                    <td>{{get_challenge_company_score('my')}}</td>
+                                </tr>
+                                <tr v-for="(item, idx) in challenges.my">
+                                    <th rowspan="3" v-if="idx == 0">羁绊得分</th>
+                                    <td v-if="item.card_id > 0">
+                                        <a href="javascript:;" @click="show_challenge_card(idx, 'my')">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></a>
+                                    </td>
+                                    <td v-else><a href="javascript:;" @click="show_challenge_card(idx, 'my')">未设置</a></td>
+                                    <td>{{item.score || 0}}</td>
+                                </tr>
+                                <tr>
+                                    <th>守护得分</th>
+                                    <td>
+                                        <select v-model="challenges.my_bonus">
+                                            <option :value="i" v-for="i in [0, 5, 10, 25, 30, 50]">{{i}}%</option>
+                                        </select>
+                                    </td>
+                                    <td>{{get_challenge_bonus_score('my')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>总分</th>
+                                    <td><a href="javascript:;" @click="clear_challenge_card('my')">清空</a></td>
+                                    <td>{{get_challenge_total_score('my')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed" v-show="challenges.option == 'match'">
+                            <tbody>
+                                <tr>
+                                    <th>公司得分</th>
+                                    <td>
+                                        <a href="javascript:;" @click="show_challenge_company('match')">{{challenges.match_company.decisiveness}} / {{challenges.match_company.creativity}} / {{challenges.match_company.kindness}} / {{challenges.match_company.activity}}</a>
+                                    </td>
+                                    <td>{{get_challenge_company_score('match')}}</td>
+                                </tr>
+                                <tr v-for="(item, idx) in challenges.match">
+                                    <th rowspan="3" v-if="idx == 0">羁绊得分</th>
+                                    <td v-if="item.card_id > 0">
+                                        <a href="javascript:;" @click="show_challenge_card(idx, 'match')">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></a>
+                                    </td>
+                                    <td v-else><a href="javascript:;" @click="show_challenge_card(idx, 'match')">未设置</a></td>
+                                    <td>{{item.score || 0}}</td>
+                                </tr>
+                                <tr>
+                                    <th>守护得分</th>
+                                    <td>
+                                        <select v-model="challenges.match_bonus">
+                                            <option :value="i" v-for="i in [0, 5, 10, 25, 30, 50]">{{i}}%</option>
+                                        </select>
+                                    </td>
+                                    <td>{{get_challenge_bonus_score('match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>总分</th>
+                                    <td><a href="javascript:;" @click="clear_challenge_card('match')">清空</a></td>
+                                    <td>{{get_challenge_total_score('match')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>公司对比</th>
+                                    <th>决策</th>
+                                    <th>创造</th>
+                                    <th>亲和</th>
+                                    <th>行动</th>
+                                    <th>总计</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>自己</th>
+                                    <td>{{challenges.my_company.decisiveness}}</td>
+                                    <td>{{challenges.my_company.creativity}}</td>
+                                    <td>{{challenges.my_company.kindness}}</td>
+                                    <td>{{challenges.my_company.activity}}</td>
+                                    <td>{{get_challenge_company_total('my')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>对手</th>
+                                    <td>{{challenges.match_company.decisiveness}}</td>
+                                    <td>{{challenges.match_company.creativity}}</td>
+                                    <td>{{challenges.match_company.kindness}}</td>
+                                    <td>{{challenges.match_company.activity}}</td>
+                                    <td>{{get_challenge_company_total('match')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>羁绊对比</th>
+                                    <th>决策</th>
+                                    <th>创造</th>
+                                    <th>亲和</th>
+                                    <th>行动</th>
+                                    <th>总计</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>自己</th>
+                                    <td>{{get_challenge_card('my', 'decisiveness')}}</td>
+                                    <td>{{get_challenge_card('my', 'creativity')}}</td>
+                                    <td>{{get_challenge_card('my', 'kindness')}}</td>
+                                    <td>{{get_challenge_card('my', 'activity')}}</td>
+                                    <td>{{get_challenge_card_total('my')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>对手</th>
+                                    <td>{{get_challenge_card('match', 'decisiveness')}}</td>
+                                    <td>{{get_challenge_card('match', 'creativity')}}</td>
+                                    <td>{{get_challenge_card('match', 'kindness')}}</td>
+                                    <td>{{get_challenge_card('match', 'activity')}}</td>
+                                    <td>{{get_challenge_card_total('match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>受损</th>
+                                    <td>{{0 - get_challenge_card_loss('decisiveness', 'my', 'match')}}</td>
+                                    <td>{{0 - get_challenge_card_loss('creativity', 'my', 'match')}}</td>
+                                    <td>{{0 - get_challenge_card_loss('kindness', 'my', 'match')}}</td>
+                                    <td>{{0 - get_challenge_card_loss('activity', 'my', 'match')}}</td>
+                                    <td>{{0 - get_challenge_card_loss_total('my','match')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>得分对比</th>
+                                    <th>自己</th>
+                                    <th>对手</th>
+                                    <th>分数差</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>决策</th>
+                                    <td>{{get_challenge_prop_score('decisiveness', 'my')}}</td>
+                                    <td>{{get_challenge_prop_score('decisiveness', 'match')}}</td>
+                                    <td :class="{'text-success': get_challenge_prop_score_diff('decisiveness', 'my', 'match') > 0, 'text-danger': get_challenge_prop_score_diff('decisiveness', 'my', 'match') < 0}">{{get_challenge_prop_score_diff('decisiveness', 'my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>创造</th>
+                                    <td>{{get_challenge_prop_score('creativity', 'my')}}</td>
+                                    <td>{{get_challenge_prop_score('creativity', 'match')}}</td>
+                                    <td :class="{'text-success': get_challenge_prop_score_diff('creativity', 'my', 'match') > 0, 'text-danger': get_challenge_prop_score_diff('creativity', 'my', 'match') < 0}">{{get_challenge_prop_score_diff('creativity', 'my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>亲和</th>
+                                    <td>{{get_challenge_prop_score('kindness', 'my')}}</td>
+                                    <td>{{get_challenge_prop_score('kindness', 'match')}}</td>
+                                    <td :class="{'text-success': get_challenge_prop_score_diff('kindness', 'my', 'match') > 0, 'text-danger': get_challenge_prop_score_diff('kindness', 'my', 'match') < 0}">{{get_challenge_prop_score_diff('kindness', 'my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>行动</th>
+                                    <td>{{get_challenge_prop_score('activity', 'my')}}</td>
+                                    <td>{{get_challenge_prop_score('activity', 'match')}}</td>
+                                    <td :class="{'text-success': get_challenge_prop_score_diff('activity', 'my', 'match') > 0, 'text-danger': get_challenge_prop_score_diff('activity', 'my', 'match') < 0}">{{get_challenge_prop_score_diff('activity', 'my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>守护</th>
+                                    <td>{{get_challenge_bonus_score('my')}}</td>
+                                    <td>{{get_challenge_bonus_score('match')}}</td>
+                                    <td :class="{'text-success': get_challenge_bonus_score_diff('my', 'match') > 0, 'text-danger': get_challenge_bonus_score_diff('my', 'match') < 0}">{{get_challenge_bonus_score_diff('my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>总分</th>
+                                    <td>{{get_challenge_total_score('my')}}</td>
+                                    <td>{{get_challenge_total_score('match')}}</td>
+                                    <td style="font-weight: bold;" :class="{'text-success': get_challenge_total_score_diff('my', 'match') > 0, 'text-danger': get_challenge_total_score_diff('my', 'match') < 0}">{{get_challenge_total_score_diff('my', 'match')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div v-show="!empty(challenges.cards)">
+                        <h4>
+                            <span>羁绊分析</span>
+                            <!-- <a href="javascript:;">重置</a> -->
+                        </h4>
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>等级</th>
+                                    <th class="hidden-xs">决策</th>
+                                    <th class="hidden-xs">创造</th>
+                                    <th class="hidden-xs">亲和</th>
+                                    <th class="hidden-xs">行动</th>
+                                    <th>得分</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in challenges.cards">
+                                    <td>{{item.card.name}} <sub>{{get_type_tag(item.card.type)}}</sub></td>
+                                    <td>lv.{{item.card.level}} {{get_star_print(item.card.star)}} {{get_evolved_tag(item.card.evolved)}}</td>
+                                    <td class="hidden-xs">{{item.card.decisiveness}}</td>
+                                    <td class="hidden-xs">{{item.card.creativity}}</td>
+                                    <td class="hidden-xs">{{item.card.kindness}}</td>
+                                    <td class="hidden-xs">{{item.card.activity}}</td>
+                                    <td>{{item.score}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- 24小时挑战 -->
+
                 <!-- 卡组分析 -->
                 <div class="mycard" v-show="nav == 'double'">
                     <h4>卡组分析</h4>
@@ -1199,6 +1456,143 @@
             </div>
             <!--关卡公司弹窗-->
 
+            <!--24小时公司弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="challenge">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">决策</label>
+                                    <input type="number" max="5000" class="form-control" v-model="challenges.company.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">创造</label>
+                                    <input type="number" max="5000" class="form-control" v-model="challenges.company.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">亲和</label>
+                                    <input type="number" max="5000" class="form-control" v-model="challenges.company.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">行动</label>
+                                    <input type="number" max="5000" class="form-control" v-model="challenges.company.activity">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-6 col-md-4">
+                                    <label class="label-above">总实力</label>
+                                    <input type="number" class="form-control" v-model="challenges.company.total">
+                                </div>
+                                <div class="col-xs-6 col-md-4">
+                                    <label class="label-above">&nbsp;</label>
+                                    <p style="text-align: left;"><a class="btn btn-primary" href="javascript:;" @click="split_challenge_company()">平均填入</a></p>
+                                </div>
+                            </div>
+                            <p class="help-block">公司数据未知，可根据总实力平均分配</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" @click="save_challenge_company()">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--24小时公司弹窗-->
+
+            <!--24小时羁绊弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="24hour">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="pd15">
+                                <label class="label-above">羁绊名</label>
+                                <input type="text" id="challenge_typeahead" class="typeahead form-control" data-provide="typeahead" autocomplete="off">
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">进化</label>
+                                    <select class="form-control" v-model="challenges.select.evolved">
+                                        <option value="0">未进化</option>
+                                        <option value="1">进化</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">星级</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.star">
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">等级</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.level">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">决策</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">创造</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">亲和</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">行动</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.activity">
+                                </div>
+                            </div>
+                            <p class="help-block"><a href="javascript:;" @click="challenges.select.show_head = !challenges.select.show_head">显示头像</a></p>
+                            <div v-show="challenges.select.show_head">
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-4 col-md-3 col-lg-2">
+                                        <label class="label-above">人物</label>
+                                        <select class="form-control" v-model="challenges.select.role">
+                                            <option value="1">李泽言</option>
+                                            <option value="2">许墨</option>
+                                            <option value="3">周棋洛</option>
+                                            <option value="4">白起</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4 col-md-3 col-lg-2">
+                                        <label class="label-above">稀有度</label>
+                                        <select class="form-control" v-model="challenges.select.rare">
+                                            <option value="5">SSR</option>
+                                            <option value="4">SR</option>
+                                            <option value="3">R</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4 col-md-3 col-lg-2">
+                                        <label class="label-above">颜色</label>
+                                        <select class="form-control" v-model="challenges.select.color">
+                                            <option value="1">蓝</option>
+                                            <option value="2">橙</option>
+                                            <option value="3">粉</option>
+                                            <option value="4">绿</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix" v-for="item in cards" v-if="item.type == challenges.select.rare && item.category == challenges.select.role && item.top == challenges.select.color">
+                                    <div class="col-xs-4 col-md-3 col-lg-2">
+                                        <a href="javascript:;" @click="use_challenge_card(item.card_id)" style="font-size: small;">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></a>
+                                    </div>
+                                    <div class="col-xs-4 col-md-3 col-lg-2" v-for="icon in item.head.split(',')">
+                                        <img :src="'https://app.coderprepares.com/evolcalculator/img/card/' + icon + '.png'" width="80%">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" @click="save_challenge_card()">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--24小时羁绊弹窗-->
+
             <!--票房公司弹窗-->
             <div class="modal fade" tabindex="-1" role="dialog" id="ticket">
                 <div class="modal-dialog" role="document">
@@ -1439,7 +1833,7 @@
         </div>
     </div>
     <p id="tips">加载中...</p>
-    <script type="text/javascript" src="js/vm.js?v=2.0.2"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.1"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
