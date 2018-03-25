@@ -1538,36 +1538,45 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <span>选择上阵羁绊</span>
+                            <span>点击名称选择上阵羁绊</span>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <table class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>名称</th>
-                                        <!-- <th class="hidden-xs">决策</th>
-                                        <th class="hidden-xs">创造</th>
-                                        <th class="hidden-xs">亲和</th>
-                                        <th class="hidden-xs">行动</th> -->
-                                        <th>得分</th>
-                                        <th>操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="item in challenges.cards" v-show="challenges.field_ids.indexOf(item.card.card_id) >= 0 || challenges.field_ids.length < 30">
-                                        <td>{{item.card.name}} <sub>（{{get_damage_rate(item.card)}}）</sub></td>
-                                        <!-- <td class="hidden-xs">{{item.card.decisiveness}}</td>
-                                        <td class="hidden-xs">{{item.card.creativity}}</td>
-                                        <td class="hidden-xs">{{item.card.kindness}}</td>
-                                        <td class="hidden-xs">{{item.card.activity}}</td> -->
-                                        <td>{{item.score}}</td>
-                                        <td><a href="javascript:;" @click="select_challenge_card(item)" v-if="item.score > 0">上阵</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div style="overflow-x: scroll;">
+                                <table class="table table-bordered table-hover" style="min-width: 400px;">
+                                    <thead>
+                                        <tr>
+                                            <th>名称</th>
+                                            <!-- <th class="hidden-xs">决策</th>
+                                            <th class="hidden-xs">创造</th>
+                                            <th class="hidden-xs">亲和</th>
+                                            <th class="hidden-xs">行动</th> -->
+                                            <th>得分</th>
+                                            <th>总受损</th>
+                                            <th>对比</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="item in challenges.cards" v-show="challenges.field_ids.indexOf(item.card.card_id) >= 0 || challenges.field_ids.length < 30">
+                                            <td v-if="item.score > 0 && challenges.my_ids.indexOf(item.card.card_id) < 0">
+                                                <a href="javascript:;" @click="select_challenge_card(item)">
+                                                    {{item.card.name}} <sub>（{{get_damage_rate(item.card)}}）</sub>
+                                                </a>
+                                            </td>
+                                            <td v-else>{{item.card.name}} <sub>（{{get_damage_rate(item.card)}}）</sub></td>
+                                            <!-- <td class="hidden-xs">{{item.card.decisiveness}}</td>
+                                            <td class="hidden-xs">{{item.card.creativity}}</td>
+                                            <td class="hidden-xs">{{item.card.kindness}}</td>
+                                            <td class="hidden-xs">{{item.card.activity}}</td> -->
+                                            <td>{{item.score}}</td>
+                                            <td>{{item.total_loss}}</td>
+                                            <td><small>{{challenges.calc_max_loss > 0 ? Math.round(Math.abs(item.total_loss) / challenges.calc_max_loss * 100) : 0}}%</small></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1907,7 +1916,7 @@
         </div>
     </div>
     <p id="tips">加载中...</p>
-    <script type="text/javascript" src="js/vm.js?v=2.2.2"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.2.3"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');

@@ -242,12 +242,60 @@ var vm = new Vue({
         challenges: {
             my_bonus: 0,
             match_bonus: 0,
+            calc_max_loss: 0,
             combine: [],
             challenge: {},
             record: $.LS.get('challenges.record') ? JSON.parse($.LS.get('challenges.record')) : [],
             my_damaged: [],
             match_damaged: [],
             ready: false,
+            calc: [
+                {
+                    card_id: 0,
+                    evolved: 0,
+                    star: 1,
+                    level: 1,
+                    decisiveness: 0,
+                    creativity: 0,
+                    kindness: 0,
+                    activity: 0,
+                    name: '',
+                    type: 0,
+                    category: 0,
+                    total: 0,
+                    score: 0
+                },
+                {
+                    card_id: 0,
+                    evolved: 0,
+                    star: 1,
+                    level: 1,
+                    decisiveness: 0,
+                    creativity: 0,
+                    kindness: 0,
+                    activity: 0,
+                    name: '',
+                    type: 0,
+                    category: 0,
+                    total: 0,
+                    score: 0
+                },
+                {
+                    card_id: 0,
+                    evolved: 0,
+                    star: 1,
+                    level: 1,
+                    decisiveness: 0,
+                    creativity: 0,
+                    kindness: 0,
+                    activity: 0,
+                    name: '',
+                    type: 0,
+                    category: 0,
+                    total: 0,
+                    score: 0
+                }
+            ],
             my: [
                 {
                     card_id: 0,
@@ -385,7 +433,8 @@ var vm = new Vue({
                 show_head: false
             },
             cards: $.LS.get('challenges.cards') ? JSON.parse($.LS.get('challenges.cards')) : [],
-            field_ids: []
+            field_ids: [],
+            my_ids: []
         },
         challenge_select: {
             library: 1,
@@ -821,7 +870,8 @@ var vm = new Vue({
 
                 my_cards.push({
                     card: card,
-                    score: Math.round(score)
+                    score: Math.round(score),
+                    total_loss: 0
                 });
             }
             my_cards.sort(function(a, b) {
@@ -921,6 +971,7 @@ var vm = new Vue({
         update_field_ids: function(){
             var record = this.challenges.record;
             var ids = [];
+            var my_ids = [];
 
             for(var i = 0; i < record.length; i++){
                 var my = record[i].my;
@@ -938,9 +989,11 @@ var vm = new Vue({
                 if(card.card_id != 0 && ids.indexOf(card.card_id) < 0){
                     ids.push(card.card_id);
                 }
+                my_ids.push(card.card_id);
             }
 
             this.challenges.field_ids = ids;
+            this.challenges.my_ids = my_ids;
         },
         challenge_record_retract: function(){
             var record = this.challenges.record.splice(0, 1);
@@ -990,8 +1043,6 @@ var vm = new Vue({
                     break;
                 }
             }
-
-            console.log(my_ready, match_ready);
 
             var ret = my_ready && match_ready;
 
@@ -1065,6 +1116,45 @@ var vm = new Vue({
         show_challenge_card_select: function(idx, option){
             this.challenges.select.idx = idx;
             this.challenges.select.option = option;
+            
+            var loss = [];
+
+            for(var i = 0; i < this.challenges.cards.length; i++){
+                var vo = this.challenges.cards[i];
+
+                for(j = 0; j < this.challenges.calc.length; j++){
+                    var card = this.challenges.calc[j];
+                    if(j == idx){
+                        var select = vo.card;
+                    } else {
+                        var select = this.challenges.my[j];
+                    }
+
+                    card.card_id = select.card_id;
+                    card.evolved = select.evolved;
+                    card.star = select.star;
+                    card.level = select.level;
+                    card.decisiveness = parseInt(select.decisiveness, 10);
+                    card.creativity = parseInt(select.creativity, 10);
+                    card.kindness = parseInt(select.kindness, 10);
+                    card.activity = parseInt(select.activity, 10);
+                    card.name = select.name;
+                    card.type = select.type;
+                    card.category = select.category;
+                    card.total = select.total;
+                    card.score = select.score;
+                }
+
+                var total_loss = this.get_challenge_card_loss_total('calc', 'match');
+                loss.push(total_loss);
+                
+                vo.total_loss = 0 - total_loss;
+            }
+
+            loss.sort(function(a,b){
+                return b-a;
+            });
+            this.challenges.calc_max_loss = loss[0];
 
             $('#field').modal();
         },
@@ -1234,6 +1324,7 @@ var vm = new Vue({
         get_challenge_card_loss: function(attr, option1, option2){
             var total1 = this.get_challenge_card(option1, attr);
             var total2 = Math.floor(this.get_challenge_card(option2, attr) / 2);
+
             return Math.min(total1, total2);
         },
         get_challenge_card_loss_total: function(option1, option2){
