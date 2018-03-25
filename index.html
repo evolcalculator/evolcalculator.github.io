@@ -832,10 +832,41 @@
                             </tbody>
                         </table>
                         <ul class="nav nav-tabs">
-                            <li role="presentation" :class="{active: challenges.option == 'my'}"><a href="javascript:;" @click="challenges.option = 'my'">我的阵容</a></li>
-                            <li role="presentation" :class="{active: challenges.option == 'match'}"><a href="javascript:;" @click="challenges.option = 'match'">对手阵容</a></li>
-                            <li role="presentation" :class="{active: challenges.option == 'record'}" v-show="challenges.record.length > 0 || challenges.ready"><a href="javascript:;" @click="challenges.option = 'record'">损耗记录</a></li>
+                            <li role="presentation" :class="{active: challenges.option == 'my'}"><a href="javascript:;" @click="challenges.option = 'my'">我的<span class="hidden-xs">阵容</span></a></li>
+                            <li role="presentation" :class="{active: challenges.option == 'match'}"><a href="javascript:;" @click="challenges.option = 'match'">对手<span class="hidden-xs">阵容</span></a></li>
+                            <li role="presentation" :class="{active: challenges.option == 'record'}" v-show="challenges.record.length > 0 || challenges.ready"><a href="javascript:;" @click="challenges.option = 'record'">损耗<span class="hidden-xs">记录</span></a></li>
+                            <li role="presentation" :class="{active: challenges.option == 'history'}" v-show="challenges.history.length > 0"><a href="javascript:;" @click="challenges.option = 'history'">历史<span class="hidden-xs">对手</span></a></li>
                         </ul>
+                        <table class="table table-bordered table-hover table-condensed" v-show="challenges.option == 'history'">
+                            <thead>
+                                <tr>
+                                    <th>公司实力</th>
+                                    <th>羁绊实力</th>
+                                    <th>加成</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item,idx) in challenges.history">
+                                    <td>
+                                        {{item.company_total}}
+                                    </td>
+                                    <td>
+                                        {{item.card_total}}
+                                    </td>
+                                    <td>
+                                        {{item.match_bonus}}%
+                                    </td>
+                                    <td>
+                                        <a href="javascript:;" @click="challenge_use_history(idx)">使用</a>
+                                        <a href="javascript:;" @click="challenge_remove_history(idx)">删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><a href="javascript:;" @click="challenge_clear_history()">清空历史</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <table class="table table-bordered table-hover table-condensed" v-show="challenges.option == 'record'">
                             <thead>
                                 <tr>
@@ -931,6 +962,9 @@
                                 </tr>
                             </tbody>
                         </table>
+
+                        <p><a href="javascript:;" :disabled="!challenges.ready" class="btn btn-primary" @click="challenge_record()">记录损耗</a></p>
+
                         <table class="table table-bordered table-hover table-condensed">
                             <thead>
                                 <tr>
@@ -1069,7 +1103,7 @@
                             </thead>
                             <tbody>
                                 <tr v-for="item in challenges.cards">
-                                    <td>{{item.card.name}} <sub>（{{get_damage_rate(item.card)}}）</sub></td>
+                                    <td><a href="javascript:;" @click="show_challenge_edit(item.card)">{{item.card.name}} <sub>（{{get_damage_rate(item.card)}}）</sub></a></td>
                                     <td class="hidden-xs">lv.{{item.card.level}} {{get_star_print(item.card.star)}} {{get_evolved_tag(item.card.evolved)}}</td>
                                     <td class="hidden-xs">{{item.card.decisiveness}}</td>
                                     <td class="hidden-xs">{{item.card.creativity}}</td>
@@ -1553,13 +1587,21 @@
                                             <th class="hidden-xs">创造</th>
                                             <th class="hidden-xs">亲和</th>
                                             <th class="hidden-xs">行动</th> -->
-                                            <th>得分</th>
-                                            <th>总受损</th>
-                                            <th>对比</th>
+                                            <th @click="challenge_select_sort('score')">
+                                                得分
+                                                <span v-show="challenges.sort == 'score' && challenges.desc == 1">▼</span>
+                                                <span v-show="challenges.sort == 'score' && challenges.desc == -1">▲</span>
+                                            </th>
+                                            <th @click="challenge_select_sort('total_loss')">
+                                                总受损
+                                                <span v-show="challenges.sort == 'total_loss' && challenges.desc == 1">▼</span>
+                                                <span v-show="challenges.sort == 'total_loss' && challenges.desc == -1">▲</span>
+                                            </th>
+                                            <!-- <th>对比</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="item in challenges.cards" v-show="challenges.field_ids.indexOf(item.card.card_id) >= 0 || challenges.field_ids.length < 30">
+                                        <tr v-for="item in challenges.field_list" v-show="challenges.field_ids.indexOf(item.card.card_id) >= 0 || challenges.field_ids.length < 30">
                                             <td v-if="item.score > 0 && challenges.my_ids.indexOf(item.card.card_id) < 0">
                                                 <a href="javascript:;" @click="select_challenge_card(item)">
                                                     {{item.card.name}} <sub>（{{get_damage_rate(item.card)}}）</sub>
@@ -1572,7 +1614,7 @@
                                             <td class="hidden-xs">{{item.card.activity}}</td> -->
                                             <td>{{item.score}}</td>
                                             <td>{{item.total_loss}}</td>
-                                            <td><small>{{challenges.calc_max_loss > 0 ? Math.round(Math.abs(item.total_loss) / challenges.calc_max_loss * 100) : 0}}%</small></td>
+                                            <!-- <td><small>{{challenges.calc_max_loss > 0 ? Math.round(Math.abs(item.total_loss) / challenges.calc_max_loss * 100) : 0}}%</small></td> -->
                                         </tr>
                                     </tbody>
                                 </table>
@@ -1675,6 +1717,62 @@
                 </div>
             </div>
             <!--24小时羁绊弹窗-->
+
+            <!--24小时羁绊修改弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="edit">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span>修改【{{challenges.select.name}}】</span>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group clearfix">
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">进化</label>
+                                    <select class="form-control" v-model="challenges.select.evolved">
+                                        <option value="0">未进化</option>
+                                        <option value="1">进化</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">星级</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.star">
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">等级</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.level">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">决策</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">创造</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">亲和</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">行动</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.activity">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" @click="save_challenge_edit()">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--24小时羁绊修改弹窗-->
 
             <!--票房公司弹窗-->
             <div class="modal fade" tabindex="-1" role="dialog" id="ticket">
@@ -1916,7 +2014,7 @@
         </div>
     </div>
     <p id="tips">加载中...</p>
-    <script type="text/javascript" src="js/vm.js?v=2.2.4"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.2.5"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
