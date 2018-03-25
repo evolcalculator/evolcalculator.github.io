@@ -849,14 +849,18 @@ var vm = new Vue({
             var total = 0;
             var prop = this.prop;
             for(var i = 0; i < prop.length; i++){
-                total += obj[prop[i]];
+                total += parseInt(obj[prop[i]], 10);
             }
             return total;
         },
         get_challenges: function(){
-            for (key in this.company) {
-                this.challenges.my_company[key] = this.company[key];
-                // this.challenges.match_company[key] = this.company[key];
+            var total = this.get_total(this.challenges.my_company);
+
+            if(total == 0){
+                for (key in this.company) {
+                    this.challenges.my_company[key] = this.company[key];
+                    // this.challenges.match_company[key] = this.company[key];
+                }
             }
             this.challenge_cards();
             this.update_field_ids();
@@ -1423,8 +1427,8 @@ var vm = new Vue({
             var prop = this.prop;
             var total = 0;
             for (var i = 0; i < prop.length; i++) {
-                this.challenges.company[prop[i]] = this.challenges[option + '_company'][prop[i]];
-                total += this.challenges[option + '_company'][prop[i]];
+                this.challenges.company[prop[i]] = parseInt(this.challenges[option + '_company'][prop[i]], 10);
+                total += this.challenges.company[prop[i]];
             }
             this.challenges.company.option = option;
             this.challenges.company.total = total;
@@ -1452,7 +1456,7 @@ var vm = new Vue({
             var option = company.option;
 
             for (var i = 0; i < prop.length; i++) {
-                this.challenges[option + '_company'][prop[i]] = company[prop[i]];
+                this.challenges[option + '_company'][prop[i]] = parseInt(company[prop[i]], 10);
             }
 
             $('#challenge').modal('hide');
