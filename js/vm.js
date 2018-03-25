@@ -1147,7 +1147,7 @@ var vm = new Vue({
                     this.challenges['company'][prop[i]] = remin;                    
                 } else {
                     remin -= Math.floor(total/4);
-                    this.challenges['company'][prop[i]] = Math.floor(total/4);
+                    this.challenges['company'][prop[i]] = Math.round(total/4);
                 }
             }
         },
