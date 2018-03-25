@@ -384,7 +384,8 @@ var vm = new Vue({
                 color: 1,
                 show_head: false
             },
-            cards: $.LS.get('challenges.cards') ? JSON.parse($.LS.get('challenges.cards')) : []
+            cards: $.LS.get('challenges.cards') ? JSON.parse($.LS.get('challenges.cards')) : [],
+            field_ids: []
         },
         challenge_select: {
             library: 1,
@@ -761,6 +762,7 @@ var vm = new Vue({
                 // this.challenges.match_company[key] = this.company[key];
             }
             this.challenge_cards();
+            this.update_field_ids();
         },
         get_challenge_factor: function(challenge){
             var ret = {};
@@ -916,6 +918,30 @@ var vm = new Vue({
             this.clear_challenge_card('my');
             this.get_challenges();
         },
+        update_field_ids: function(){
+            var record = this.challenges.record;
+            var ids = [];
+
+            for(var i = 0; i < record.length; i++){
+                var my = record[i].my;
+                for(var j = 0; j < my.length; j++){
+                    var card = my[j];
+                    if(card.card_id != 0 && ids.indexOf(card.card_id) < 0){
+                        ids.push(card.card_id);
+                    }
+                }
+            }
+
+            var my = this.challenges.my;
+            for(var j = 0; j < my.length; j++){
+                var card = my[j];
+                if(card.card_id != 0 && ids.indexOf(card.card_id) < 0){
+                    ids.push(card.card_id);
+                }
+            }
+
+            this.challenges.field_ids = ids;
+        },
         challenge_record_retract: function(){
             var record = this.challenges.record.splice(0, 1);
             var list = [];
@@ -943,7 +969,9 @@ var vm = new Vue({
             this.clear_challenge_card('my');
             this.get_challenges();
 
-            this.challenges.option = 'my';
+            if(!this.challenges.ready){
+                this.challenges.option = 'match';
+            }
         },
         challenge_ready: function(){
             var my_ready = false;
@@ -997,6 +1025,7 @@ var vm = new Vue({
             }
             this.challenges[option] = list;
 
+            this.update_field_ids();
             this.challenge_ready();
         },
         show_challenge_card: function(idx, option) {
@@ -1057,6 +1086,7 @@ var vm = new Vue({
             card.total = select.card.total;
             card.score = this.get_challenge_score(card);
 
+            this.update_field_ids();
             this.challenge_ready();
 
             $('#field').modal('hide');
@@ -1086,6 +1116,7 @@ var vm = new Vue({
             card.total = select.total;
             card.score = this.get_challenge_score(card);
 
+            this.update_field_ids();
             this.challenge_ready();
 
             $('#24hour').modal('hide');

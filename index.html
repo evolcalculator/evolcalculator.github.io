@@ -1063,20 +1063,20 @@
                                     <th class="hidden-xs">创造</th>
                                     <th class="hidden-xs">亲和</th>
                                     <th class="hidden-xs">行动</th>
-                                    <th>受损</th>
                                     <th>得分</th>
+                                    <th>状态</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="item in challenges.cards">
-                                    <td>{{item.card.name}} <sub>{{get_type_tag(item.card.type)}}</sub></td>
+                                    <td>{{item.card.name}} <sub>（{{get_damage_rate(item.card)}}）</sub></td>
                                     <td class="hidden-xs">lv.{{item.card.level}} {{get_star_print(item.card.star)}} {{get_evolved_tag(item.card.evolved)}}</td>
                                     <td class="hidden-xs">{{item.card.decisiveness}}</td>
                                     <td class="hidden-xs">{{item.card.creativity}}</td>
                                     <td class="hidden-xs">{{item.card.kindness}}</td>
                                     <td class="hidden-xs">{{item.card.activity}}</td>
-                                    <td>{{get_damage_rate(item.card)}}</td>
                                     <td>{{item.score}}</td>
+                                    <td>{{challenges.field_ids.indexOf(item.card.card_id) >= 0 ? '已上阵' : ''}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1558,9 +1558,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="item in challenges.cards">
-                                        <td>{{item.card.name}} <sub>{{get_type_tag(item.card.type)}}</sub></td>
-                                        <td class="hidden-xs">{{get_damage_rate(item.card)}}</td>
+                                    <tr v-for="item in challenges.cards" v-show="challenges.field_ids.indexOf(item.card.card_id) >= 0 || challenges.field_ids.length < 30">
+                                        <td>{{item.card.name}} <sub>（{{get_damage_rate(item.card)}}）</sub></td>
                                         <!-- <td class="hidden-xs">{{item.card.decisiveness}}</td>
                                         <td class="hidden-xs">{{item.card.creativity}}</td>
                                         <td class="hidden-xs">{{item.card.kindness}}</td>
@@ -1909,7 +1908,7 @@
         </div>
     </div>
     <p id="tips">加载中...</p>
-    <script type="text/javascript" src="js/vm.js?v=2.2.1"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.2.2"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
