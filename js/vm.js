@@ -925,6 +925,9 @@ var vm = new Vue({
             this.challenges.record = [];
             this.challenges.cards = [];
             this.get_challenges();
+            if(!this.challenges.ready){
+                this.challenges.option = 'match';
+            }
         },
         challenge_record: function(){
             var list_my = [];
