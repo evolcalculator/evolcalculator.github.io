@@ -1787,13 +1787,13 @@ var vm = new Vue({
             var prop = this.prop;
             var company = this.challenges.company;
             var total = company.total;
-            var remin = total;
+            var remain = total;
 
             for (var i = 0; i < prop.length; i++) {
                 if(i == prop.length - 1){
-                    this.challenges['company'][prop[i]] = remin;                    
+                    this.challenges['company'][prop[i]] = remain;                    
                 } else {
-                    remin -= Math.floor(total/4);
+                    remain -= Math.round(total/4);
                     this.challenges['company'][prop[i]] = Math.round(total/4);
                 }
             }
