@@ -970,6 +970,7 @@
                             <a href="javascript:;" :disabled="!challenges.ready" class="btn btn-primary" @click="challenge_record()">记录损耗</a>
                         </p>
                         <p class="help-block" style="text-align: center;">{{challenges.recommend_text}} <br> 分差阈值：{{challenges.threshold}}&nbsp;<a href="javascript:;" @click="show_challenge_threshold()">设置</a></p>
+                        <p class="help-block" style="text-align: center;">（进行下一关的时候记得选择新的主题）</p>
 
                         <!-- <table class="table table-bordered table-hover table-condensed">
                             <thead>
@@ -1094,7 +1095,7 @@
                     <div v-show="!empty(challenges.challenge)">
                         <h4>
                             <span>我的羁绊</span>
-                            <small v-show="challenges.record.length > 0"><a href="javascript:;" @click="challenge_reset()">重置损耗</a></small>
+                            <small v-show="challenges.record.length > 0 || challenges.field_ids.length > 0"><a href="javascript:;" @click="challenge_reset()">重置损耗</a></small>
                         </h4>
                         <p v-show="challenges.cards.length < 30"><a href="javascript:;" @click="nav = 'card'">添加更多羁绊</a></p>
                         <table class="table table-bordered table-hover" v-show="!empty(challenges.cards)">
@@ -2057,7 +2058,7 @@
         </div>
     </div>
     <p id="tips">加载中...</p>
-    <script type="text/javascript" src="js/vm.js?v=2.3.8"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.3.9"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');

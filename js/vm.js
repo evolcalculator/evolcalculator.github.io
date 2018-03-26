@@ -1077,8 +1077,16 @@ var vm = new Vue({
         },
         update_field_ids: function(){
             var record = this.challenges.record;
+            var cards = this.challenges.cards;
             var ids = [];
             var my_ids = [];
+
+            for(var i = 0; i < cards.length; i++){
+                var card = cards[i].card;
+                if(card.total != this.get_total(card)){
+                    ids.push(card.card_id);
+                }
+            }
 
             for(var i = 0; i < record.length; i++){
                 var my = record[i].my;
