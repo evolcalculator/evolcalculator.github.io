@@ -1074,7 +1074,7 @@ var vm = new Vue({
             }
             this.clear_challenge_card('my');
             this.get_challenges();
-            this.challenge.option = 'match';
+            this.challenges.option = 'match';
         },
         update_field_ids: function(){
             var record = this.challenges.record;
