@@ -1260,7 +1260,7 @@ var vm = new Vue({
                     // console.log(2, vo[1].card.name);
 
                     var md_key = i + ':' + j;
-                    if(exclude.indexOf(md_key) >= 0 || j == i || vo[1].score == 0){
+                    if(exclude.indexOf(md_key) >= 0 || j == i || (vo[1].card.card_id != 0 && vo[1].score == 0)){
                         continue;
                     }
                     var ex_key = j + ':' + i;
@@ -1314,7 +1314,7 @@ var vm = new Vue({
                     for(var k = 0; k < count; k++){
                         vo[2] = cards[k];
 
-                        if((vo[1].card.card_id == 0 && vo[2].card.card_id != 0) || k == i || (k == j && j != 0) || vo[2].score == 0){
+                        if((vo[1].card.card_id == 0 && vo[2].card.card_id != 0) || k == i || (k == j && j != 0) || (vo[2].card.card_id != 0 && vo[2].score == 0)){
                             continue;
                         }
 
