@@ -1611,6 +1611,12 @@
                         </div>
                         <div class="modal-body">
                             <div style="overflow-x: scroll;">
+                                <ul class="nav nav-tabs">
+                                    <li role="presentation" :class="{active: challenges.field_option == 0}"><a href="javascript:;" @click="challenges.field_option = 0">全部</a></li>
+                                    <li role="presentation" :class="{active: challenges.field_option == 5}"><a href="javascript:;" @click="challenges.field_option = 5">SSR</a></li>
+                                    <li role="presentation" :class="{active: challenges.field_option == 4}"><a href="javascript:;" @click="challenges.field_option = 4">SR</a></li>
+                                    <li role="presentation" :class="{active: challenges.field_option == 3}"><a href="javascript:;" @click="challenges.field_option = 3">R</a></li>
+                                </ul>
                                 <table class="table table-bordered table-hover" style="min-width: 400px;">
                                     <thead>
                                         <tr>
@@ -1635,15 +1641,20 @@
                                                 <span v-show="challenges.sort == 'total_loss' && challenges.desc == -1">▲</span>
                                             </th> -->
                                             <!-- <th>对比</th> -->
-                                            <th @click="challenge_select_sort('loss_rate')">
+                                            <!-- <th @click="challenge_select_sort('loss_rate')">
                                                 受损/得分
                                                 <span v-show="challenges.sort == 'loss_rate' && challenges.desc == 1">▼</span>
                                                 <span v-show="challenges.sort == 'loss_rate' && challenges.desc == -1">▲</span>
+                                            </th> -->
+                                            <th @click="challenge_select_sort('loss_unit_score')">
+                                                得分率
+                                                <span v-show="challenges.sort == 'loss_unit_score' && challenges.desc == 1">▼</span>
+                                                <span v-show="challenges.sort == 'loss_unit_score' && challenges.desc == -1">▲</span>
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="item in challenges.field_list" v-show="challenges.field_ids.indexOf(item.card.card_id) >= 0 || challenges.field_ids.length < 30">
+                                        <tr v-for="item in challenges.field_list" v-show="(challenges.field_ids.indexOf(item.card.card_id) >= 0 || challenges.field_ids.length < 30) && (challenges.field_option == 0 || challenges.field_option == item.card.type)">
                                             <td v-if="item.score > 0 && challenges.my_ids.indexOf(item.card.card_id) < 0">
                                                 <a href="javascript:;" @click="select_challenge_card(item)">
                                                     {{item.card.name}} <sub>（{{get_damage_rate(item.card)}}）</sub>
@@ -1657,7 +1668,8 @@
                                             <td>{{item.score}}</td>
                                             <td>{{item.loss}}</td>
                                             <!-- <td>{{item.total_loss}}</td> -->
-                                            <td>{{isNaN(item.loss_rate) ? 'N/A' : (item.loss_rate + '%')}}</td>
+                                            <!-- <td>{{isNaN(item.loss_rate) ? 'N/A' : (item.loss_rate + '%')}}</td> -->
+                                            <td>{{item.loss_unit_score}}</td>
                                             <!-- <td><small>{{challenges.calc_max_loss > 0 ? Math.round(Math.abs(item.total_loss) / challenges.calc_max_loss * 100) : 0}}%</small></td> -->
                                         </tr>
                                     </tbody>
@@ -2058,7 +2070,7 @@
         </div>
     </div>
     <p id="tips">加载中...</p>
-    <script type="text/javascript" src="js/vm.js?v=2.3.13"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.3.14"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');

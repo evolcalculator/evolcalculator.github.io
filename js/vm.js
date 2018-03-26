@@ -251,6 +251,7 @@ var vm = new Vue({
             challenge: {},
             record: $.LS.get('challenges.record') ? JSON.parse($.LS.get('challenges.record')) : [],
             recommend_text: '点击推荐卡组，找出最小损耗组合。',
+            field_option: 0,
             my_damaged: [],
             match_damaged: [],
             ready: false,
@@ -1664,7 +1665,8 @@ var vm = new Vue({
 
                 vo.loss = loss[idx];
                 vo.total_loss = total_loss;
-                vo.loss_rate = Math.round((Math.abs(vo.loss) / vo.score) * 100) / 100;
+                // vo.loss_rate = Math.round((Math.abs(vo.loss) / vo.score) * 100) / 100;
+                vo.loss_unit_score = Math.round(vo.score / Math.abs(vo.loss) / Math.abs(vo.loss) * 100) / 100;
                 list.push(vo);
             }
 
