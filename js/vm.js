@@ -844,6 +844,11 @@ var vm = new Vue({
                     this.batch.source = 'calculator';
                 }
             }
+        },
+        'challenge_select.level': function(newVal, oldVal){
+            if(!this.empty(this.challenges.challenge)){
+                this.get_challenges();
+            }
         }
     },
     methods: {
