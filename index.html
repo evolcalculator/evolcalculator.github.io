@@ -1657,7 +1657,7 @@
                                             <td>{{item.score}}</td>
                                             <td>{{item.loss}}</td>
                                             <!-- <td>{{item.total_loss}}</td> -->
-                                            <td>{{isNaN(item.loss_rate) ? (item.loss_rate + '%') : 'N/A'}}</td>
+                                            <td>{{isNaN(item.loss_rate) ? 'N/A' : (item.loss_rate + '%')}}</td>
                                             <!-- <td><small>{{challenges.calc_max_loss > 0 ? Math.round(Math.abs(item.total_loss) / challenges.calc_max_loss * 100) : 0}}%</small></td> -->
                                         </tr>
                                     </tbody>
