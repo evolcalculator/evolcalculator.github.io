@@ -1072,7 +1072,7 @@ var vm = new Vue({
                     }
                 }
             }
-            this.clear_challenge_card('my');
+            this.clear_challenge_card('match');
             this.get_challenges();
         },
         update_field_ids: function(){

@@ -1657,7 +1657,7 @@
                                             <td>{{item.score}}</td>
                                             <td>{{item.loss}}</td>
                                             <!-- <td>{{item.total_loss}}</td> -->
-                                            <td>{{item.loss_rate}}%</td>
+                                            <td>{{isNaN(item.loss_rate) ? (item.loss_rate + '%') : 'N/A'}}</td>
                                             <!-- <td><small>{{challenges.calc_max_loss > 0 ? Math.round(Math.abs(item.total_loss) / challenges.calc_max_loss * 100) : 0}}%</small></td> -->
                                         </tr>
                                     </tbody>
@@ -2058,7 +2058,7 @@
         </div>
     </div>
     <p id="tips">加载中...</p>
-    <script type="text/javascript" src="js/vm.js?v=2.3.9"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.3.10"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
