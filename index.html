@@ -812,7 +812,7 @@
                                 <option :value="item.level" v-for="item in challenge" v-if="item.library == challenge_select.library">{{item.level}}. {{item.name}}</option>
                             </select>
                         </div>
-                        <div class="col-xs-4 col-sm-2 col-md-1">
+                        <div class="col-xs-4 col-sm-2 col-lg-1">
                             <button id="get_levels" type="button" data-loading-text="加载中..." class="btn btn-primary form-control" autocomplete="off" @click="get_challenges()">过关分析</button>
                         </div>
                     </div>
@@ -840,6 +840,7 @@
                         <table class="table table-bordered table-hover table-condensed" v-show="challenges.option == 'history'">
                             <thead>
                                 <tr>
+                                    <th>序号</th>
                                     <th>公司实力</th>
                                     <th>羁绊实力</th>
                                     <th>加成</th>
@@ -848,6 +849,7 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(item,idx) in challenges.history">
+                                    <td>{{idx+1}}</td>
                                     <td>
                                         {{item.company_total}}
                                     </td>
@@ -863,7 +865,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4"><a href="javascript:;" @click="challenge_clear_history()">清空历史</a></td>
+                                    <td colspan="5"><a href="javascript:;" @click="challenge_clear_history()">清空历史</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -963,9 +965,13 @@
                             </tbody>
                         </table>
 
-                        <p><a href="javascript:;" :disabled="!challenges.ready" class="btn btn-primary" @click="challenge_record()">记录损耗</a></p>
+                        <p>
+                            <a href="javascript:;" :disabled="challenges.match[0].card_id == 0 && challenges.match[1].card_id == 0 && challenges.match[2].card_id == 0" class="btn btn-default" @click="challenge_recommend()">推荐卡组</a>
+                            <a href="javascript:;" :disabled="!challenges.ready" class="btn btn-primary" @click="challenge_record()">记录损耗</a>
+                        </p>
+                        <p class="help-block" style="text-align: center;">{{challenges.recommend_text}} <br> 分差阈值：{{challenges.threshold}}&nbsp;<a href="javascript:;" @click="show_challenge_threshold()">设置</a></p>
 
-                        <table class="table table-bordered table-hover table-condensed">
+                        <!-- <table class="table table-bordered table-hover table-condensed">
                             <thead>
                                 <tr>
                                     <th>公司对比</th>
@@ -994,7 +1000,7 @@
                                     <td>{{get_challenge_company_total('match')}}</td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </table> -->
                         <table class="table table-bordered table-hover table-condensed">
                             <thead>
                                 <tr>
@@ -1043,31 +1049,31 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr v-show="challenges.expand">
                                     <th>决策</th>
                                     <td>{{get_challenge_prop_score('decisiveness', 'my')}}</td>
                                     <td>{{get_challenge_prop_score('decisiveness', 'match')}}</td>
                                     <td :class="{'text-success': get_challenge_prop_score_diff('decisiveness', 'my', 'match') > 0, 'text-danger': get_challenge_prop_score_diff('decisiveness', 'my', 'match') < 0}">{{get_challenge_prop_score_diff('decisiveness', 'my', 'match')}}</td>
                                 </tr>
-                                <tr>
+                                <tr v-show="challenges.expand">
                                     <th>创造</th>
                                     <td>{{get_challenge_prop_score('creativity', 'my')}}</td>
                                     <td>{{get_challenge_prop_score('creativity', 'match')}}</td>
                                     <td :class="{'text-success': get_challenge_prop_score_diff('creativity', 'my', 'match') > 0, 'text-danger': get_challenge_prop_score_diff('creativity', 'my', 'match') < 0}">{{get_challenge_prop_score_diff('creativity', 'my', 'match')}}</td>
-                                </tr>
-                                <tr>
+                                </tr v-show="challenges.expand">
+                                <tr v-show="challenges.expand">
                                     <th>亲和</th>
                                     <td>{{get_challenge_prop_score('kindness', 'my')}}</td>
                                     <td>{{get_challenge_prop_score('kindness', 'match')}}</td>
                                     <td :class="{'text-success': get_challenge_prop_score_diff('kindness', 'my', 'match') > 0, 'text-danger': get_challenge_prop_score_diff('kindness', 'my', 'match') < 0}">{{get_challenge_prop_score_diff('kindness', 'my', 'match')}}</td>
                                 </tr>
-                                <tr>
+                                <tr v-show="challenges.expand">
                                     <th>行动</th>
                                     <td>{{get_challenge_prop_score('activity', 'my')}}</td>
                                     <td>{{get_challenge_prop_score('activity', 'match')}}</td>
                                     <td :class="{'text-success': get_challenge_prop_score_diff('activity', 'my', 'match') > 0, 'text-danger': get_challenge_prop_score_diff('activity', 'my', 'match') < 0}">{{get_challenge_prop_score_diff('activity', 'my', 'match')}}</td>
                                 </tr>
-                                <tr>
+                                <tr v-show="challenges.expand">
                                     <th>守护</th>
                                     <td>{{get_challenge_bonus_score('my')}}</td>
                                     <td>{{get_challenge_bonus_score('match')}}</td>
@@ -1078,6 +1084,9 @@
                                     <td>{{get_challenge_total_score('my')}}</td>
                                     <td>{{get_challenge_total_score('match')}}</td>
                                     <td style="font-weight: bold;" :class="{'text-success': get_challenge_total_score_diff('my', 'match') > 0, 'text-danger': get_challenge_total_score_diff('my', 'match') < 0}">{{get_challenge_total_score_diff('my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><a href="javascript:;" @click="challenges.expand = !challenges.expand">展开/收起详情</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1523,6 +1532,28 @@
             </div>
             <!--关卡公司弹窗-->
 
+            <!--24小时设置弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="threshold">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-group clearfix">
+                                <div class="col-xs-6 col-md-4">
+                                    <label class="label-above">分差阈值</label>
+                                    <input type="number" class="form-control" v-model="challenges.select_threshold">
+                                </div>
+                            </div>
+                            <p class="help-block">可设置分差大于某一数值判定过关，来平衡未知公司数据的影响</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" @click="save_challenge_threshold()">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--24小时公司弹窗-->
+
             <!--24小时公司弹窗-->
             <div class="modal fade" tabindex="-1" role="dialog" id="challenge">
                 <div class="modal-dialog" role="document">
@@ -1592,12 +1623,22 @@
                                                 <span v-show="challenges.sort == 'score' && challenges.desc == 1">▼</span>
                                                 <span v-show="challenges.sort == 'score' && challenges.desc == -1">▲</span>
                                             </th>
-                                            <th @click="challenge_select_sort('total_loss')">
+                                            <th @click="challenge_select_sort('loss')">
+                                                受损
+                                                <span v-show="challenges.sort == 'loss' && challenges.desc == 1">▼</span>
+                                                <span v-show="challenges.sort == 'loss' && challenges.desc == -1">▲</span>
+                                            </th>
+                                            <!-- <th @click="challenge_select_sort('total_loss')">
                                                 总受损
                                                 <span v-show="challenges.sort == 'total_loss' && challenges.desc == 1">▼</span>
                                                 <span v-show="challenges.sort == 'total_loss' && challenges.desc == -1">▲</span>
-                                            </th>
+                                            </th> -->
                                             <!-- <th>对比</th> -->
+                                            <th @click="challenge_select_sort('loss_rate')">
+                                                损益比
+                                                <span v-show="challenges.sort == 'loss_rate' && challenges.desc == 1">▼</span>
+                                                <span v-show="challenges.sort == 'loss_rate' && challenges.desc == -1">▲</span>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1613,7 +1654,9 @@
                                             <td class="hidden-xs">{{item.card.kindness}}</td>
                                             <td class="hidden-xs">{{item.card.activity}}</td> -->
                                             <td>{{item.score}}</td>
-                                            <td>{{item.total_loss}}</td>
+                                            <td>{{item.loss}}</td>
+                                            <!-- <td>{{item.total_loss}}</td> -->
+                                            <td>{{item.loss_rate}}%</td>
                                             <!-- <td><small>{{challenges.calc_max_loss > 0 ? Math.round(Math.abs(item.total_loss) / challenges.calc_max_loss * 100) : 0}}%</small></td> -->
                                         </tr>
                                     </tbody>
@@ -2014,7 +2057,7 @@
         </div>
     </div>
     <p id="tips">加载中...</p>
-    <script type="text/javascript" src="js/vm.js?v=2.2.6"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.3.5"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');

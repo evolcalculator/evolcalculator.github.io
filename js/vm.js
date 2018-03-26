@@ -240,14 +240,17 @@ var vm = new Vue({
         //24小时挑战
         challenge: [],
         challenges: {
+            expand: false,
+            threshold: 800,
+            select_threshold: 800,
             sort: 'score',
             desc: 1,
             my_bonus: 0,
             match_bonus: 0,
-            calc_max_loss: 0,
             combine: [],
             challenge: {},
             record: $.LS.get('challenges.record') ? JSON.parse($.LS.get('challenges.record')) : [],
+            recommend_text: '点击推荐卡组，找出最小损耗组合。',
             my_damaged: [],
             match_damaged: [],
             ready: false,
@@ -862,8 +865,10 @@ var vm = new Vue({
                     // this.challenges.match_company[key] = this.company[key];
                 }
             }
+
             this.challenge_cards();
             this.update_field_ids();
+            this.challenges.recommend_text = '点击推荐卡组，找出最小损耗组合。';
         },
         get_challenge_factor: function(challenge){
             var ret = {};
@@ -923,7 +928,9 @@ var vm = new Vue({
                 my_cards.push({
                     card: card,
                     score: Math.round(score),
-                    total_loss: 0
+                    total_loss: 0,
+                    loss: 0,
+                    loss_rate: 0
                 });
             }
             my_cards.sort(function(a, b) {
@@ -1090,6 +1097,302 @@ var vm = new Vue({
             this.challenges.field_ids = ids;
             this.challenges.my_ids = my_ids;
         },
+        challenge_recommend: function(){
+            this.clear_challenge_card('my');
+            if(this.challenges.match[0].card_id == 0 && this.challenges.match[1].card_id == 0 && this.challenges.match[2].card_id == 0){
+                return false;
+            }
+
+            var field_ids = this.challenges.field_ids;
+            
+            var choice = [];
+            var list = [];
+
+            for(var i = 0; i < this.challenges.cards.length; i++){
+                var card = this.challenges.cards[i].card;
+                if(field_ids.indexOf(card.card_id) >= 0){
+                    choice.push(card);
+                } else {
+                    list.push(card);
+                }
+            }
+
+            list.sort(function(a, b){
+                return b.total - a.total;
+            });
+
+            var limit = 30 - choice.length;
+            if(list.length > limit){
+                var line = list[limit - 1].total;
+                var gap = 200;
+                for(var i = 0; i < list.length; i++){
+                    var card = list[i];
+                    if(card.total > line - gap){
+                        choice.push(card);
+                    }
+                }
+            } else {
+                for(var i = 0; i < list.length; i++){
+                    choice.push(list[i]);
+                }
+            }
+
+            var cards = [];
+            for(var i = 0; i < choice.length; i++){
+                var card = choice[i];
+                cards.push({
+                    card: card,
+                    score: this.get_challenge_score(card)
+                });
+            }
+
+            if(cards.length > 30){
+                cards = cards.slice(0, 30);
+            }
+
+            var empty_card = {
+                card_id: 0,
+                evolved: 0,
+                star: 1,
+                level: 1,
+                decisiveness: 0,
+                creativity: 0,
+                kindness: 0,
+                activity: 0,
+                name: '',
+                type: 0,
+                category: 0,
+                total: 0,
+                score: 0
+            };
+            cards.push({
+                card: empty_card,
+                score: 0
+            });
+            cards.sort(function(a, b){
+                return a.score - b.score;
+            });
+
+            var exclude = [];
+            var calc = this.challenges.calc;
+            var result = [];
+            var count = cards.length;
+            var match_score = this.get_challenge_total_score('match');
+            var threshold = this.challenges.threshold;
+            var vo = [];
+            var loss = [-1, -1, -1];
+
+            this.challenges.calc_company = this.challenges.my_company;
+            this.challenges.calc_bonus = this.challenges.my_bonus;
+
+            for(var i = 0; i < count; i++){
+                vo[0] = cards[i];
+
+                // console.log(1, vo[0].card.name);
+
+                if(vo[0].card.card_id == 0){
+                    continue;
+                }
+
+                for(var t = 0; t < 3; t++){
+                    if(t > 0){
+                        vo[t] = {
+                            card: empty_card,
+                            score: 0
+                        };
+                    }
+
+                    this.challenges.calc[t].card_id = vo[t].card.card_id;
+                    this.challenges.calc[t].evolved = vo[t].card.evolved;
+                    this.challenges.calc[t].star = vo[t].card.star;
+                    this.challenges.calc[t].level = vo[t].card.level;
+                    this.challenges.calc[t].decisiveness = parseInt(vo[t].card.decisiveness, 10);
+                    this.challenges.calc[t].creativity = parseInt(vo[t].card.creativity, 10);
+                    this.challenges.calc[t].kindness = parseInt(vo[t].card.kindness, 10);
+                    this.challenges.calc[t].activity = parseInt(vo[t].card.activity, 10);
+                    this.challenges.calc[t].name = vo[t].card.name;
+                    this.challenges.calc[t].type = vo[t].card.type;
+                    this.challenges.calc[t].category = vo[t].card.category;
+                    this.challenges.calc[t].total = vo[t].card.total;
+                    this.challenges.calc[t].score = vo[t].score;
+                }
+
+                var score0 = this.get_challenge_total_score('calc');
+
+                // console.log(1, score0, score0 >= match_score + threshold);
+
+                if(score0 >= match_score + threshold){
+                    var loss0 = this.get_challenge_card_loss_total('calc', 'match');
+
+                    // console.log(1, loss0, loss[0], loss0 <= loss[0]);
+
+                    if(loss[0] < 0){
+                        loss[0] = loss0;
+                    } else {
+                        if(loss0 <= loss[0]){
+                            loss[0] = loss0;
+                        } else {
+                            continue;
+                        }
+                    }
+                }
+
+                // console.log(1, loss0, 'live0');
+
+                for(var j = 0; j < count; j++){
+                    vo[1] = cards[j];
+
+                    // console.log('----------', 1, vo[0].card.name);
+                    // console.log(2, vo[1].card.name);
+
+                    var md_key = i + ':' + j;
+                    if(exclude.indexOf(md_key) >= 0 || j == i){
+                        continue;
+                    }
+                    var ex_key = j + ':' + i;
+                    exclude.push(ex_key);
+
+                    for(var t = 0; t < 3; t++){
+                        if(t > 1){
+                            vo[t] = {
+                                card: empty_card,
+                                score: 0
+                            };
+                        }
+
+                        this.challenges.calc[t].card_id = vo[t].card.card_id;
+                        this.challenges.calc[t].evolved = vo[t].card.evolved;
+                        this.challenges.calc[t].star = vo[t].card.star;
+                        this.challenges.calc[t].level = vo[t].card.level;
+                        this.challenges.calc[t].decisiveness = parseInt(vo[t].card.decisiveness, 10);
+                        this.challenges.calc[t].creativity = parseInt(vo[t].card.creativity, 10);
+                        this.challenges.calc[t].kindness = parseInt(vo[t].card.kindness, 10);
+                        this.challenges.calc[t].activity = parseInt(vo[t].card.activity, 10);
+                        this.challenges.calc[t].name = vo[t].card.name;
+                        this.challenges.calc[t].type = vo[t].card.type;
+                        this.challenges.calc[t].category = vo[t].card.category;
+                        this.challenges.calc[t].total = vo[t].card.total;
+                        this.challenges.calc[t].score = vo[t].score;
+                    }
+
+                    var score1 = this.get_challenge_total_score('calc');
+
+                    // console.log(2, score1, score1 >= match_score + threshold);
+
+                    if(score1 >= match_score + threshold){
+                        var loss1 = this.get_challenge_card_loss_total('calc', 'match');
+
+                        // console.log(2, loss1, loss[1], loss1 <= loss[1]);
+
+                        if(loss[1] < 0){
+                            loss[1] = loss1;
+                        } else {
+                            if(loss1 <= loss[1]){
+                                loss[1] = loss1;
+                            } else {
+                                continue;
+                            }
+                        }
+                    }
+                    
+                    // console.log(2, loss1, 'live1');
+
+                    for(var k = 0; k < count; k++){
+                        vo[2] = cards[k];
+
+                        if((vo[1].card.card_id == 0 && vo[2].card.card_id != 0) || k == i || (k == j && j != 0)){
+                            continue;
+                        }
+
+                        var key = i + ':' + j + ':' + k;
+
+                        if(exclude.indexOf(key) >= 0){
+                            continue;
+                        }
+                        var ex_key1 = i + ':' + k + ':' + j;
+                        var ex_key2 = j + ':' + k + ':' + i;
+
+                        exclude.push(ex_key1);
+                        exclude.push(ex_key2);
+
+                        for(var t = 0; t < 3; t++){
+                            this.challenges.calc[t].card_id = vo[t].card.card_id;
+                            this.challenges.calc[t].evolved = vo[t].card.evolved;
+                            this.challenges.calc[t].star = vo[t].card.star;
+                            this.challenges.calc[t].level = vo[t].card.level;
+                            this.challenges.calc[t].decisiveness = parseInt(vo[t].card.decisiveness, 10);
+                            this.challenges.calc[t].creativity = parseInt(vo[t].card.creativity, 10);
+                            this.challenges.calc[t].kindness = parseInt(vo[t].card.kindness, 10);
+                            this.challenges.calc[t].activity = parseInt(vo[t].card.activity, 10);
+                            this.challenges.calc[t].name = vo[t].card.name;
+                            this.challenges.calc[t].type = vo[t].card.type;
+                            this.challenges.calc[t].category = vo[t].card.category;
+                            this.challenges.calc[t].total = vo[t].card.total;
+                            this.challenges.calc[t].score = vo[t].score;
+                        }
+
+                        var my_score = this.get_challenge_total_score('calc');
+
+                        if(my_score < match_score + threshold){
+                            continue;
+                        }
+
+                        var total_loss = this.get_challenge_card_loss_total('calc', 'match');
+                        // var card_select = [];
+                        // var card_key = key.split(':');
+                        // for(var t = 0; t < card_key.length; t++){
+                        //     card_select.push(cards[card_key[t]].card.name);
+                        // }
+                        result.push({
+                            key: key,
+                            // card_select: card_select,
+                            score: my_score,
+                            loss: total_loss
+                        });
+                    }
+                }
+            }
+
+            if(result.length == 0){
+                this.challenges.recommend_text = '当前卡组无法达到过关要求。';
+                return false;
+            } else {
+                this.challenges.recommend_text = '';
+            }
+
+            result.sort(function(a, b){
+                var res = a.loss - b.loss;
+                if(res == 0){
+                    res = a.score - b.score;
+                }
+
+                return res;
+            });
+
+            // console.log(result);
+
+            var comb = result[0].key.split(':');
+            for(var t = 0; t < comb.length; t++){
+                var item = cards[comb[t]];
+                this.challenges.my[t].card_id = item.card.card_id;
+                this.challenges.my[t].evolved = item.card.evolved;
+                this.challenges.my[t].star = item.card.star;
+                this.challenges.my[t].level = item.card.level;
+                this.challenges.my[t].decisiveness = parseInt(item.card.decisiveness, 10);
+                this.challenges.my[t].creativity = parseInt(item.card.creativity, 10);
+                this.challenges.my[t].kindness = parseInt(item.card.kindness, 10);
+                this.challenges.my[t].activity = parseInt(item.card.activity, 10);
+                this.challenges.my[t].name = item.card.name;
+                this.challenges.my[t].type = item.card.type;
+                this.challenges.my[t].category = item.card.category;
+                this.challenges.my[t].total = item.card.total;
+                this.challenges.my[t].score = item.score;
+            }
+
+            this.update_field_ids();
+            this.challenge_ready();
+            this.challenges.option = 'my';
+        },
         challenge_record_retract: function(){
             var record = this.challenges.record.splice(0, 1);
             var list = [];
@@ -1204,18 +1507,18 @@ var vm = new Vue({
                     card.evolved = this.challenges.select.evolved;
                     card.star = this.challenges.select.star;
                     card.level = this.challenges.select.level;
-                    card.decisiveness = this.challenges.select.decisiveness;
-                    card.creativity = this.challenges.select.creativity;
-                    card.kindness = this.challenges.select.kindness;
-                    card.activity = this.challenges.select.activity;
-                    card.total = this.challenges.select.total;
+                    card.decisiveness = parseInt(this.challenges.select.decisiveness, 10);
+                    card.creativity = parseInt(this.challenges.select.creativity, 10);
+                    card.kindness = parseInt(this.challenges.select.kindness, 10);
+                    card.activity = parseInt(this.challenges.select.activity, 10);
+                    // card.total = this.challenges.select.total;
                     
-                    // var data = this.predict_card(card.card_id, card.evolved, card.star, card.level);
-                    // var prop = this.prop;
-                    // card.total = 0;
-                    // for (var j = 0; j < prop.length; j++) {
-                    //     card.total += data[prop[j]];
-                    // }
+                    var data = this.predict_card(card.card_id, card.evolved, card.star, card.level);
+                    var prop = this.prop;
+                    card.total = 0;
+                    for (var j = 0; j < prop.length; j++) {
+                        card.total += data[prop[j]];
+                    }
 
                     break;
                 }
@@ -1223,6 +1526,14 @@ var vm = new Vue({
 
             this.get_challenges();
             $('#edit').modal('hide');
+        },
+        show_challenge_threshold: function(){
+            this.challenges.select_threshold = this.challenges.threshold;
+            $('#threshold').modal();
+        },
+        save_challenge_threshold: function(){
+            this.challenges.threshold = parseInt(this.challenges.select_threshold, 10);
+            $('#threshold').modal('hide');
         },
         show_challenge_card: function(idx, option) {
             this.challenges.select.idx = idx;
@@ -1272,7 +1583,6 @@ var vm = new Vue({
             this.challenges.select.idx = idx;
             this.challenges.select.option = option;
             
-            var loss = [];
             var list = [];
 
             for(var i = 0; i < this.challenges.cards.length; i++){
@@ -1301,10 +1611,46 @@ var vm = new Vue({
                     card.score = select.score;
                 }
 
-                var total_loss = this.get_challenge_card_loss_total('calc', 'match');
-                loss.push(total_loss);
+                // var total_loss = this.get_challenge_card_loss_total('calc', 'match');
                 
-                vo.total_loss = 0 - total_loss;
+                var prop = this.prop;
+                var arr = [];
+                var calc = this.challenges.calc;
+                for(var j = 0; j < calc.length; j++){
+                    arr.push(this.copy(calc[j]));
+                }
+
+                var loss = [];
+
+                for(var j = 0; j < arr.length; j++){
+                    loss[j] = this.get_total(arr[j]);
+                }
+
+                for(var j = 0; j < prop.length; j++){
+                    var damage = this.get_challenge_card_loss(prop[j], 'calc', 'match');
+                    for(var k = 0; k < arr.length; k++){
+                        if(arr[k].card_id > 0 && damage > 0){
+                            var p = arr[k][prop[j]];
+                            if(p >= damage){
+                                arr[k][prop[j]] = p - damage;
+                                damage = 0;
+                            } else {
+                                arr[k][prop[j]] = 0;
+                                damage -= p;
+                            }
+                        }
+                    }
+                }
+
+                var total_loss = 0;
+                for(var j = 0; j < arr.length; j++){
+                    loss[j] = this.get_total(arr[j]) - loss[j];
+                    total_loss += loss[j];
+                }
+
+                vo.loss = loss[idx];
+                vo.total_loss = total_loss;
+                vo.loss_rate = Math.round((Math.abs(vo.loss) / vo.score) * 100) / 100;
                 list.push(vo);
             }
 
@@ -1314,11 +1660,6 @@ var vm = new Vue({
             });
 
             this.challenges.field_list = list;
-
-            loss.sort(function(a,b){
-                return b-a;
-            });
-            this.challenges.calc_max_loss = loss[0];
 
             $('#field').modal();
         },
@@ -1380,8 +1721,15 @@ var vm = new Vue({
             card.name = select.name;
             card.type = select.type;
             card.category = select.category;
-            card.total = select.total;
+            // card.total = select.total;
             card.score = this.get_challenge_score(card);
+
+            var data = this.predict_card(card.card_id, card.evolved, card.star, card.level);
+            var prop = this.prop;
+            card.total = 0;
+            for (var j = 0; j < prop.length; j++) {
+                card.total += data[prop[j]];
+            }
 
             this.update_field_ids();
             this.challenge_ready();
