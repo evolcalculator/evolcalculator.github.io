@@ -867,6 +867,9 @@ var vm = new Vue({
         }
     },
     methods: {
+        image_load: function(e){
+            $(e.target).prev().hide();
+        },
         //24小时挑战
         get_total: function(obj){
             var total = 0;
@@ -957,7 +960,9 @@ var vm = new Vue({
                     total_loss: 0,
                     loss: 0,
                     loss_unit_score: 0,
-                    score_reduce: 0
+                    score_reduce: 0,
+                    score_reduce_total: 0,
+                    loss_unit_score_reduce: 0
                 });
             }
             my_cards.sort(function(a, b) {
@@ -1687,8 +1692,8 @@ var vm = new Vue({
 
                 var match_score = this.get_challenge_total_score('match');
                 var match_damaged = this.challenge_get_damaged('match','calc');
-                var match_damaged_score = 0;
-                match_damaged_score += this.get_challenge_bonus_score('match');
+                var match_damaged_score = this.get_challenge_bonus_score('match');
+                
                 for(var j = 0; j < prop.length; j++){
                     var prop_val = 0;
                     var attr = prop[j];
@@ -1701,6 +1706,35 @@ var vm = new Vue({
                     match_damaged_score += Math.round(factor[attr] * prop_val);
                 }
 
+                calc[idx].card_id = 0;
+                calc[idx].evolved = 0;
+                calc[idx].star = 1;
+                calc[idx].level = 1;
+                calc[idx].decisiveness = 0;
+                calc[idx].creativity = 0;
+                calc[idx].kindness = 0;
+                calc[idx].activity = 0;
+                calc[idx].name = '';
+                calc[idx].type = 0;
+                calc[idx].category = 0;
+                calc[idx].total = 0;
+                calc[idx].score = 0;
+
+                var prev_match_damaged = this.challenge_get_damaged('match','calc');
+                var prev_match_damaged_score = this.get_challenge_bonus_score('match');
+
+                for(var j = 0; j < prop.length; j++){
+                    var prop_val = 0;
+                    var attr = prop[j];
+                    for(var k = 0; k < prev_match_damaged.length; k++){
+                        if(prev_match_damaged[k].card_id != 0){
+                            prop_val += prev_match_damaged[k][attr];
+                        }
+                    }
+                    prop_val += parseInt(this.challenges['match_company'][attr], 10);
+                    prev_match_damaged_score += Math.round(factor[attr] * prop_val);
+                }
+
                 var total_loss = 0;
                 for(var j = 0; j < arr.length; j++){
                     loss[j] = this.get_total(arr[j]) - loss[j];
@@ -1709,9 +1743,10 @@ var vm = new Vue({
 
                 vo.loss = loss[idx];
                 vo.total_loss = total_loss;
-                // vo.loss_rate = Math.round((Math.abs(vo.loss) / vo.score) * 100) / 100;
-                vo.loss_unit_score = Math.round(vo.score / Math.abs(vo.loss) / Math.abs(vo.loss) * 100) / 100;
-                vo.score_reduce = match_score - match_damaged_score;
+                vo.loss_unit_score = Math.round(vo.score / Math.abs(vo.loss));
+                vo.score_reduce = prev_match_damaged_score - match_damaged_score;
+                vo.loss_unit_score_reduce = vo.loss == 0 ? 0 : Math.round(vo.score_reduce / Math.abs(vo.loss));
+                vo.score_reduce_total = match_score - match_damaged_score;
                 list.push(vo);
             }
 
@@ -3325,6 +3360,11 @@ var vm = new Vue({
         },
         //添加羁绊
         add_all_card: function(){
+            var ack = confirm('确定添加全部吗？');
+            if(!ack){
+                return false;
+            }
+
             this.batch.source = 'all';
             this.import_data();
         },
