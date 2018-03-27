@@ -18,6 +18,9 @@
         #tips {
             padding: 15px;
         }
+        .img-icon {
+            width: 80%;
+        }
     </style>
     <script type='text/javascript' charset="utf-8" src='js/jquery.js'></script>
     <script type='text/javascript' charset="utf-8" src='js/storage.js'></script>
@@ -1622,7 +1625,7 @@
                                     <li role="presentation" :class="{active: challenges.field_option == 4}"><a href="javascript:;" @click="challenges.field_option = 4">SR</a></li>
                                     <li role="presentation" :class="{active: challenges.field_option == 3}"><a href="javascript:;" @click="challenges.field_option = 3">R</a></li>
                                 </ul>
-                                <table class="table table-bordered table-hover" style="min-width: 400px;">
+                                <table class="table table-bordered table-hover" :style="{'min-width': challenges.mode == '0' ? '450px' : '500px'}">
                                     <thead>
                                         <tr>
                                             <th>名称</th>
@@ -1636,9 +1639,14 @@
                                                 <span v-show="challenges.sort == 'score' && challenges.desc == -1">▲</span>
                                             </th>
                                             <th @click="challenge_select_sort('score_reduce')" v-show="challenges.mode == '1'">
-                                                总共磨掉
+                                                磨掉
                                                 <span v-show="challenges.sort == 'score_reduce' && challenges.desc == 1">▼</span>
                                                 <span v-show="challenges.sort == 'score_reduce' && challenges.desc == -1">▲</span>
+                                            </th>
+                                            <th @click="challenge_select_sort('score_reduce_total')" v-show="challenges.mode == '1'">
+                                                总计
+                                                <span v-show="challenges.sort == 'score_reduce_total' && challenges.desc == 1">▼</span>
+                                                <span v-show="challenges.sort == 'score_reduce_total' && challenges.desc == -1">▲</span>
                                             </th>
                                             <th @click="challenge_select_sort('loss')">
                                                 受损
@@ -1657,9 +1665,14 @@
                                                 <span v-show="challenges.sort == 'loss_rate' && challenges.desc == -1">▲</span>
                                             </th> -->
                                             <th @click="challenge_select_sort('loss_unit_score')" v-show="challenges.mode == '0'">
-                                                得分率
+                                                单位收益
                                                 <span v-show="challenges.sort == 'loss_unit_score' && challenges.desc == 1">▼</span>
                                                 <span v-show="challenges.sort == 'loss_unit_score' && challenges.desc == -1">▲</span>
+                                            </th>
+                                            <th @click="challenge_select_sort('loss_unit_score_reduce')" v-show="challenges.mode == '1'">
+                                                单位收益
+                                                <span v-show="challenges.sort == 'loss_unit_score_reduce' && challenges.desc == 1">▼</span>
+                                                <span v-show="challenges.sort == 'loss_unit_score_reduce' && challenges.desc == -1">▲</span>
                                             </th>
                                         </tr>
                                     </thead>
@@ -1677,11 +1690,10 @@
                                             <td class="hidden-xs">{{item.card.activity}}</td> -->
                                             <td v-show="challenges.mode == '0'">{{item.score}}</td>
                                             <td v-show="challenges.mode == '1'">{{item.score_reduce}}</td>
+                                            <td v-show="challenges.mode == '1'">{{item.score_reduce_total}}</td>
                                             <td>{{item.loss}}</td>
-                                            <!-- <td>{{item.total_loss}}</td> -->
-                                            <!-- <td>{{isNaN(item.loss_rate) ? 'N/A' : (item.loss_rate + '%')}}</td> -->
                                             <td v-show="challenges.mode == '0'">{{item.loss_unit_score}}</td>
-                                            <!-- <td><small>{{challenges.calc_max_loss > 0 ? Math.round(Math.abs(item.total_loss) / challenges.calc_max_loss * 100) : 0}}%</small></td> -->
+                                            <td v-show="challenges.mode == '1'">{{item.loss_unit_score_reduce}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -1771,7 +1783,8 @@
                                         <a href="javascript:;" @click="use_challenge_card(item.card_id)" style="font-size: small;">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></a>
                                     </div>
                                     <div class="col-xs-4 col-md-3 col-lg-2" v-for="icon in item.head.split(',')">
-                                        <img :src="'img/card/' + icon + '.png'" width="80%" alt="图片加载中...">
+                                        <span>图片加载中...</span>
+                                        <img :src="'img/card/' + icon + '.png'" width="80%" @load="image_load($event)">
                                     </div>
                                 </div>
                             </div>
@@ -2081,7 +2094,8 @@
         </div>
     </div>
     <p id="tips">加载中...</p>
-    <script type="text/javascript" src="js/vm.js?v=2.3.16"></script>
+
+    <script type="text/javascript" src="js/vm.js?v=2.3.17"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
