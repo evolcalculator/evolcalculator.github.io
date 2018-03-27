@@ -1400,6 +1400,8 @@ var vm = new Vue({
                 for(var i = 1; i <= 3; i++){
                     max_score += cards[cards.length - i].score;
                 }
+                max_score += this.get_challenge_company_score('my');
+                max_score += this.get_challenge_bonus_score('my');
                 var diff = match_score + threshold - max_score;
                 this.challenges.recommend_text = '当前卡组无法达到过关要求，还需要磨掉 ' + diff + ' 分';
                 return false;
