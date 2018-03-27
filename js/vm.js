@@ -240,6 +240,7 @@ var vm = new Vue({
         //24小时挑战
         challenge: [],
         challenges: {
+            mode: '0',
             expand: false,
             threshold: 2000,
             select_threshold: 2000,
@@ -250,7 +251,7 @@ var vm = new Vue({
             combine: [],
             challenge: {},
             record: $.LS.get('challenges.record') ? JSON.parse($.LS.get('challenges.record')) : [],
-            recommend_text: '点击推荐卡组，找出最小损耗组合。',
+            recommend_text: '',
             field_option: 0,
             my_damaged: [],
             match_damaged: [],
@@ -447,7 +448,8 @@ var vm = new Vue({
         },
         challenge_select: {
             library: 1,
-            level: 1
+            level: 1,
+            next_level: 2
         }
     },
     watch: {
@@ -850,6 +852,18 @@ var vm = new Vue({
             if(!this.empty(this.challenges.challenge)){
                 this.get_challenges();
             }
+
+            for(var i = 0; i < this.challenge.length; i++){
+                if(this.challenge[i].level == newVal){
+                    if(i < this.challenge.length - 1 && this.challenge[i + 1].library == this.challenge[i].library){
+                        this.challenge_select.next_level = this.challenge[i + 1].level;
+                    } else {
+                        this.challenge_select.next_level = -1;
+                    }
+
+                    break;
+                }
+            }
         }
     },
     methods: {
@@ -874,7 +888,8 @@ var vm = new Vue({
 
             this.challenge_cards();
             this.update_field_ids();
-            this.challenges.recommend_text = '点击推荐卡组，找出最小损耗组合。';
+
+            // this.challenges.recommend_text = '点击推荐卡组，找出最小损耗组合。';
         },
         get_challenge_factor: function(challenge){
             var ret = {};
@@ -894,6 +909,11 @@ var vm = new Vue({
                 ret[key] = obj[key];
             }
             return ret;
+        },
+        challenge_next: function(){
+            if(this.challenge_select.next_level != -1){
+                this.challenge_select.level = this.challenge_select.next_level;
+            }
         },
         challenge_cards: function(){
             var self = this;
@@ -936,7 +956,8 @@ var vm = new Vue({
                     score: Math.round(score),
                     total_loss: 0,
                     loss: 0,
-                    loss_unit_score: 0
+                    loss_unit_score: 0,
+                    score_reduce: 0
                 });
             }
             my_cards.sort(function(a, b) {
@@ -989,7 +1010,9 @@ var vm = new Vue({
             this.clear_challenge_card('match');
             this.challenges.record = [];
             this.challenges.cards = [];
-            this.get_challenges();
+            if(!this.empty(this.challenges.challenge)){
+                this.get_challenges();
+            }
             if(!this.challenges.ready && this.challenges.record.length == 0){
                 this.challenges.option = 'match';
             }
@@ -1160,7 +1183,6 @@ var vm = new Vue({
                     score: this.get_challenge_score(card)
                 });
             }
-
             if(cards.length > 30){
                 cards = cards.slice(0, 30);
             }
@@ -1369,7 +1391,12 @@ var vm = new Vue({
             }
 
             if(result.length == 0){
-                this.challenges.recommend_text = '当前卡组无法达到过关要求。';
+                var max_score = 0;
+                for(var i = 1; i <= 3; i++){
+                    max_score += cards[cards.length - i].score;
+                }
+                var diff = match_score + threshold - max_score;
+                this.challenges.recommend_text = '当前卡组无法达到过关要求，还需要磨掉 ' + diff + ' 分';
                 return false;
             } else {
                 this.challenges.recommend_text = '';
@@ -1599,6 +1626,7 @@ var vm = new Vue({
             this.challenges.select.option = option;
             
             var list = [];
+            var factor = this.challenges.challenge;
 
             for(var i = 0; i < this.challenges.cards.length; i++){
                 var vo = this.challenges.cards[i];
@@ -1657,6 +1685,22 @@ var vm = new Vue({
                     }
                 }
 
+                var match_score = this.get_challenge_total_score('match');
+                var match_damaged = this.challenge_get_damaged('match','calc');
+                var match_damaged_score = 0;
+                match_damaged_score += this.get_challenge_bonus_score('match');
+                for(var j = 0; j < prop.length; j++){
+                    var prop_val = 0;
+                    var attr = prop[j];
+                    for(var k = 0; k < match_damaged.length; k++){
+                        if(match_damaged[k].card_id != 0){
+                            prop_val += match_damaged[k][attr];
+                        }
+                    }
+                    prop_val += parseInt(this.challenges['match_company'][attr], 10);
+                    match_damaged_score += Math.round(factor[attr] * prop_val);
+                }
+
                 var total_loss = 0;
                 for(var j = 0; j < arr.length; j++){
                     loss[j] = this.get_total(arr[j]) - loss[j];
@@ -1667,6 +1711,7 @@ var vm = new Vue({
                 vo.total_loss = total_loss;
                 // vo.loss_rate = Math.round((Math.abs(vo.loss) / vo.score) * 100) / 100;
                 vo.loss_unit_score = Math.round(vo.score / Math.abs(vo.loss) / Math.abs(vo.loss) * 100) / 100;
+                vo.score_reduce = match_score - match_damaged_score;
                 list.push(vo);
             }
 
@@ -3596,7 +3641,7 @@ var vm = new Vue({
                 data: {
                     name: self.login.name,
                     code: self.login.code,
-                    list: self.get_json_list(),
+                    list: self.login.option == 'create_user' ? self.get_json_list() : '',
                 },
                 success: function(res) {
                     if (res.status == 1) {
@@ -3876,6 +3921,8 @@ var vm = new Vue({
                             self.today = res.today;
                             self.ticket_combine();
                         }
+
+                        self.challenge_reset();
 
                         if (!self.dom_init) {
                             $('.typeahead').typeahead({
