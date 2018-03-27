@@ -1013,9 +1013,9 @@ var vm = new Vue({
         challenge_reset: function(){
             this.clear_challenge_card('my');
             this.clear_challenge_card('match');
-            this.challenges.record = [];
             this.challenges.cards = [];
             if(!this.empty(this.challenges.challenge)){
+                this.challenges.record = [];
                 this.get_challenges();
             }
             if(!this.challenges.ready && this.challenges.record.length == 0){
