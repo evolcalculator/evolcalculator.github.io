@@ -966,11 +966,11 @@
                         </table>
 
                         <p>
-                            <a href="javascript:;" :disabled="challenges.match[0].card_id == 0 && challenges.match[1].card_id == 0 && challenges.match[2].card_id == 0" class="btn btn-default" @click="challenge_recommend()">推荐卡组</a>
-                            <a href="javascript:;" :disabled="!challenges.ready" class="btn btn-primary" @click="challenge_record()">记录损耗</a>
+                            <a href="javascript:;" :disabled="challenges.match[0].card_id == 0 && challenges.match[1].card_id == 0 && challenges.match[2].card_id == 0" class="btn btn-default" @click="challenge_recommend()">推荐卡组</a>&nbsp;
+                            <a href="javascript:;" :disabled="!challenges.ready" class="btn btn-primary" @click="challenge_record()">记录损耗</a>&nbsp;
+                            <a href="javascript:;" :disabled="challenge_select.next_level < 0" class="btn btn-default" @click="challenge_next()">下一关</a>
                         </p>
-                        <p class="help-block" style="text-align: center;">{{challenges.recommend_text}} <br> 分差阈值：{{challenges.threshold}}&nbsp;<a href="javascript:;" @click="show_challenge_threshold()">设置</a></p>
-                        <p class="help-block" style="text-align: center;">（进行下一关的时候记得选择新的主题）</p>
+                        <p class="help-block" style="text-align: center;">{{challenges.recommend_text}} <br v-show="challenges.recommend_text != ''"> 分差阈值：{{challenges.threshold}}&nbsp;<a href="javascript:;" @click="show_challenge_threshold()">设置</a></p>
 
                         <!-- <table class="table table-bordered table-hover table-condensed">
                             <thead>
@@ -1610,6 +1610,11 @@
                             </button>
                         </div>
                         <div class="modal-body">
+                            <p>
+                                模式：
+                                <label><input type="radio" name="mode" v-model="challenges.mode" value="0"> 得分</label>&nbsp;&nbsp;
+                                <label><input type="radio" name="mode" v-model="challenges.mode" value="1"> 磨卡</label>
+                            </p>
                             <div style="overflow-x: scroll;">
                                 <ul class="nav nav-tabs">
                                     <li role="presentation" :class="{active: challenges.field_option == 0}"><a href="javascript:;" @click="challenges.field_option = 0">全部</a></li>
@@ -1625,10 +1630,15 @@
                                             <th class="hidden-xs">创造</th>
                                             <th class="hidden-xs">亲和</th>
                                             <th class="hidden-xs">行动</th> -->
-                                            <th @click="challenge_select_sort('score')">
+                                            <th @click="challenge_select_sort('score')" v-show="challenges.mode == '0'">
                                                 得分
                                                 <span v-show="challenges.sort == 'score' && challenges.desc == 1">▼</span>
                                                 <span v-show="challenges.sort == 'score' && challenges.desc == -1">▲</span>
+                                            </th>
+                                            <th @click="challenge_select_sort('score_reduce')" v-show="challenges.mode == '1'">
+                                                总共磨掉
+                                                <span v-show="challenges.sort == 'score_reduce' && challenges.desc == 1">▼</span>
+                                                <span v-show="challenges.sort == 'score_reduce' && challenges.desc == -1">▲</span>
                                             </th>
                                             <th @click="challenge_select_sort('loss')">
                                                 受损
@@ -1646,7 +1656,7 @@
                                                 <span v-show="challenges.sort == 'loss_rate' && challenges.desc == 1">▼</span>
                                                 <span v-show="challenges.sort == 'loss_rate' && challenges.desc == -1">▲</span>
                                             </th> -->
-                                            <th @click="challenge_select_sort('loss_unit_score')">
+                                            <th @click="challenge_select_sort('loss_unit_score')" v-show="challenges.mode == '0'">
                                                 得分率
                                                 <span v-show="challenges.sort == 'loss_unit_score' && challenges.desc == 1">▼</span>
                                                 <span v-show="challenges.sort == 'loss_unit_score' && challenges.desc == -1">▲</span>
@@ -1665,11 +1675,12 @@
                                             <td class="hidden-xs">{{item.card.creativity}}</td>
                                             <td class="hidden-xs">{{item.card.kindness}}</td>
                                             <td class="hidden-xs">{{item.card.activity}}</td> -->
-                                            <td>{{item.score}}</td>
+                                            <td v-show="challenges.mode == '0'">{{item.score}}</td>
+                                            <td v-show="challenges.mode == '1'">{{item.score_reduce}}</td>
                                             <td>{{item.loss}}</td>
                                             <!-- <td>{{item.total_loss}}</td> -->
                                             <!-- <td>{{isNaN(item.loss_rate) ? 'N/A' : (item.loss_rate + '%')}}</td> -->
-                                            <td>{{item.loss_unit_score}}</td>
+                                            <td v-show="challenges.mode == '0'">{{item.loss_unit_score}}</td>
                                             <!-- <td><small>{{challenges.calc_max_loss > 0 ? Math.round(Math.abs(item.total_loss) / challenges.calc_max_loss * 100) : 0}}%</small></td> -->
                                         </tr>
                                     </tbody>
@@ -2070,7 +2081,7 @@
         </div>
     </div>
     <p id="tips">加载中...</p>
-    <script type="text/javascript" src="js/vm.js?v=2.3.15"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.3.16"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
