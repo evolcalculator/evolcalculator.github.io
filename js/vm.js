@@ -241,8 +241,8 @@ var vm = new Vue({
         challenge: [],
         challenges: {
             expand: false,
-            threshold: 800,
-            select_threshold: 800,
+            threshold: 2000,
+            select_threshold: 2000,
             sort: 'score',
             desc: 1,
             my_bonus: 0,
@@ -936,7 +936,7 @@ var vm = new Vue({
                     score: Math.round(score),
                     total_loss: 0,
                     loss: 0,
-                    loss_rate: 0
+                    loss_unit_score: 0
                 });
             }
             my_cards.sort(function(a, b) {
