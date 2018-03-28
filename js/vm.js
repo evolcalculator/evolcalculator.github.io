@@ -841,13 +841,13 @@ var vm = new Vue({
             this.reverse.addup.activity = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             this.update_reverse_scores();
         },
-        'batch.option': function(newVal, oldVal){
-            if(newVal == 'export_data'){
-                if(this.batch.source == 'all'){
-                    this.batch.source = 'calculator';
-                }
-            }
-        },
+        // 'batch.option': function(newVal, oldVal){
+        //     if(newVal == 'export_data'){
+        //         if(this.batch.source == 'all'){
+        //             this.batch.source = 'calculator';
+        //         }
+        //     }
+        // },
         'challenge_select.level': function(newVal, oldVal){
             if(!this.empty(this.challenges.challenge)){
                 this.get_challenges();
@@ -3171,6 +3171,15 @@ var vm = new Vue({
                     data.push([arr[1], list[i].decisiveness, list[i].creativity, list[i].kindness, list[i].activity].join("\t"));
                 }
                 this.batch.export = data.join("\n");
+            } else if (this.batch.source == 'debug') {
+                var self = this;
+                $('#export_data').button('loading');
+                
+                setTimeout(function(){
+                    var export_data = JSON.stringify(self.$data);
+                    self.batch.export = export_data;
+                    $('#export_data').button('reset');
+                }, 500);
             }
         },
         //导入数据
@@ -3323,6 +3332,9 @@ var vm = new Vue({
         },
         //批量导入
         show_batch: function(option) {
+            if(option == 'import_data' && ['calculator','excel'].indexOf(this.batch.source) < 0){
+                this.batch.source = 'calculator';
+            }
             this.batch.option = option;
             this.batch.export = '';
             $('#batch').modal();

@@ -1949,8 +1949,8 @@
                     <div class="modal-content">
                         <div class="modal-body">
                             <ul class="nav nav-tabs">
-                                <li role="presentation" :class="{active: batch.option == 'import_data'}"><a href="javascript:;" @click="batch.option = 'import_data'">批量导入</a></li>
-                                <li role="presentation" :class="{active: batch.option == 'export_data'}"><a href="javascript:;" @click="batch.option = 'export_data'">批量导出</a></li>
+                                <li role="presentation" :class="{active: batch.option == 'import_data'}"><a href="javascript:;" @click="show_batch('import_data')">批量导入</a></li>
+                                <li role="presentation" :class="{active: batch.option == 'export_data'}"><a href="javascript:;" @click="show_batch('export_data')">批量导出</a></li>
                             </ul>
                             <div class="modal-main">
                                 <div class="radio">
@@ -1959,6 +1959,9 @@
                                     </label>
                                     <label>
                                         <input type="radio" v-model="batch.source" value="excel"> Excel
+                                    </label>
+                                    <label v-show="batch.option == 'export_data'">
+                                        <input type="radio" v-model="batch.source" value="debug"> 调试信息
                                     </label>
                                     <!-- <label v-show="batch.option == 'import_data'">
                                         <input type="radio" v-model="batch.source" value="all"> 所有羁绊
@@ -1976,7 +1979,7 @@
                         </div>
                         <div class="modal-footer" v-show="batch.option == 'export_data'">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" class="btn btn-primary" @click="export_data()">导出</button>
+                            <button type="button" id="export_data" class="btn btn-primary" data-loading-text="导出中..." @click="export_data()">导出</button>
                         </div>
                     </div>
                 </div>
@@ -2095,7 +2098,7 @@
     </div>
     <p id="tips">加载中...</p>
 
-    <script type="text/javascript" src="js/vm.js?v=2.3.19"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.3.20"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
