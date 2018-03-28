@@ -21,6 +21,12 @@
         .img-icon {
             width: 80%;
         }
+        span.image-load-text {
+            display: none;
+        }
+        .image-load span.image-load-text {
+            display: inline;
+        }
     </style>
     <script type='text/javascript' charset="utf-8" src='js/jquery.js'></script>
     <script type='text/javascript' charset="utf-8" src='js/storage.js'></script>
@@ -195,6 +201,7 @@
                                 <td>
                                     <a href="javascript:;" @click="show_card(item.card_id)">修改</a>
                                     <a href="javascript:;" @click="remove_card(item.card_id)">删除</a>
+                                    <a v-show="!empty(challenges.challenge) && challenges.card_ids.indexOf(item.card_id) < 0 && item.level >= 20" href="javascript:;" @click="challenge_add_card(item.card_id)">加入24H</a>
                                 </td>
                             </tr>
                             <tr v-show="!card_expand && list_filtered.length > card_limit">
@@ -1098,7 +1105,7 @@
                     <div v-show="!empty(challenges.challenge)">
                         <h4>
                             <span>我的羁绊</span>
-                            <small v-show="challenges.record.length > 0 || challenges.field_ids.length > 0"><a href="javascript:;" @click="challenge_reset()">重置损耗</a></small>
+                            <small><a href="javascript:;" @click="challenge_reset_click()">重置</a></small>
                         </h4>
                         <p v-show="challenges.cards.length < 30"><a href="javascript:;" @click="nav = 'card'">添加更多羁绊</a></p>
                         <table class="table table-bordered table-hover" v-show="!empty(challenges.cards)">
@@ -1123,7 +1130,10 @@
                                     <td class="hidden-xs">{{item.card.kindness}}</td>
                                     <td class="hidden-xs">{{item.card.activity}}</td>
                                     <td>{{item.score}}</td>
-                                    <td>{{challenges.field_ids.indexOf(item.card.card_id) >= 0 ? '已上阵' : ''}}</td>
+                                    <td v-if="challenges.field_ids.indexOf(item.card.card_id) >= 0">已上阵</td>
+                                    <td v-else>
+                                        <a href="javascript:;" @click="challenge_remove_card(item.card.card_id)">移除</a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1748,7 +1758,12 @@
                                     <input type="number" class="form-control" v-model="challenges.select.activity">
                                 </div>
                             </div>
-                            <p class="help-block"><a href="javascript:;" @click="challenges.select.show_head = !challenges.select.show_head">显示头像▼</a></p>
+                            <p class="help-block">
+                                <a href="javascript:;" @click="challenges.select.show_head = !challenges.select.show_head">显示头像▼</a>&nbsp;
+                                <a href="javascript:;" @click="use_challenge_card(0, 2)" v-show="this.challenges.select.card_id != 0">初级</a>&nbsp;
+                                <a href="javascript:;" @click="use_challenge_card(0, 0)" v-show="this.challenges.select.card_id != 0">未进化</a>&nbsp;
+                                <a href="javascript:;" @click="use_challenge_card(0, 1)" v-show="this.challenges.select.card_id != 0">满级</a>
+                            </p>
                             <div v-show="challenges.select.show_head">
                                 <div class="form-group clearfix">
                                     <div class="col-xs-4 col-md-3 col-lg-2">
@@ -1780,11 +1795,11 @@
                                 </div>
                                 <div class="form-group clearfix" v-for="item in cards" v-if="item.type == challenges.select.rare && item.category == challenges.select.role && item.top == challenges.select.color">
                                     <div class="col-xs-4 col-md-3 col-lg-2">
-                                        <a href="javascript:;" @click="use_challenge_card(item.card_id)" style="font-size: small;">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></a>
+                                        <a href="javascript:;" @click="use_challenge_card(item.card_id, -1)" style="font-size: small;">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></a>
                                     </div>
-                                    <div class="col-xs-4 col-md-3 col-lg-2" v-for="icon in item.head.split(',')">
-                                        <span>图片加载中...</span>
-                                        <img :src="'img/card/' + icon + '.png'" width="80%" @load="image_load($event)">
+                                    <div class="col-xs-4 col-md-3 col-lg-2" v-for="(icon,evol) in item.head.split(',')" class="image-load">
+                                        <span class="image-load-text">图片加载中...</span>
+                                        <a href="javascript:;" @click="use_challenge_card(item.card_id, evol)"><img :src="'img/card/' + icon + '.png'" width="80%" @load="image_load($event)"></a>
                                     </div>
                                 </div>
                             </div>
@@ -2098,7 +2113,7 @@
     </div>
     <p id="tips">加载中...</p>
 
-    <script type="text/javascript" src="js/vm.js?v=2.3.20"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.3.21"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');

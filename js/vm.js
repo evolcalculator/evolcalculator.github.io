@@ -443,6 +443,7 @@ var vm = new Vue({
             cards: $.LS.get('challenges.cards') ? JSON.parse($.LS.get('challenges.cards')) : [],
             field_ids: [],
             my_ids: [],
+            cards_ids: [],
             field_list: [],
             history: $.LS.get('challenges.history') ? JSON.parse($.LS.get('challenges.history')) : [],
         },
@@ -868,7 +869,7 @@ var vm = new Vue({
     },
     methods: {
         image_load: function(e){
-            $(e.target).prev().hide();
+            $(e.target).parent('div').removeClass('image-load');
         },
         //24小时挑战
         get_total: function(obj){
@@ -970,6 +971,7 @@ var vm = new Vue({
             });
 
             self.challenges.cards = my_cards;
+            this.update_card_ids();
         },
         challenge_get_damaged: function(option1, option2){
             var prop = this.prop;
@@ -1010,11 +1012,55 @@ var vm = new Vue({
             }
             return Math.ceil((card.total - total) / card.total * 100) + '%';
         },
+        challenge_add_card: function(card_id){
+            var index = this.my_cards.indexOf(card_id);
+            var card = this.list[index];
+
+            var cards = this.challenges.cards;
+            var idx = -1;
+            for(var i = 0; i < cards.length; i++){
+                if(cards[i].card.card_id == card_id){
+                    idx = i;
+                    break;
+                }
+            }
+            if(idx >= 0){
+                this.challenges.cards[idx].card = this.copy(card);
+            } else {
+                this.challenges.cards.push({
+                    card: this.copy(card),
+                    score: 0
+                });
+            }
+
+            this.get_challenges();
+        },
+        challenge_remove_card: function(card_id){
+            var cards = this.challenges.cards;
+            var idx = -1;
+            for(var i = 0; i < cards.length; i++){
+                if(cards[i].card.card_id == card_id){
+                    idx = i;
+                    break;
+                }
+            }
+            if(idx >= 0){
+                this.challenges.cards.splice(idx, 1);
+                this.update_card_ids();
+            }
+        },
+        challenge_reset_click: function(){
+            var ack = confirm('确定重置吗？');
+            if(!ack){
+                return false;
+            }
+            this.challenge_reset();
+        },
         challenge_reset: function(){
             this.clear_challenge_card('my');
             this.clear_challenge_card('match');
-            this.challenges.cards = [];
             if(!this.empty(this.challenges.challenge)){
+                this.challenges.cards = [];
                 this.challenges.record = [];
                 this.get_challenges();
             }
@@ -1104,6 +1150,14 @@ var vm = new Vue({
             this.clear_challenge_card('my');
             this.get_challenges();
             this.challenges.option = 'match';
+        },
+        update_card_ids: function(){
+            var ids = [];
+            var cards = this.challenges.cards;
+            for(var i = 0; i < cards.length; i++){
+                ids.push(cards[i].card.card_id);
+            }
+            this.challenges.card_ids = ids;
         },
         update_field_ids: function(){
             var record = this.challenges.record;
@@ -1797,10 +1851,33 @@ var vm = new Vue({
 
             $('#field').modal('hide');
         },
-        use_challenge_card: function(card_id){
+        use_challenge_card: function(card_id, evolved){
+            evolved = parseInt(evolved, 10);
+            if(card_id == 0){
+                card_id = this.challenges.select.card_id;
+            }
             var card = this.cards[card_id];
             $('#challenge_typeahead').val(card.name);
             this.challenges.select.card_id = card_id;
+            if(evolved >= 0){
+                switch(evolved){
+                    case 0:
+                        this.challenges.select.evolved = 0;
+                        this.challenges.select.star = card.type;
+                        this.challenges.select.level = (card.type - 1) * 10;
+                        break;
+                    case 1:
+                        this.challenges.select.evolved = 1;
+                        this.challenges.select.star = card.type + 1;
+                        this.challenges.select.level = card.type * 10;
+                        break;
+                    case 2:
+                        this.challenges.select.evolved = 0;
+                        this.challenges.select.star = 1;
+                        this.challenges.select.level = 20;
+                        break;
+                }
+            }
             this.challenges.select.show_head = false;
         },
         save_challenge_card: function() {
