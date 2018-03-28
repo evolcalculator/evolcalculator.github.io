@@ -1063,7 +1063,33 @@ var vm = new Vue({
                 this.challenges.cards = [];
                 this.challenges.record = [];
                 this.get_challenges();
+            } else if(this.challenges.record.length > 0 && this.challenges.cards.length == 0) {
+                this.get_challenges();
+                var prop = this.prop;
+                var record = this.challenges.record;
+
+                for(var k = record.length - 1; k >= 0; k--){
+                    var damaged = record[k].my_damaged;
+
+                    for(var j = 0; j < damaged.length; j++){
+                        var my_card = damaged[j];
+
+                        if(my_card.card_id != 0){
+                            for(var i = 0; i < this.challenges.cards.length; i++){
+                                var card = this.challenges.cards[i].card;
+                                if(card.card_id == my_card.card_id){
+                                    for(var t = 0; t < prop.length; t++){
+                                        card[prop[t]] = my_card[prop[t]];
+                                    }
+
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
             }
+
             if(!this.challenges.ready && this.challenges.record.length == 0){
                 this.challenges.option = 'match';
             }
@@ -1164,6 +1190,7 @@ var vm = new Vue({
             var cards = this.challenges.cards;
             var ids = [];
             var my_ids = [];
+            var prop = this.prop;
 
             for(var i = 0; i < cards.length; i++){
                 var card = cards[i].card;
