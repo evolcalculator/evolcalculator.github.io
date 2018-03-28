@@ -951,7 +951,11 @@
                                     <td>{{get_challenge_company_score('match')}}</td>
                                 </tr>
                                 <tr v-for="(item, idx) in challenges.match">
-                                    <th rowspan="3" v-if="idx == 0">羁绊得分</th>
+                                    <th rowspan="3" v-if="idx == 0">
+                                        羁绊得分
+                                        <br>
+                                        <!-- <small><a href="javascript:;" @click="show_robot()" v-show="lab.robot && lab.robot == 1">机器人</a></small> -->
+                                    </th>
                                     <td v-if="item.card_id > 0">
                                         <a href="javascript:;" @click="show_challenge_card(idx, 'match')">{{item.name}}（{{get_damage_rate(item)}}）</a>
                                     </td>
@@ -1623,10 +1627,11 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>
+                            <p style="text-align: left;">
                                 模式：
                                 <label><input type="radio" name="mode" v-model="challenges.mode" value="0"> 得分</label>&nbsp;&nbsp;
-                                <label><input type="radio" name="mode" v-model="challenges.mode" value="1"> 磨卡</label>
+                                <label><input type="radio" name="mode" v-model="challenges.mode" value="1"> 磨卡</label>&nbsp;&nbsp;
+                                &nbsp;&nbsp;<a href="javascript:;" @click="save_challenge_card(true)">取消上阵</a>
                             </p>
                             <div style="overflow-x: scroll;">
                                 <ul class="nav nav-tabs">
@@ -1720,7 +1725,7 @@
                     <div class="modal-content">
                         <div class="modal-body">
                             <div class="pd15">
-                                <label class="label-above">羁绊名</label>
+                                <label class="label-above">羁绊名 &nbsp;&nbsp; <a href="javascript:;" @click="challenges.select.check_head = !challenges.select.check_head" v-show="challenges.select.card_id != 0">查看头像</a></label>
                                 <input type="text" id="challenge_typeahead" class="typeahead form-control" data-provide="typeahead" autocomplete="off">
                             </div>
                             <div class="form-group clearfix">
@@ -1758,8 +1763,14 @@
                                     <input type="number" class="form-control" v-model="challenges.select.activity">
                                 </div>
                             </div>
+                            <div class="form-group clearfix" v-if="challenges.select.card_id != 0" v-show="challenges.select.check_head">
+                                <div class="col-xs-4 col-md-3 col-lg-2 image-load" v-for="(icon,evol) in cards[challenges.select.card_id].head.split(',')">
+                                    <span class="image-load-text">图片加载中...</span>
+                                    <a href="javascript:;" @click="use_challenge_card(0, evol)"><img :src="'img/card/' + icon + '.png'" width="80%" @load="image_load($event)"></a>
+                                </div>
+                            </div>
                             <p class="help-block">
-                                <a href="javascript:;" @click="challenges.select.show_head = !challenges.select.show_head">显示头像▼</a>&nbsp;
+                                <a href="javascript:;" @click="challenges.select.show_head = !challenges.select.show_head">显示头像▼</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <a href="javascript:;" @click="use_challenge_card(0, 2)" v-show="this.challenges.select.card_id != 0">初级</a>&nbsp;
                                 <a href="javascript:;" @click="use_challenge_card(0, 0)" v-show="this.challenges.select.card_id != 0">未进化</a>&nbsp;
                                 <a href="javascript:;" @click="use_challenge_card(0, 1)" v-show="this.challenges.select.card_id != 0">满级</a>
@@ -1797,7 +1808,7 @@
                                     <div class="col-xs-4 col-md-3 col-lg-2">
                                         <a href="javascript:;" @click="use_challenge_card(item.card_id, -1)" style="font-size: small;">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></a>
                                     </div>
-                                    <div class="col-xs-4 col-md-3 col-lg-2" v-for="(icon,evol) in item.head.split(',')" class="image-load">
+                                    <div class="col-xs-4 col-md-3 col-lg-2 image-load" v-for="(icon,evol) in item.head.split(',')">
                                         <span class="image-load-text">图片加载中...</span>
                                         <a href="javascript:;" @click="use_challenge_card(item.card_id, evol)"><img :src="'img/card/' + icon + '.png'" width="80%" @load="image_load($event)"></a>
                                     </div>
@@ -1805,8 +1816,9 @@
                             </div>
                         </div>
                         <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @click="save_challenge_card(true)" style="color: #000;">清空</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-primary" @click="save_challenge_card()">保存</button>
+                            <button type="button" class="btn btn-primary" @click="save_challenge_card(false)">保存</button>
                         </div>
                     </div>
                 </div>
@@ -2113,7 +2125,7 @@
     </div>
     <p id="tips">加载中...</p>
 
-    <script type="text/javascript" src="js/vm.js?v=2.3.23"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.3.25"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
