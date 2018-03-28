@@ -438,6 +438,7 @@ var vm = new Vue({
                 rare: 5,
                 color: 1,
                 show_head: false,
+                check_head: false,
                 lock: {}
             },
             cards: $.LS.get('challenges.cards') ? JSON.parse($.LS.get('challenges.cards')) : [],
@@ -445,13 +446,14 @@ var vm = new Vue({
             my_ids: [],
             cards_ids: [],
             field_list: [],
-            history: $.LS.get('challenges.history') ? JSON.parse($.LS.get('challenges.history')) : [],
+            history: $.LS.get('challenges.history') ? JSON.parse($.LS.get('challenges.history')) : []
         },
         challenge_select: {
             library: 1,
             level: 1,
             next_level: 2
         }
+        // lab: $.LS.get('lab') ? JSON.parse($.LS.get('lab')) : {}
     },
     watch: {
         //数据本地存储
@@ -869,7 +871,7 @@ var vm = new Vue({
     },
     methods: {
         image_load: function(e){
-            $(e.target).parent('div').removeClass('image-load');
+            $(e.target).closest('div').removeClass('image-load');
         },
         //24小时挑战
         get_total: function(obj){
@@ -918,6 +920,7 @@ var vm = new Vue({
             if(this.challenge_select.next_level != -1){
                 this.challenge_select.level = this.challenge_select.next_level;
             }
+            this.clear_challenge_card('match');
         },
         challenge_cards: function(){
             var self = this;
@@ -1480,9 +1483,14 @@ var vm = new Vue({
                 var max_score = 0;
                 for(var i = 1; i <= 3; i++){
                     max_score += cards[cards.length - i].score;
+                    console.log(max_score);
                 }
                 max_score += this.get_challenge_company_score('my');
+                console.log(max_score);
+
                 max_score += this.get_challenge_bonus_score('my');
+                console.log(max_score);
+                
                 var diff = match_score + threshold - max_score;
                 this.challenges.recommend_text = '当前卡组无法达到过关要求，还需要磨掉 ' + diff + ' 分';
                 return false;
@@ -1668,6 +1676,7 @@ var vm = new Vue({
         show_challenge_card: function(idx, option) {
             this.challenges.select.idx = idx;
             this.challenges.select.option = option;
+            this.challenges.select.check_head = false;
             var card = this.challenges[option][idx];
 
             if(card.card_id != 0){
@@ -1907,10 +1916,28 @@ var vm = new Vue({
             }
             this.challenges.select.show_head = false;
         },
-        save_challenge_card: function() {
+        save_challenge_card: function(clear) {
             var option = this.challenges.select.option;
             var card = this.challenges[option][this.challenges.select.idx];
-            var select = this.challenges.select;
+            if(!clear){
+                var select = this.challenges.select;
+            } else {
+                var select = {
+                    card_id: 0,
+                    evolved: 0,
+                    star: 1,
+                    level: 1,
+                    decisiveness: 0,
+                    creativity: 0,
+                    kindness: 0,
+                    activity: 0,
+                    name: '',
+                    type: 0,
+                    category: 0,
+                    total: 0,
+                    score: 0
+                };
+            }
 
             card.card_id = select.card_id;
             card.evolved = select.evolved;
@@ -1924,19 +1951,25 @@ var vm = new Vue({
             card.type = select.type;
             card.category = select.category;
             // card.total = select.total;
-            card.score = this.get_challenge_score(card);
 
-            var data = this.predict_card(card.card_id, card.evolved, card.star, card.level);
-            var prop = this.prop;
-            card.total = 0;
-            for (var j = 0; j < prop.length; j++) {
-                card.total += data[prop[j]];
+            if(card.card_id != 0){
+                card.score = this.get_challenge_score(card);
+
+                var data = this.predict_card(card.card_id, card.evolved, card.star, card.level);
+                var prop = this.prop;
+                card.total = 0;
+                for (var j = 0; j < prop.length; j++) {
+                    card.total += data[prop[j]];
+                }
+            } else {
+                card.score = 0;
+                card.total = 0;
             }
-
             this.update_field_ids();
             this.challenge_ready();
 
             $('#24hour').modal('hide');
+            $('#field').modal('hide');
         },
         get_challenge_score: function(card){
             var prop = this.prop;
