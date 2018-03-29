@@ -1422,7 +1422,11 @@ var vm = new Vue({
                     for (var k = 0; k < count; k++) {
                         vo[2] = cards[k];
 
-                        if ((vo[1].card.card_id == 0 && vo[2].card.card_id != 0) || k == i || (k == j && j != 0) || (vo[2].card.card_id != 0 && vo[2].score == 0)) {
+                        // console.log('----------', 1, vo[0].card.name);
+                        // console.log('----------', 2, vo[1].card.name);
+                        // console.log(3, vo[2].card.name, vo[1].card.card_id == 0 && vo[2].card.card_id != 0, k == i, k == j && vo[2].card.card_id != 0, vo[2].card.card_id != 0 && vo[2].score == 0);
+
+                        if ((vo[1].card.card_id == 0 && vo[2].card.card_id != 0) || k == i || (k == j && vo[2].card.card_id != 0) || (vo[2].card.card_id != 0 && vo[2].score == 0)) {
                             continue;
                         }
 
@@ -1455,9 +1459,13 @@ var vm = new Vue({
 
                         var my_score = this.get_challenge_total_score('calc');
 
+                        // console.log(3, my_score, my_score < match_score + threshold);
+
                         if (my_score < match_score + threshold) {
                             continue;
                         }
+
+                        // console.log(3, my_score, 'live2');
 
                         var total_loss = this.get_challenge_card_loss_total('calc', 'match');
                         // var card_select = [];
@@ -1479,13 +1487,13 @@ var vm = new Vue({
                 var max_score = 0;
                 for (var i = 1; i <= 3; i++) {
                     max_score += cards[cards.length - i].score;
-                    console.log(max_score);
+                    // console.log(max_score);
                 }
                 max_score += this.get_challenge_company_score('my');
-                console.log(max_score);
+                // console.log(max_score);
 
                 max_score += this.get_challenge_bonus_score('my');
-                console.log(max_score);
+                // console.log(max_score);
 
                 var diff = match_score + threshold - max_score;
                 this.challenges.recommend_text = '当前卡组无法达到过关要求，还需要磨掉 ' + diff + ' 分';
