@@ -1635,6 +1635,7 @@ var vm = new Vue({
         },
         save_challenge_edit: function() {
             var card_id = this.challenges.select.card_id;
+            var prop = this.prop;
             for (var i = 0; i < this.challenges.cards.length; i++) {
                 var card = this.challenges.cards[i].card;
                 if (card.card_id == card_id) {
@@ -1645,10 +1646,16 @@ var vm = new Vue({
                     card.creativity = parseInt(this.challenges.select.creativity, 10);
                     card.kindness = parseInt(this.challenges.select.kindness, 10);
                     card.activity = parseInt(this.challenges.select.activity, 10);
+
+                    for(var j = 0; j < prop.length; j++){
+                        if(isNaN(card[prop[j]])){
+                            card[prop[j]] = 0;
+                        }
+                    }
+
                     // card.total = this.challenges.select.total;
 
                     var data = this.predict_card(card.card_id, card.evolved, card.star, card.level);
-                    var prop = this.prop;
                     card.total = 0;
                     for (var j = 0; j < prop.length; j++) {
                         card.total += data[prop[j]];
@@ -1667,6 +1674,9 @@ var vm = new Vue({
         },
         save_challenge_threshold: function() {
             this.challenges.threshold = parseInt(this.challenges.select_threshold, 10);
+            if(isNaN(this.challenges.threshold)){
+                this.challenges.threshold = 0;
+            }
             $('#threshold').modal('hide');
         },
         show_challenge_card: function(idx, option) {
@@ -1948,11 +1958,17 @@ var vm = new Vue({
             card.category = select.category;
             // card.total = select.total;
 
+            var prop = this.prop;
+            for(var i = 0; i < prop.length; i++){
+                if(isNaN(card[prop[i]])){
+                    card[prop[i]] = 0;
+                }
+            }
+
             if (card.card_id != 0) {
                 card.score = this.get_challenge_score(card);
 
                 var data = this.predict_card(card.card_id, card.evolved, card.star, card.level);
-                var prop = this.prop;
                 card.total = 0;
                 for (var j = 0; j < prop.length; j++) {
                     card.total += data[prop[j]];
@@ -2038,6 +2054,9 @@ var vm = new Vue({
 
             for (var i = 0; i < prop.length; i++) {
                 this.challenges[option + '_company'][prop[i]] = parseInt(company[prop[i]], 10);
+                if(isNaN(this.challenges[option + '_company'][prop[i]])){
+                    this.challenges[option + '_company'][prop[i]] = 0;
+                }
             }
 
             $('#challenge').modal('hide');
