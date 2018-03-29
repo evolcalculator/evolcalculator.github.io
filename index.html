@@ -1595,7 +1595,7 @@
                                     <input type="number" max="5000" class="form-control" v-model="challenges.company.activity">
                                 </div>
                             </div>
-                            <div class="form-group clearfix">
+                            <div class="form-group clearfix" v-show="challenges.company.option == 'match'">
                                 <div class="col-xs-6 col-md-4">
                                     <label class="label-above">总实力</label>
                                     <input type="number" class="form-control" v-model="challenges.company.total">
@@ -1605,7 +1605,7 @@
                                     <p style="text-align: left;"><a class="btn btn-primary" href="javascript:;" @click="split_challenge_company()">平均填入</a></p>
                                 </div>
                             </div>
-                            <p class="help-block">公司数据未知，可根据总实力平均分配</p>
+                            <p class="help-block" v-show="challenges.company.option == 'match'">公司数据未知，可根据总实力平均分配</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
