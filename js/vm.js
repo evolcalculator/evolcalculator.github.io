@@ -82,7 +82,7 @@ var vm = new Vue({
             ssr: 'remain',
             config: false,
             // cols: ['decisiveness','creativity','kindness','activity','gain'],
-            cols: ['value','gain'],
+            cols: ['value', 'gain'],
             sort: 'decisiveness_creativity',
             category: 0,
             factor: [0.9, 0.6, 0.3, 0.2],
@@ -119,8 +119,7 @@ var vm = new Vue({
             combine: [],
             ticket: {},
             my: [],
-            match: [
-                {
+            match: [{
                     card_id: 0,
                     evolved: 0,
                     star: 1,
@@ -256,8 +255,7 @@ var vm = new Vue({
             my_damaged: [],
             match_damaged: [],
             ready: false,
-            calc: [
-                {
+            calc: [{
                     card_id: 0,
                     evolved: 0,
                     star: 1,
@@ -303,8 +301,7 @@ var vm = new Vue({
                     score: 0
                 }
             ],
-            my: [
-                {
+            my: [{
                     card_id: 0,
                     evolved: 0,
                     star: 1,
@@ -350,8 +347,7 @@ var vm = new Vue({
                     score: 0
                 }
             ],
-            match: [
-                {
+            match: [{
                     card_id: 0,
                     evolved: 0,
                     star: 1,
@@ -457,62 +453,62 @@ var vm = new Vue({
     },
     watch: {
         //数据本地存储
-        'challenges.cards': function(newVal, oldVal){
+        'challenges.cards': function(newVal, oldVal) {
             $.LS.set('challenges.cards', JSON.stringify(newVal));
         },
-        'challenges.record': function(newVal, oldVal){
+        'challenges.record': function(newVal, oldVal) {
             $.LS.set('challenges.record', JSON.stringify(newVal));
         },
-        'challenges.history': function(newVal, oldVal){
+        'challenges.history': function(newVal, oldVal) {
             $.LS.set('challenges.history', JSON.stringify(newVal));
         },
-        'levels.multiple': function(newVal, oldVal){
+        'levels.multiple': function(newVal, oldVal) {
             $.LS.set('multiple', newVal);
         },
-        list: function(newVal, oldVal){
+        list: function(newVal, oldVal) {
             $.LS.set('list', JSON.stringify(newVal));
 
             this.ticket_combine();
             this.update_list_filtered();
         },
-        all_cards: function(newVal, oldVal){
+        all_cards: function(newVal, oldVal) {
             this.update_all_cards_filtered();
         },
-        my_cards: function(newVal, oldVal){
+        my_cards: function(newVal, oldVal) {
             $.LS.set('my_cards', JSON.stringify(newVal));
         },
-        'company.decisiveness': function(newVal, oldVal){
+        'company.decisiveness': function(newVal, oldVal) {
             var max = 5000;
             var val = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
-            if(val && val > max){
+            if (val && val > max) {
                 val = max;
             }
             this.company.decisiveness = val;
 
             $.LS.set('company', JSON.stringify(this.company));
         },
-        'company.creativity': function(newVal, oldVal){
+        'company.creativity': function(newVal, oldVal) {
             var max = 5000;
             var val = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
-            if(val && val > max){
+            if (val && val > max) {
                 val = max;
             }
             this.company.creativity = val;
             $.LS.set('company', JSON.stringify(this.company));
         },
-        'company.kindness': function(newVal, oldVal){
+        'company.kindness': function(newVal, oldVal) {
             var max = 5000;
             var val = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
-            if(val && val > max){
+            if (val && val > max) {
                 val = max;
             }
             this.company.kindness = val;
             $.LS.set('company', JSON.stringify(this.company));
         },
-        'company.activity': function(newVal, oldVal){
+        'company.activity': function(newVal, oldVal) {
             var max = 5000;
             var val = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
-            if(val && val > max){
+            if (val && val > max) {
                 val = max;
             }
             this.company.activity = val;
@@ -532,22 +528,22 @@ var vm = new Vue({
             }
         },
         //羁绊筛选
-        'card_filter.name': function(newVal, oldVal){
+        'card_filter.name': function(newVal, oldVal) {
             this.update_list_filtered();
         },
-        'card_filter.category': function(newVal, oldVal){
+        'card_filter.category': function(newVal, oldVal) {
             this.update_list_filtered();
         },
-        'card_filter.type': function(newVal, oldVal){
+        'card_filter.type': function(newVal, oldVal) {
             this.update_list_filtered();
         },
-        'all_card_filter.name': function(newVal, oldVal){
+        'all_card_filter.name': function(newVal, oldVal) {
             this.update_all_cards_filtered();
         },
-        'all_card_filter.category': function(newVal, oldVal){
+        'all_card_filter.category': function(newVal, oldVal) {
             this.update_all_cards_filtered();
         },
-        'all_card_filter.type': function(newVal, oldVal){
+        'all_card_filter.type': function(newVal, oldVal) {
             this.update_all_cards_filtered();
         },
         //羁绊选择
@@ -579,18 +575,18 @@ var vm = new Vue({
             this.card_select.evolved = this.card_select.type < 3 ? 0 : this.card_select.evolved;
             var max_star = this.card_select.evolved == 0 ? this.card_select.type : this.card_select.type + 1;
             var max_level = this.card_select.evolved == 0 ? (this.card_select.type - 1) * 10 : this.card_select.type * 10;
-            if(this.card_select.type < 3){
+            if (this.card_select.type < 3) {
                 max_star = 1;
                 max_level = this.card_select.type == 2 ? 10 : 5;
             }
 
-            if(this.card_select.star > max_star){
+            if (this.card_select.star > max_star) {
                 this.card_select.star = max_star;
             }
-            if(this.card_select.level > max_level){
+            if (this.card_select.level > max_level) {
                 this.card_select.level = max_level;
             }
-            
+
             this.update_card_select();
         },
         'card_select.evolved': function(newVal, oldVal) {
@@ -609,7 +605,7 @@ var vm = new Vue({
         'levels.select.card_id': function(newVal, oldVal) {
             var card_id = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             var card = this.cards[card_id];
-            if(card){
+            if (card) {
                 this.levels.select.name = card.name;
                 this.levels.select.type = card.type;
                 this.levels.select.category = card.category;
@@ -617,19 +613,19 @@ var vm = new Vue({
                 this.levels.select.evolved = this.levels.select.type < 3 ? 0 : this.levels.select.evolved;
                 var max_star = this.levels.select.evolved == 0 ? this.levels.select.type : this.levels.select.type + 1;
                 var max_level = this.levels.select.evolved == 0 ? (this.levels.select.type - 1) * 10 : this.levels.select.type * 10;
-                if(this.levels.select.type < 3){
+                if (this.levels.select.type < 3) {
                     max_star = 1;
                     max_level = this.levels.select.type == 2 ? 10 : 5;
                 }
 
-                if(this.levels.select.star > max_star){
+                if (this.levels.select.star > max_star) {
                     this.levels.select.star = max_star;
                 }
-                if(this.levels.select.level > max_level){
+                if (this.levels.select.level > max_level) {
                     this.levels.select.level = max_level;
                 }
             }
-            
+
             // if (this.my_cards.indexOf(card_id) >= 0) {
             //     for (var i = 0; i < this.list.length; i++) {
             //         if (card_id == this.list[i].card_id) {
@@ -661,7 +657,7 @@ var vm = new Vue({
         'tickets.select.card_id': function(newVal, oldVal) {
             var card_id = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             var card = this.cards[card_id];
-            if(card){
+            if (card) {
                 this.tickets.select.name = card.name;
                 this.tickets.select.type = card.type;
                 this.tickets.select.category = card.category;
@@ -669,15 +665,15 @@ var vm = new Vue({
                 this.tickets.select.evolved = this.tickets.select.type < 3 ? 0 : this.tickets.select.evolved;
                 var max_star = this.tickets.select.evolved == 0 ? this.tickets.select.type : this.tickets.select.type + 1;
                 var max_level = this.tickets.select.evolved == 0 ? (this.tickets.select.type - 1) * 10 : this.tickets.select.type * 10;
-                if(this.tickets.select.type < 3){
+                if (this.tickets.select.type < 3) {
                     max_star = 1;
                     max_level = this.tickets.select.type == 2 ? 10 : 5;
                 }
 
-                if(this.tickets.select.star > max_star){
+                if (this.tickets.select.star > max_star) {
                     this.tickets.select.star = max_star;
                 }
-                if(this.tickets.select.level > max_level){
+                if (this.tickets.select.level > max_level) {
                     this.tickets.select.level = max_level;
                 }
             }
@@ -712,7 +708,7 @@ var vm = new Vue({
         'challenges.select.card_id': function(newVal, oldVal) {
             var card_id = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             var card = this.cards[card_id];
-            if(card){
+            if (card) {
                 this.challenges.select.name = card.name;
                 this.challenges.select.type = card.type;
                 this.challenges.select.category = card.category;
@@ -720,61 +716,61 @@ var vm = new Vue({
                 this.challenges.select.evolved = this.challenges.select.type < 3 ? 0 : this.challenges.select.evolved;
                 var max_star = this.challenges.select.evolved == 0 ? this.challenges.select.type : this.challenges.select.type + 1;
                 var max_level = this.challenges.select.evolved == 0 ? (this.challenges.select.type - 1) * 10 : this.challenges.select.type * 10;
-                if(this.challenges.select.type < 3){
+                if (this.challenges.select.type < 3) {
                     max_star = 1;
                     max_level = this.challenges.select.type == 2 ? 10 : 5;
                 }
 
-                if(this.challenges.select.star > max_star){
+                if (this.challenges.select.star > max_star) {
                     this.challenges.select.star = max_star;
                 }
-                if(this.challenges.select.level > max_level){
+                if (this.challenges.select.level > max_level) {
                     this.challenges.select.level = max_level;
                 }
             }
 
-            if(!this.empty(this.challenges.select.lock)){
-                if(this.challenges.select.lock.card_id != card_id){
+            if (!this.empty(this.challenges.select.lock)) {
+                if (this.challenges.select.lock.card_id != card_id) {
                     this.challenges.select.lock = {};
                 }
             }
-            if(this.empty(this.challenges.select.lock)){
+            if (this.empty(this.challenges.select.lock)) {
                 this.update_challenge_select();
             }
         },
         'challenges.select.evolved': function(newVal, oldVal) {
             this.challenges.select.evolved = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
 
-            if(!this.empty(this.challenges.select.lock)){
-                if(this.challenges.select.lock.evolved != newVal){
+            if (!this.empty(this.challenges.select.lock)) {
+                if (this.challenges.select.lock.evolved != newVal) {
                     this.challenges.select.lock = {};
                 }
             }
-            if(this.empty(this.challenges.select.lock)){
+            if (this.empty(this.challenges.select.lock)) {
                 this.update_challenge_select();
             }
         },
         'challenges.select.star': function(newVal, oldVal) {
             this.challenges.select.star = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
-            
-            if(!this.empty(this.challenges.select.lock)){
-                if(this.challenges.select.lock.star != newVal){
+
+            if (!this.empty(this.challenges.select.lock)) {
+                if (this.challenges.select.lock.star != newVal) {
                     this.challenges.select.lock = {};
                 }
             }
-            if(this.empty(this.challenges.select.lock)){
+            if (this.empty(this.challenges.select.lock)) {
                 this.update_challenge_select();
             }
         },
         'challenges.select.level': function(newVal, oldVal) {
             this.challenges.select.level = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
-            
-            if(!this.empty(this.challenges.select.lock)){
-                if(this.challenges.select.lock.level != newVal){
+
+            if (!this.empty(this.challenges.select.lock)) {
+                if (this.challenges.select.lock.level != newVal) {
                     this.challenges.select.lock = {};
                 }
             }
-            if(this.empty(this.challenges.select.lock)){
+            if (this.empty(this.challenges.select.lock)) {
                 this.update_challenge_select();
             }
         },
@@ -808,39 +804,39 @@ var vm = new Vue({
             this.ticket_cards();
             this.double_cards();
         },
-        'levels.category': function(newVal, oldVal){
+        'levels.category': function(newVal, oldVal) {
             this.double_cards();
         },
         //票房反推
-        'reverse.separate.decisiveness': function(newVal, oldVal){
+        'reverse.separate.decisiveness': function(newVal, oldVal) {
             this.reverse.separate.decisiveness = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             this.update_reverse_scores();
         },
-        'reverse.separate.creativity': function(newVal, oldVal){
+        'reverse.separate.creativity': function(newVal, oldVal) {
             this.reverse.separate.creativity = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             this.update_reverse_scores();
         },
-        'reverse.separate.kindness': function(newVal, oldVal){
+        'reverse.separate.kindness': function(newVal, oldVal) {
             this.reverse.separate.kindness = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             this.update_reverse_scores();
         },
-        'reverse.separate.activity': function(newVal, oldVal){
+        'reverse.separate.activity': function(newVal, oldVal) {
             this.reverse.separate.kindness = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             this.update_reverse_scores();
         },
-        'reverse.addup.decisiveness': function(newVal, oldVal){
+        'reverse.addup.decisiveness': function(newVal, oldVal) {
             this.reverse.addup.decisiveness = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             this.update_reverse_scores();
         },
-        'reverse.addup.creativity': function(newVal, oldVal){
+        'reverse.addup.creativity': function(newVal, oldVal) {
             this.reverse.addup.creativity = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             this.update_reverse_scores();
         },
-        'reverse.addup.kindness': function(newVal, oldVal){
+        'reverse.addup.kindness': function(newVal, oldVal) {
             this.reverse.addup.kindness = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             this.update_reverse_scores();
         },
-        'reverse.addup.activity': function(newVal, oldVal){
+        'reverse.addup.activity': function(newVal, oldVal) {
             this.reverse.addup.activity = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             this.update_reverse_scores();
         },
@@ -851,14 +847,14 @@ var vm = new Vue({
         //         }
         //     }
         // },
-        'challenge_select.level': function(newVal, oldVal){
-            if(!this.empty(this.challenges.challenge)){
+        'challenge_select.level': function(newVal, oldVal) {
+            if (!this.empty(this.challenges.challenge)) {
                 this.get_challenges();
             }
 
-            for(var i = 0; i < this.challenge.length; i++){
-                if(this.challenge[i].level == newVal){
-                    if(i < this.challenge.length - 1 && this.challenge[i + 1].library == this.challenge[i].library){
+            for (var i = 0; i < this.challenge.length; i++) {
+                if (this.challenge[i].level == newVal) {
+                    if (i < this.challenge.length - 1 && this.challenge[i + 1].library == this.challenge[i].library) {
                         this.challenge_select.next_level = this.challenge[i + 1].level;
                     } else {
                         this.challenge_select.next_level = -1;
@@ -870,22 +866,22 @@ var vm = new Vue({
         }
     },
     methods: {
-        image_load: function(e){
+        image_load: function(e) {
             $(e.target).closest('div').removeClass('image-load');
         },
         //24小时挑战
-        get_total: function(obj){
+        get_total: function(obj) {
             var total = 0;
             var prop = this.prop;
-            for(var i = 0; i < prop.length; i++){
+            for (var i = 0; i < prop.length; i++) {
                 total += parseInt(obj[prop[i]], 10);
             }
             return total;
         },
-        get_challenges: function(){
+        get_challenges: function() {
             var total = this.get_total(this.challenges.my_company);
 
-            if(total == 0){
+            if (total == 0) {
                 for (key in this.company) {
                     this.challenges.my_company[key] = this.company[key];
                     // this.challenges.match_company[key] = this.company[key];
@@ -897,11 +893,11 @@ var vm = new Vue({
 
             // this.challenges.recommend_text = '点击推荐卡组，找出最小损耗组合。';
         },
-        get_challenge_factor: function(challenge){
+        get_challenge_factor: function(challenge) {
             var ret = {};
 
-            for(var i = 0; i < this.challenge.length; i++){
-                if(this.challenge[i].library == challenge.library && this.challenge[i].level == challenge.level){
+            for (var i = 0; i < this.challenge.length; i++) {
+                if (this.challenge[i].library == challenge.library && this.challenge[i].level == challenge.level) {
                     ret = this.challenge[i];
                     break;
                 }
@@ -909,20 +905,20 @@ var vm = new Vue({
 
             return ret;
         },
-        copy: function(obj){
+        copy: function(obj) {
             var ret = {};
-            for(key in obj){
+            for (key in obj) {
                 ret[key] = obj[key];
             }
             return ret;
         },
-        challenge_next: function(){
-            if(this.challenge_select.next_level != -1){
+        challenge_next: function() {
+            if (this.challenge_select.next_level != -1) {
                 this.challenge_select.level = this.challenge_select.next_level;
             }
             this.clear_challenge_card('match');
         },
-        challenge_cards: function(){
+        challenge_cards: function() {
             var self = this;
 
             var list = [];
@@ -933,7 +929,7 @@ var vm = new Vue({
             var cards = self.challenges.cards;
             var card_ids = [];
 
-            for(var i = 0; i < cards.length; i++){
+            for (var i = 0; i < cards.length; i++) {
                 var card = cards[i].card;
                 list.push(card);
                 card_ids.push(card.card_id);
@@ -953,7 +949,7 @@ var vm = new Vue({
                 var card = list[i];
                 var prop = self.prop;
 
-                for(var k = 0; k < prop.length; k++){
+                for (var k = 0; k < prop.length; k++) {
                     var attr = prop[k];
                     score += card[attr] * factor[attr];
                 }
@@ -976,21 +972,21 @@ var vm = new Vue({
             self.challenges.cards = my_cards;
             this.update_card_ids();
         },
-        challenge_get_damaged: function(option1, option2){
+        challenge_get_damaged: function(option1, option2) {
             var prop = this.prop;
 
             var list = [];
             var cards = this.challenges[option1];
-            for(var i = 0; i < cards.length; i++){
+            for (var i = 0; i < cards.length; i++) {
                 list.push(this.copy(cards[i]));
             }
 
-            for(var i = 0; i < prop.length; i++){
+            for (var i = 0; i < prop.length; i++) {
                 var damage = this.get_challenge_card_loss(prop[i], option1, option2);
-                for(var k = 0; k < list.length; k++){
-                    if(list[k].card_id > 0 && damage > 0){
+                for (var k = 0; k < list.length; k++) {
+                    if (list[k].card_id > 0 && damage > 0) {
                         var p = list[k][prop[i]];
-                        if(p >= damage){
+                        if (p >= damage) {
                             list[k][prop[i]] = p - damage;
                             damage = 0;
                         } else {
@@ -1001,33 +997,33 @@ var vm = new Vue({
                 }
             }
 
-            for(var i = 0; i < list.length; i++){
+            for (var i = 0; i < list.length; i++) {
                 list[i].score = this.get_challenge_score(list[i]);
             }
 
             return list;
         },
-        get_damage_rate: function(card){
+        get_damage_rate: function(card) {
             var total = 0;
             var prop = this.prop;
-            for(var i = 0; i < prop.length; i++){
+            for (var i = 0; i < prop.length; i++) {
                 total += card[prop[i]];
             }
             return Math.ceil((card.total - total) / card.total * 100) + '%';
         },
-        challenge_add_card: function(card_id){
+        challenge_add_card: function(card_id) {
             var index = this.my_cards.indexOf(card_id);
             var card = this.list[index];
 
             var cards = this.challenges.cards;
             var idx = -1;
-            for(var i = 0; i < cards.length; i++){
-                if(cards[i].card.card_id == card_id){
+            for (var i = 0; i < cards.length; i++) {
+                if (cards[i].card.card_id == card_id) {
                     idx = i;
                     break;
                 }
             }
-            if(idx >= 0){
+            if (idx >= 0) {
                 this.challenges.cards[idx].card = this.copy(card);
             } else {
                 this.challenges.cards.push({
@@ -1038,50 +1034,50 @@ var vm = new Vue({
 
             this.get_challenges();
         },
-        challenge_remove_card: function(card_id){
+        challenge_remove_card: function(card_id) {
             var cards = this.challenges.cards;
             var idx = -1;
-            for(var i = 0; i < cards.length; i++){
-                if(cards[i].card.card_id == card_id){
+            for (var i = 0; i < cards.length; i++) {
+                if (cards[i].card.card_id == card_id) {
                     idx = i;
                     break;
                 }
             }
-            if(idx >= 0){
+            if (idx >= 0) {
                 this.challenges.cards.splice(idx, 1);
                 this.update_card_ids();
             }
         },
-        challenge_reset_click: function(){
+        challenge_reset_click: function() {
             var ack = confirm('确定重置吗？');
-            if(!ack){
+            if (!ack) {
                 return false;
             }
             this.challenge_reset();
         },
-        challenge_reset: function(){
+        challenge_reset: function() {
             this.clear_challenge_card('my');
             this.clear_challenge_card('match');
-            if(!this.empty(this.challenges.challenge)){
+            if (!this.empty(this.challenges.challenge)) {
                 this.challenges.cards = [];
                 this.challenges.record = [];
                 this.get_challenges();
-            } else if(this.challenges.record.length > 0 && this.challenges.cards.length == 0) {
+            } else if (this.challenges.record.length > 0 && this.challenges.cards.length == 0) {
                 this.get_challenges();
                 var prop = this.prop;
                 var record = this.challenges.record;
 
-                for(var k = record.length - 1; k >= 0; k--){
+                for (var k = record.length - 1; k >= 0; k--) {
                     var damaged = record[k].my_damaged;
 
-                    for(var j = 0; j < damaged.length; j++){
+                    for (var j = 0; j < damaged.length; j++) {
                         var my_card = damaged[j];
 
-                        if(my_card.card_id != 0){
-                            for(var i = 0; i < this.challenges.cards.length; i++){
+                        if (my_card.card_id != 0) {
+                            for (var i = 0; i < this.challenges.cards.length; i++) {
                                 var card = this.challenges.cards[i].card;
-                                if(card.card_id == my_card.card_id){
-                                    for(var t = 0; t < prop.length; t++){
+                                if (card.card_id == my_card.card_id) {
+                                    for (var t = 0; t < prop.length; t++) {
                                         card[prop[t]] = my_card[prop[t]];
                                     }
 
@@ -1093,27 +1089,27 @@ var vm = new Vue({
                 }
             }
 
-            if(!this.challenges.ready && this.challenges.record.length == 0){
+            if (!this.challenges.ready && this.challenges.record.length == 0) {
                 this.challenges.option = 'match';
             }
         },
-        challenge_clear_history: function(idx){
+        challenge_clear_history: function(idx) {
             this.challenges.history = [];
             this.challenges.option = 'match';
         },
-        challenge_remove_history: function(idx){
+        challenge_remove_history: function(idx) {
             this.challenges.history.splice(idx, 1);
-            if(this.challenges.history.length == 0){
+            if (this.challenges.history.length == 0) {
                 this.challenges.option = 'match';
             }
         },
-        challenge_use_history: function(idx){
+        challenge_use_history: function(idx) {
             var history = this.challenges.history[idx];
             this.challenges.match_company = this.copy(history.match_company);
             this.challenges.match_bonus = history.match_bonus;
 
             var list = [];
-            for(var i = 0; i < history.match.length; i++){
+            for (var i = 0; i < history.match.length; i++) {
                 list.push(this.copy(history.match[i]));
             }
             this.clear_challenge_card('match');
@@ -1121,8 +1117,8 @@ var vm = new Vue({
 
             this.challenges.option = 'match';
         },
-        challenge_record: function(){
-            if(!this.challenge_ready()){
+        challenge_record: function() {
+            if (!this.challenge_ready()) {
                 return false;
             }
 
@@ -1130,10 +1126,10 @@ var vm = new Vue({
             var list_match = [];
             var history_match = [];
             var card_total = 0;
-            for(var i = 0; i < this.challenges.my.length; i++){
+            for (var i = 0; i < this.challenges.my.length; i++) {
                 list_my.push(this.copy(this.challenges.my[i]));
             }
-            for(var i = 0; i < this.challenges.match.length; i++){
+            for (var i = 0; i < this.challenges.match.length; i++) {
                 list_match.push(this.copy(this.challenges.match[i]));
                 history_match.push(this.copy(this.challenges.match[i]));
                 card_total += this.get_total(this.challenges.match[i]);
@@ -1143,11 +1139,11 @@ var vm = new Vue({
                 idx: this.challenges.record.length + 1,
                 my: list_my,
                 match: list_match,
-                my_damaged: this.challenge_get_damaged('my','match'),
-                match_damaged: this.challenge_get_damaged('match','my')
+                my_damaged: this.challenge_get_damaged('my', 'match'),
+                match_damaged: this.challenge_get_damaged('match', 'my')
             };
             this.challenges.record.push(record);
-            this.challenges.record.sort(function(a,b){
+            this.challenges.record.sort(function(a, b) {
                 return b.idx - a.idx;
             });
 
@@ -1159,17 +1155,17 @@ var vm = new Vue({
                 match_bonus: this.challenges.match_bonus
             });
 
-            var list = this.challenge_get_damaged('match','my');
+            var list = this.challenge_get_damaged('match', 'my');
             this.clear_challenge_card('match');
             this.challenges.match = list;
 
             var prop = this.prop;
-            for(var k = 0; k < record.my_damaged.length; k++){
+            for (var k = 0; k < record.my_damaged.length; k++) {
                 var my_card = record.my_damaged[k];
-                for(var i = 0; i < this.challenges.cards.length; i++){
+                for (var i = 0; i < this.challenges.cards.length; i++) {
                     var card = this.challenges.cards[i].card;
-                    if(card.card_id == my_card.card_id){
-                        for(var j = 0; j < prop.length; j++){
+                    if (card.card_id == my_card.card_id) {
+                        for (var j = 0; j < prop.length; j++) {
                             card[prop[j]] = my_card[prop[j]];
                         }
                         break;
@@ -1180,42 +1176,42 @@ var vm = new Vue({
             this.get_challenges();
             this.challenges.option = 'match';
         },
-        update_card_ids: function(){
+        update_card_ids: function() {
             var ids = [];
             var cards = this.challenges.cards;
-            for(var i = 0; i < cards.length; i++){
+            for (var i = 0; i < cards.length; i++) {
                 ids.push(cards[i].card.card_id);
             }
             this.challenges.card_ids = ids;
         },
-        update_field_ids: function(){
+        update_field_ids: function() {
             var record = this.challenges.record;
             var cards = this.challenges.cards;
             var ids = [];
             var my_ids = [];
             var prop = this.prop;
 
-            for(var i = 0; i < cards.length; i++){
+            for (var i = 0; i < cards.length; i++) {
                 var card = cards[i].card;
-                if(card.total != this.get_total(card)){
+                if (card.total != this.get_total(card)) {
                     ids.push(card.card_id);
                 }
             }
 
-            for(var i = 0; i < record.length; i++){
+            for (var i = 0; i < record.length; i++) {
                 var my = record[i].my;
-                for(var j = 0; j < my.length; j++){
+                for (var j = 0; j < my.length; j++) {
                     var card = my[j];
-                    if(card.card_id != 0 && ids.indexOf(card.card_id) < 0){
+                    if (card.card_id != 0 && ids.indexOf(card.card_id) < 0) {
                         ids.push(card.card_id);
                     }
                 }
             }
 
             var my = this.challenges.my;
-            for(var j = 0; j < my.length; j++){
+            for (var j = 0; j < my.length; j++) {
                 var card = my[j];
-                if(card.card_id != 0 && ids.indexOf(card.card_id) < 0){
+                if (card.card_id != 0 && ids.indexOf(card.card_id) < 0) {
                     ids.push(card.card_id);
                 }
                 my_ids.push(card.card_id);
@@ -1224,55 +1220,55 @@ var vm = new Vue({
             this.challenges.field_ids = ids;
             this.challenges.my_ids = my_ids;
         },
-        challenge_recommend: function(){
+        challenge_recommend: function() {
             this.clear_challenge_card('my');
-            if(this.challenges.match[0].card_id == 0 && this.challenges.match[1].card_id == 0 && this.challenges.match[2].card_id == 0){
+            if (this.challenges.match[0].card_id == 0 && this.challenges.match[1].card_id == 0 && this.challenges.match[2].card_id == 0) {
                 return false;
             }
 
             var field_ids = this.challenges.field_ids;
-            
+
             var choice = [];
             var list = [];
 
-            for(var i = 0; i < this.challenges.cards.length; i++){
+            for (var i = 0; i < this.challenges.cards.length; i++) {
                 var card = this.challenges.cards[i].card;
-                if(field_ids.indexOf(card.card_id) >= 0){
+                if (field_ids.indexOf(card.card_id) >= 0) {
                     choice.push(card);
                 } else {
                     list.push(card);
                 }
             }
 
-            list.sort(function(a, b){
+            list.sort(function(a, b) {
                 return b.total - a.total;
             });
 
             var limit = 30 - choice.length;
-            if(list.length > limit){
+            if (list.length > limit) {
                 var line = list[limit - 1].total;
                 var gap = 200;
-                for(var i = 0; i < list.length; i++){
+                for (var i = 0; i < list.length; i++) {
                     var card = list[i];
-                    if(card.total > line - gap){
+                    if (card.total > line - gap) {
                         choice.push(card);
                     }
                 }
             } else {
-                for(var i = 0; i < list.length; i++){
+                for (var i = 0; i < list.length; i++) {
                     choice.push(list[i]);
                 }
             }
 
             var cards = [];
-            for(var i = 0; i < choice.length; i++){
+            for (var i = 0; i < choice.length; i++) {
                 var card = choice[i];
                 cards.push({
                     card: card,
                     score: this.get_challenge_score(card)
                 });
             }
-            if(cards.length > 30){
+            if (cards.length > 30) {
                 cards = cards.slice(0, 30);
             }
 
@@ -1295,7 +1291,7 @@ var vm = new Vue({
                 card: empty_card,
                 score: 0
             });
-            cards.sort(function(a, b){
+            cards.sort(function(a, b) {
                 return a.score - b.score;
             });
 
@@ -1311,17 +1307,17 @@ var vm = new Vue({
             this.challenges.calc_company = this.challenges.my_company;
             this.challenges.calc_bonus = this.challenges.my_bonus;
 
-            for(var i = 0; i < count; i++){
+            for (var i = 0; i < count; i++) {
                 vo[0] = cards[i];
 
                 // console.log(1, vo[0].card.name);
 
-                if(vo[0].card.card_id == 0 || vo[0].score == 0){
+                if (vo[0].card.card_id == 0 || vo[0].score == 0) {
                     continue;
                 }
 
-                for(var t = 0; t < 3; t++){
-                    if(t > 0){
+                for (var t = 0; t < 3; t++) {
+                    if (t > 0) {
                         vo[t] = {
                             card: empty_card,
                             score: 0
@@ -1347,15 +1343,15 @@ var vm = new Vue({
 
                 // console.log(1, score0, score0 >= match_score + threshold);
 
-                if(score0 >= match_score + threshold){
+                if (score0 >= match_score + threshold) {
                     var loss0 = this.get_challenge_card_loss_total('calc', 'match');
 
                     // console.log(1, loss0, loss[0], loss0 <= loss[0]);
 
-                    if(loss[0] < 0){
+                    if (loss[0] < 0) {
                         loss[0] = loss0;
                     } else {
-                        if(loss0 <= loss[0]){
+                        if (loss0 <= loss[0]) {
                             loss[0] = loss0;
                         } else {
                             continue;
@@ -1365,21 +1361,21 @@ var vm = new Vue({
 
                 // console.log(1, loss0, 'live0');
 
-                for(var j = 0; j < count; j++){
+                for (var j = 0; j < count; j++) {
                     vo[1] = cards[j];
 
                     // console.log('----------', 1, vo[0].card.name);
                     // console.log(2, vo[1].card.name);
 
                     var md_key = i + ':' + j;
-                    if(exclude.indexOf(md_key) >= 0 || j == i || (vo[1].card.card_id != 0 && vo[1].score == 0)){
+                    if (exclude.indexOf(md_key) >= 0 || j == i || (vo[1].card.card_id != 0 && vo[1].score == 0)) {
                         continue;
                     }
                     var ex_key = j + ':' + i;
                     exclude.push(ex_key);
 
-                    for(var t = 0; t < 3; t++){
-                        if(t > 1){
+                    for (var t = 0; t < 3; t++) {
+                        if (t > 1) {
                             vo[t] = {
                                 card: empty_card,
                                 score: 0
@@ -1405,34 +1401,34 @@ var vm = new Vue({
 
                     // console.log(2, score1, score1 >= match_score + threshold);
 
-                    if(score1 >= match_score + threshold){
+                    if (score1 >= match_score + threshold) {
                         var loss1 = this.get_challenge_card_loss_total('calc', 'match');
 
                         // console.log(2, loss1, loss[1], loss1 <= loss[1]);
 
-                        if(loss[1] < 0){
+                        if (loss[1] < 0) {
                             loss[1] = loss1;
                         } else {
-                            if(loss1 <= loss[1]){
+                            if (loss1 <= loss[1]) {
                                 loss[1] = loss1;
                             } else {
                                 continue;
                             }
                         }
                     }
-                    
+
                     // console.log(2, loss1, 'live1');
 
-                    for(var k = 0; k < count; k++){
+                    for (var k = 0; k < count; k++) {
                         vo[2] = cards[k];
 
-                        if((vo[1].card.card_id == 0 && vo[2].card.card_id != 0) || k == i || (k == j && j != 0) || (vo[2].card.card_id != 0 && vo[2].score == 0)){
+                        if ((vo[1].card.card_id == 0 && vo[2].card.card_id != 0) || k == i || (k == j && j != 0) || (vo[2].card.card_id != 0 && vo[2].score == 0)) {
                             continue;
                         }
 
                         var key = i + ':' + j + ':' + k;
 
-                        if(exclude.indexOf(key) >= 0){
+                        if (exclude.indexOf(key) >= 0) {
                             continue;
                         }
                         var ex_key1 = i + ':' + k + ':' + j;
@@ -1441,7 +1437,7 @@ var vm = new Vue({
                         exclude.push(ex_key1);
                         exclude.push(ex_key2);
 
-                        for(var t = 0; t < 3; t++){
+                        for (var t = 0; t < 3; t++) {
                             this.challenges.calc[t].card_id = vo[t].card.card_id;
                             this.challenges.calc[t].evolved = vo[t].card.evolved;
                             this.challenges.calc[t].star = vo[t].card.star;
@@ -1459,7 +1455,7 @@ var vm = new Vue({
 
                         var my_score = this.get_challenge_total_score('calc');
 
-                        if(my_score < match_score + threshold){
+                        if (my_score < match_score + threshold) {
                             continue;
                         }
 
@@ -1479,9 +1475,9 @@ var vm = new Vue({
                 }
             }
 
-            if(result.length == 0){
+            if (result.length == 0) {
                 var max_score = 0;
-                for(var i = 1; i <= 3; i++){
+                for (var i = 1; i <= 3; i++) {
                     max_score += cards[cards.length - i].score;
                     console.log(max_score);
                 }
@@ -1490,7 +1486,7 @@ var vm = new Vue({
 
                 max_score += this.get_challenge_bonus_score('my');
                 console.log(max_score);
-                
+
                 var diff = match_score + threshold - max_score;
                 this.challenges.recommend_text = '当前卡组无法达到过关要求，还需要磨掉 ' + diff + ' 分';
                 return false;
@@ -1498,9 +1494,9 @@ var vm = new Vue({
                 this.challenges.recommend_text = '';
             }
 
-            result.sort(function(a, b){
+            result.sort(function(a, b) {
                 var res = a.loss - b.loss;
-                if(res == 0){
+                if (res == 0) {
                     res = a.score - b.score;
                 }
 
@@ -1510,7 +1506,7 @@ var vm = new Vue({
             // console.log(result);
 
             var comb = result[0].key.split(':');
-            for(var t = 0; t < comb.length; t++){
+            for (var t = 0; t < comb.length; t++) {
                 var item = cards[comb[t]];
                 this.challenges.my[t].card_id = item.card.card_id;
                 this.challenges.my[t].evolved = item.card.evolved;
@@ -1531,22 +1527,22 @@ var vm = new Vue({
             this.challenge_ready();
             this.challenges.option = 'my';
         },
-        challenge_record_retract: function(){
+        challenge_record_retract: function() {
             var record = this.challenges.record.splice(0, 1);
             var list = [];
-            for(var i = 0; i < record[0].match.length; i++){
+            for (var i = 0; i < record[0].match.length; i++) {
                 list.push(this.copy(record[0].match[i]));
             }
             this.clear_challenge_card('match');
             this.challenges.match = list;
 
             var prop = this.prop;
-            for(var k = 0; k < record[0].my.length; k++){
+            for (var k = 0; k < record[0].my.length; k++) {
                 var my_card = record[0].my[k];
-                for(var i = 0; i < this.challenges.cards.length; i++){
+                for (var i = 0; i < this.challenges.cards.length; i++) {
                     var card = this.challenges.cards[i].card;
-                    if(card.card_id == my_card.card_id){
-                        for(var j = 0; j < prop.length; j++){
+                    if (card.card_id == my_card.card_id) {
+                        for (var j = 0; j < prop.length; j++) {
                             card[prop[j]] = my_card[prop[j]];
                         }
                         break;
@@ -1556,23 +1552,23 @@ var vm = new Vue({
             this.clear_challenge_card('my');
             this.get_challenges();
 
-            if(!this.challenges.ready && this.challenges.record.length == 0){
+            if (!this.challenges.ready && this.challenges.record.length == 0) {
                 this.challenges.option = 'match';
             }
         },
-        challenge_ready: function(){
+        challenge_ready: function() {
             var my_ready = false;
             var match_ready = false;
 
-            for(var i = 0; i < this.challenges.my.length; i++){
-                if(this.challenges.my[i].card_id > 0){
+            for (var i = 0; i < this.challenges.my.length; i++) {
+                if (this.challenges.my[i].card_id > 0) {
                     my_ready = true;
                     break;
                 }
             }
 
-            for(var i = 0; i < this.challenges.match.length; i++){
-                if(this.challenges.match[i].card_id > 0){
+            for (var i = 0; i < this.challenges.match.length; i++) {
+                if (this.challenges.match[i].card_id > 0) {
                     match_ready = true;
                     break;
                 }
@@ -1580,18 +1576,18 @@ var vm = new Vue({
 
             var ret = my_ready && match_ready;
 
-            if(ret){
-                this.challenges.my_damaged = this.challenge_get_damaged('my','match');
-                this.challenges.match_damaged = this.challenge_get_damaged('match','my');
+            if (ret) {
+                this.challenges.my_damaged = this.challenge_get_damaged('my', 'match');
+                this.challenges.match_damaged = this.challenge_get_damaged('match', 'my');
             }
 
             this.challenges.ready = ret;
 
             return ret;
         },
-        clear_challenge_card: function(option){
+        clear_challenge_card: function(option) {
             var list = [];
-            for(var idx = 0; idx < 3; idx++){
+            for (var idx = 0; idx < 3; idx++) {
                 list[idx] = {
                     card_id: 0,
                     evolved: 0,
@@ -1637,11 +1633,11 @@ var vm = new Vue({
 
             $('#edit').modal();
         },
-        save_challenge_edit: function(){
+        save_challenge_edit: function() {
             var card_id = this.challenges.select.card_id;
-            for(var i = 0; i < this.challenges.cards.length; i++){
+            for (var i = 0; i < this.challenges.cards.length; i++) {
                 var card = this.challenges.cards[i].card;
-                if(card.card_id == card_id){
+                if (card.card_id == card_id) {
                     card.evolved = this.challenges.select.evolved;
                     card.star = this.challenges.select.star;
                     card.level = this.challenges.select.level;
@@ -1650,7 +1646,7 @@ var vm = new Vue({
                     card.kindness = parseInt(this.challenges.select.kindness, 10);
                     card.activity = parseInt(this.challenges.select.activity, 10);
                     // card.total = this.challenges.select.total;
-                    
+
                     var data = this.predict_card(card.card_id, card.evolved, card.star, card.level);
                     var prop = this.prop;
                     card.total = 0;
@@ -1665,11 +1661,11 @@ var vm = new Vue({
             this.get_challenges();
             $('#edit').modal('hide');
         },
-        show_challenge_threshold: function(){
+        show_challenge_threshold: function() {
             this.challenges.select_threshold = this.challenges.threshold;
             $('#threshold').modal();
         },
-        save_challenge_threshold: function(){
+        save_challenge_threshold: function() {
             this.challenges.threshold = parseInt(this.challenges.select_threshold, 10);
             $('#threshold').modal('hide');
         },
@@ -1679,7 +1675,7 @@ var vm = new Vue({
             this.challenges.select.check_head = false;
             var card = this.challenges[option][idx];
 
-            if(card.card_id != 0){
+            if (card.card_id != 0) {
                 this.challenges.select.lock = {
                     evolved: card.evolved,
                     star: card.star,
@@ -1700,7 +1696,7 @@ var vm = new Vue({
                 this.challenges.select.kindness = card.kindness;
                 this.challenges.select.activity = card.activity;
                 // this.challenges.select.name = card.name;
-            
+
                 $('#challenge_typeahead').val(card.name);
             } else {
                 this.challenges.select.card_id = 0;
@@ -1718,19 +1714,19 @@ var vm = new Vue({
 
             $('#24hour').modal();
         },
-        show_challenge_card_select: function(idx, option){
+        show_challenge_card_select: function(idx, option) {
             this.challenges.select.idx = idx;
             this.challenges.select.option = option;
-            
+
             var list = [];
             var factor = this.challenges.challenge;
 
-            for(var i = 0; i < this.challenges.cards.length; i++){
+            for (var i = 0; i < this.challenges.cards.length; i++) {
                 var vo = this.challenges.cards[i];
 
-                for(j = 0; j < this.challenges.calc.length; j++){
+                for (j = 0; j < this.challenges.calc.length; j++) {
                     var card = this.challenges.calc[j];
-                    if(j == idx){
+                    if (j == idx) {
                         var select = vo.card;
                     } else {
                         var select = this.challenges.my[j];
@@ -1752,26 +1748,26 @@ var vm = new Vue({
                 }
 
                 // var total_loss = this.get_challenge_card_loss_total('calc', 'match');
-                
+
                 var prop = this.prop;
                 var arr = [];
                 var calc = this.challenges.calc;
-                for(var j = 0; j < calc.length; j++){
+                for (var j = 0; j < calc.length; j++) {
                     arr.push(this.copy(calc[j]));
                 }
 
                 var loss = [];
 
-                for(var j = 0; j < arr.length; j++){
+                for (var j = 0; j < arr.length; j++) {
                     loss[j] = this.get_total(arr[j]);
                 }
 
-                for(var j = 0; j < prop.length; j++){
+                for (var j = 0; j < prop.length; j++) {
                     var damage = this.get_challenge_card_loss(prop[j], 'calc', 'match');
-                    for(var k = 0; k < arr.length; k++){
-                        if(arr[k].card_id > 0 && damage > 0){
+                    for (var k = 0; k < arr.length; k++) {
+                        if (arr[k].card_id > 0 && damage > 0) {
                             var p = arr[k][prop[j]];
-                            if(p >= damage){
+                            if (p >= damage) {
                                 arr[k][prop[j]] = p - damage;
                                 damage = 0;
                             } else {
@@ -1783,14 +1779,14 @@ var vm = new Vue({
                 }
 
                 var match_score = this.get_challenge_total_score('match');
-                var match_damaged = this.challenge_get_damaged('match','calc');
+                var match_damaged = this.challenge_get_damaged('match', 'calc');
                 var match_damaged_score = this.get_challenge_bonus_score('match');
-                
-                for(var j = 0; j < prop.length; j++){
+
+                for (var j = 0; j < prop.length; j++) {
                     var prop_val = 0;
                     var attr = prop[j];
-                    for(var k = 0; k < match_damaged.length; k++){
-                        if(match_damaged[k].card_id != 0){
+                    for (var k = 0; k < match_damaged.length; k++) {
+                        if (match_damaged[k].card_id != 0) {
                             prop_val += match_damaged[k][attr];
                         }
                     }
@@ -1812,14 +1808,14 @@ var vm = new Vue({
                 calc[idx].total = 0;
                 calc[idx].score = 0;
 
-                var prev_match_damaged = this.challenge_get_damaged('match','calc');
+                var prev_match_damaged = this.challenge_get_damaged('match', 'calc');
                 var prev_match_damaged_score = this.get_challenge_bonus_score('match');
 
-                for(var j = 0; j < prop.length; j++){
+                for (var j = 0; j < prop.length; j++) {
                     var prop_val = 0;
                     var attr = prop[j];
-                    for(var k = 0; k < prev_match_damaged.length; k++){
-                        if(prev_match_damaged[k].card_id != 0){
+                    for (var k = 0; k < prev_match_damaged.length; k++) {
+                        if (prev_match_damaged[k].card_id != 0) {
                             prop_val += prev_match_damaged[k][attr];
                         }
                     }
@@ -1828,7 +1824,7 @@ var vm = new Vue({
                 }
 
                 var total_loss = 0;
-                for(var j = 0; j < arr.length; j++){
+                for (var j = 0; j < arr.length; j++) {
                     loss[j] = this.get_total(arr[j]) - loss[j];
                     total_loss += loss[j];
                 }
@@ -1843,7 +1839,7 @@ var vm = new Vue({
             }
 
             var self = this;
-            list.sort(function(a, b){
+            list.sort(function(a, b) {
                 return self.challenges.desc * (b[self.challenges.sort] - a[self.challenges.sort]);
             });
 
@@ -1851,20 +1847,20 @@ var vm = new Vue({
 
             $('#field').modal();
         },
-        challenge_select_sort: function(sort){
+        challenge_select_sort: function(sort) {
             var self = this;
-            if(self.challenges.sort == sort){
+            if (self.challenges.sort == sort) {
                 self.challenges.desc *= -1;
             } else {
                 self.challenges.sort = sort;
                 self.challenges.desc = 1;
             }
-            
-            self.challenges.field_list.sort(function(a, b){
+
+            self.challenges.field_list.sort(function(a, b) {
                 return self.challenges.desc * (b[self.challenges.sort] - a[self.challenges.sort]);
             });
         },
-        select_challenge_card: function(select){
+        select_challenge_card: function(select) {
             var option = this.challenges.select.option;
             var card = this.challenges[option][this.challenges.select.idx];
 
@@ -1887,16 +1883,16 @@ var vm = new Vue({
 
             $('#field').modal('hide');
         },
-        use_challenge_card: function(card_id, evolved){
+        use_challenge_card: function(card_id, evolved) {
             evolved = parseInt(evolved, 10);
-            if(card_id == 0){
+            if (card_id == 0) {
                 card_id = this.challenges.select.card_id;
             }
             var card = this.cards[card_id];
             $('#challenge_typeahead').val(card.name);
             this.challenges.select.card_id = card_id;
-            if(evolved >= 0){
-                switch(evolved){
+            if (evolved >= 0) {
+                switch (evolved) {
                     case 0:
                         this.challenges.select.evolved = 0;
                         this.challenges.select.star = card.type;
@@ -1919,7 +1915,7 @@ var vm = new Vue({
         save_challenge_card: function(clear) {
             var option = this.challenges.select.option;
             var card = this.challenges[option][this.challenges.select.idx];
-            if(!clear){
+            if (!clear) {
                 var select = this.challenges.select;
             } else {
                 var select = {
@@ -1952,7 +1948,7 @@ var vm = new Vue({
             card.category = select.category;
             // card.total = select.total;
 
-            if(card.card_id != 0){
+            if (card.card_id != 0) {
                 card.score = this.get_challenge_score(card);
 
                 var data = this.predict_card(card.card_id, card.evolved, card.star, card.level);
@@ -1971,7 +1967,7 @@ var vm = new Vue({
             $('#24hour').modal('hide');
             $('#field').modal('hide');
         },
-        get_challenge_score: function(card){
+        get_challenge_score: function(card) {
             var prop = this.prop;
             var score = 0;
 
@@ -1985,7 +1981,7 @@ var vm = new Vue({
         },
         //更新羁绊选择
         update_challenge_select: function() {
-            if(this.challenges.select.card_id == 0){
+            if (this.challenges.select.card_id == 0) {
                 return false;
             }
 
@@ -1998,7 +1994,7 @@ var vm = new Vue({
 
             for (var i = 0; i < prop.length; i++) {
                 this.challenges.select[prop[i]] = data[prop[i]];
-                
+
                 total += data[prop[i]];
                 score += data[prop[i]] * factor[prop[i]];
             }
@@ -2006,7 +2002,7 @@ var vm = new Vue({
             this.challenges.select.total = total;
             this.challenges.select.score = Math.round(score);
         },
-        show_challenge_company: function(option){
+        show_challenge_company: function(option) {
             var prop = this.prop;
             var total = 0;
             for (var i = 0; i < prop.length; i++) {
@@ -2018,24 +2014,24 @@ var vm = new Vue({
 
             $('#challenge').modal();
         },
-        split_challenge_company: function(){
+        split_challenge_company: function() {
             var prop = this.prop;
             var company = this.challenges.company;
             var total = company.total;
             var remain = total;
 
             for (var i = 0; i < prop.length; i++) {
-                if(i == prop.length - 1){
-                    this.challenges['company'][prop[i]] = remain;                    
+                if (i == prop.length - 1) {
+                    this.challenges['company'][prop[i]] = remain;
                 } else {
-                    remain -= Math.round(total/4);
-                    this.challenges['company'][prop[i]] = Math.round(total/4);
+                    remain -= Math.round(total / 4);
+                    this.challenges['company'][prop[i]] = Math.round(total / 4);
                 }
             }
 
             this.save_challenge_company();
         },
-        save_challenge_company: function(){
+        save_challenge_company: function() {
             var prop = this.prop;
             var company = this.challenges.company;
             var option = company.option;
@@ -2057,43 +2053,43 @@ var vm = new Vue({
 
             return score;
         },
-        get_challenge_prop: function(attr, option){
+        get_challenge_prop: function(attr, option) {
             var ret = 0;
-            for(var i = 0; i < this.challenges[option].length; i++){
+            for (var i = 0; i < this.challenges[option].length; i++) {
                 var card = this.challenges[option][i];
-                if(card.card_id != 0){
+                if (card.card_id != 0) {
                     ret += card[attr];
                 }
             }
             ret += parseInt(this.challenges[option + '_company'][attr], 10);
             return ret;
         },
-        get_challenge_card: function(option, attr){
+        get_challenge_card: function(option, attr) {
             var prop = this.prop;
             var score = 0;
-            for(var i = 0; i < this.challenges[option].length; i++){
+            for (var i = 0; i < this.challenges[option].length; i++) {
                 score += this.challenges[option][i][attr] || 0;
             }
             return score;
         },
-        get_challenge_card_total: function(option){
+        get_challenge_card_total: function(option) {
             var prop = this.prop;
             var score = 0;
-            for(var i = 0; i < prop.length; i++){
+            for (var i = 0; i < prop.length; i++) {
                 score += this.get_challenge_card(option, prop[i]);
             }
             return score;
         },
-        get_challenge_card_loss: function(attr, option1, option2){
+        get_challenge_card_loss: function(attr, option1, option2) {
             var total1 = this.get_challenge_card(option1, attr);
             var total2 = Math.floor(this.get_challenge_card(option2, attr) / 2);
 
             return Math.min(total1, total2);
         },
-        get_challenge_card_loss_total: function(option1, option2){
+        get_challenge_card_loss_total: function(option1, option2) {
             var prop = this.prop;
             var score = 0;
-            for(var i = 0; i < prop.length; i++){
+            for (var i = 0; i < prop.length; i++) {
                 score += this.get_challenge_card_loss(prop[i], option1, option2);
             }
             return score;
@@ -2119,56 +2115,56 @@ var vm = new Vue({
 
             return Math.round(score);
         },
-        get_challenge_bonus_score_diff: function(option1, option2){
+        get_challenge_bonus_score_diff: function(option1, option2) {
             return this.get_challenge_bonus_score(option1) - this.get_challenge_bonus_score(option2);
         },
-        get_challenge_prop_score: function(attr, option){
+        get_challenge_prop_score: function(attr, option) {
             var prop = this.get_challenge_prop(attr, option);
             var factor = this.challenges.challenge;
             return Math.round(factor[attr] * prop);
         },
-        get_challenge_prop_score_diff: function(attr, option1, option2){
+        get_challenge_prop_score_diff: function(attr, option1, option2) {
             return this.get_challenge_prop_score(attr, option1) - this.get_challenge_prop_score(attr, option2);
         },
-        get_challenge_total_score: function(option){
+        get_challenge_total_score: function(option) {
             var score = 0;
             var prop = this.prop;
 
             score += this.get_challenge_bonus_score(option);
 
-            for(var i = 0; i < this.prop.length; i++){
+            for (var i = 0; i < this.prop.length; i++) {
                 score += this.get_challenge_prop_score(prop[i], option);
             }
             return score;
         },
-        get_challenge_total_score_diff: function(option1, option2){
+        get_challenge_total_score_diff: function(option1, option2) {
             return this.get_challenge_total_score(option1) - this.get_challenge_total_score(option2);
         },
         //卡组分析
-        get_double_tag: function(key){
+        get_double_tag: function(key) {
             var arr = key.split('_');
             return this.get_prop_tag(arr[0]) + '<br>' + this.get_prop_tag(arr[1]);
         },
-        sort_double: function(attr){
+        sort_double: function(attr) {
             this.levels.sort = attr;
-            this.double.cards.sort(function(a, b){
+            this.double.cards.sort(function(a, b) {
                 return b[attr] - a[attr];
             });
         },
-        sort_double_total: function(){
+        sort_double_total: function() {
             var self = this;
 
-            if(self.double.sort == 0){
+            if (self.double.sort == 0) {
                 self.double.sort = -1;
             } else {
                 self.double.sort *= -1;
             }
 
-            self.double.my.sort(function(a, b){
+            self.double.my.sort(function(a, b) {
                 return self.double.sort * (b.total - a.total);
             });
         },
-        show_double: function(){
+        show_double: function() {
             // this.double.sort = 0;
             this.levels.config = false;
             this.levels.card = 'all';
@@ -2178,11 +2174,11 @@ var vm = new Vue({
             this.double_cards();
             this.nav = 'double';
         },
-        double_cards: function(){
+        double_cards: function() {
             var self = this;
             var my_cards = [];
             var cards = self.cards;
-            var factor = self.levels.factor.sort(function(a,b){
+            var factor = self.levels.factor.sort(function(a, b) {
                 return b - a;
             });
             var my = {};
@@ -2202,7 +2198,7 @@ var vm = new Vue({
                     continue;
                 }
 
-                if(self.levels.category != 0 && self.levels.category != card.category){
+                if (self.levels.category != 0 && self.levels.category != card.category) {
                     continue;
                 }
 
@@ -2236,39 +2232,39 @@ var vm = new Vue({
                 if (idx >= 0) {
                     var my_card = self.list[idx];
                 }
-                for(var i = 0; i < 4; i++){
-                    for(var j = 0; j < 4; j++){
-                        if(j != i){
+                for (var i = 0; i < 4; i++) {
+                    for (var j = 0; j < 4; j++) {
+                        if (j != i) {
                             var remain = [];
-                            for(var k = 0; k < 4; k++){
-                                if(k != i & k != j){
+                            for (var k = 0; k < 4; k++) {
+                                if (k != i & k != j) {
                                     remain.push(card[prop[k]]);
                                 }
                             }
 
                             var key = prop[i] + '_' + prop[j];
                             double[key] = Math.round(
-                                card[prop[i]] * factor[0] + 
-                                card[prop[j]] * factor[1] + 
-                                Math.max(remain[0], remain[1]) * factor[2] + 
+                                card[prop[i]] * factor[0] +
+                                card[prop[j]] * factor[1] +
+                                Math.max(remain[0], remain[1]) * factor[2] +
                                 Math.min(remain[0], remain[1]) * factor[3]
                             );
 
-                            if(!my[key]){
+                            if (!my[key]) {
                                 my[key] = [];
                             }
 
-                            if(idx >= 0){
+                            if (idx >= 0) {
                                 remain = [];
-                                for(var k = 0; k < 4; k++){
-                                    if(k != i & k != j){
+                                for (var k = 0; k < 4; k++) {
+                                    if (k != i & k != j) {
                                         remain.push(my_card[prop[k]]);
                                     }
                                 }
                                 var score = Math.round(
-                                    my_card[prop[i]] * factor[0] + 
-                                    my_card[prop[j]] * factor[1] + 
-                                    Math.max(remain[0], remain[1]) * factor[2] + 
+                                    my_card[prop[i]] * factor[0] +
+                                    my_card[prop[j]] * factor[1] +
+                                    Math.max(remain[0], remain[1]) * factor[2] +
                                     Math.min(remain[0], remain[1]) * factor[3]
                                 );
                                 my[key].push({
@@ -2300,7 +2296,7 @@ var vm = new Vue({
                     activity_rate: Math.round(card.activity / card.total * 100)
                 };
 
-                for(key in double){
+                for (key in double) {
                     item[key] = double[key];
                 }
 
@@ -2313,15 +2309,15 @@ var vm = new Vue({
             });
 
             var double_my = [];
-            for(key in my){
-                my[key].sort(function(a, b){
+            for (key in my) {
+                my[key].sort(function(a, b) {
                     return b.score - a.score;
                 });
 
                 var top = my[key].slice(0, 3);
                 var my_top = [];
                 var total = 0;
-                for(var i = 0; i < top.length; i++){
+                for (var i = 0; i < top.length; i++) {
                     var card = top[i].card;
                     my_top.push({
                         card_id: card.card_id,
@@ -2352,48 +2348,48 @@ var vm = new Vue({
             self.double.my = double_my;
         },
         //票房
-        add_to_table: function(){
+        add_to_table: function() {
             var prop = this.prop;
-            for(var i = 0; i < prop.length; i++){
+            for (var i = 0; i < prop.length; i++) {
                 this.tickets.match_company[prop[i]] = this.reverse.scores[prop[i]];
             }
             this.reset_reverse();
             $('#reverse').modal('hide');
         },
-        reset_reverse: function(){
+        reset_reverse: function() {
             var prop = this.prop;
-            for(var i = 0; i < prop.length; i++){
+            for (var i = 0; i < prop.length; i++) {
                 this.reverse.separate[prop[i]] = '';
                 this.reverse.addup[prop[i]] = '';
                 this.reverse.scores[prop[i]] = '';
             }
         },
-        has_reverse_scores: function(){
+        has_reverse_scores: function() {
             var ret = true;
             var prop = this.prop;
-            for(var i = 0; i < prop.length; i++){
-                if(!this.reverse.scores[prop[i]]){
+            for (var i = 0; i < prop.length; i++) {
+                if (!this.reverse.scores[prop[i]]) {
                     ret = false;
                     break;
                 }
             }
             return ret;
         },
-        update_reverse_scores: function(){
+        update_reverse_scores: function() {
             var prop = this.prop;
             var option = this.reverse.option;
             var factor = this.get_ticket_factor(this.tickets.ticket.ticket_id);
             var sum = 0;
-            for(var i = 0; i < prop.length; i++){
-                if(this.reverse[option][prop[i]]){
+            for (var i = 0; i < prop.length; i++) {
+                if (this.reverse[option][prop[i]]) {
                     var total = this.reverse[option][prop[i]];
-                    if(option == 'addup'){
+                    if (option == 'addup') {
                         var t = total;
                         total = total - sum;
                         sum = t;
 
                         this.reverse['separate'][prop[i]] = total;
-                    } else if (option == 'separate'){
+                    } else if (option == 'separate') {
                         sum += t;
 
                         this.reverse['addup'][prop[i]] = sum;
@@ -2406,50 +2402,50 @@ var vm = new Vue({
                 }
             }
         },
-        show_reverse: function(){
-            if(this.get_ticket_empty('match') >= 0){
+        show_reverse: function() {
+            if (this.get_ticket_empty('match') >= 0) {
                 this.show_msg('请先设置对手阵容');
                 return false;
             }
 
             $('#reverse').modal();
         },
-        get_ticket_reverse_prop_score: function(attr, option){
+        get_ticket_reverse_prop_score: function(attr, option) {
             var prop = this.get_ticket_reverse_prop(attr, option);
             var factor = this.get_ticket_factor(this.tickets.ticket.ticket_id);
             return Math.round(factor[attr] * prop);
         },
-        get_ticket_reverse_prop: function(attr, option){
+        get_ticket_reverse_prop: function(attr, option) {
             var ret = 0;
-            for(var i = 0; i < this.tickets[option].length; i++){
+            for (var i = 0; i < this.tickets[option].length; i++) {
                 var card = this.tickets[option][i];
-                if(!this.empty(card)){
+                if (!this.empty(card)) {
                     ret += card[attr];
                 }
             }
             // ret += this.tickets[option + '_company'][attr];
             return ret;
         },
-        get_ticket_prop_score: function(attr, option){
+        get_ticket_prop_score: function(attr, option) {
             var prop = this.get_ticket_prop(attr, option);
             var factor = this.get_ticket_factor(this.tickets.ticket.ticket_id);
             return Math.round(factor[attr] * prop);
         },
-        get_ticket_prop_score_diff: function(attr, option1, option2){
+        get_ticket_prop_score_diff: function(attr, option1, option2) {
             return this.get_ticket_prop_score(attr, option1) - this.get_ticket_prop_score(attr, option2);
         },
-        get_ticket_character_score: function(option){
+        get_ticket_character_score: function(option) {
             var score = 0;
             var factor = this.get_ticket_factor(this.tickets.ticket.ticket_id);
             var weight = this.get_ticket_weight(this.tickets.ticket.star) - 1;
             var prop = this.prop;
-            for(var i = 0; i < this.tickets[option].length; i++){
+            for (var i = 0; i < this.tickets[option].length; i++) {
                 var card = this.tickets[option][i];
-                if(this.card_id == 0){
+                if (this.card_id == 0) {
                     continue;
                 }
 
-                if(card.category != this.tickets.ticket.category){
+                if (card.category != this.tickets.ticket.category) {
                     continue;
                 }
                 for (var j = 0; j < prop.length; j++) {
@@ -2458,18 +2454,18 @@ var vm = new Vue({
             }
             return Math.round(score);
         },
-        get_ticket_character_score_diff: function(option1, option2){
+        get_ticket_character_score_diff: function(option1, option2) {
             return this.get_ticket_character_score(option1) - this.get_ticket_character_score(option2);
         },
-        get_ticket_total_score: function(option){
+        get_ticket_total_score: function(option) {
             var score = 0;
             score += this.get_ticket_company_score(option);
-            for(var i = 0; i < this.tickets[option].length; i++){
+            for (var i = 0; i < this.tickets[option].length; i++) {
                 score += this.tickets[option][i].score || 0;
             }
             return score;
         },
-        get_ticket_total_score_diff: function(option1, option2){
+        get_ticket_total_score_diff: function(option1, option2) {
             return this.get_ticket_total_score(option1) - this.get_ticket_total_score(option2);
         },
         get_select_company_score: function() {
@@ -2496,28 +2492,28 @@ var vm = new Vue({
         },
         get_ticket_empty: function(option) {
             var ret = -1;
-            for(var i = 0; i < this.tickets[option].length; i++){
-                if(this.tickets[option][i].card_id == 0){
+            for (var i = 0; i < this.tickets[option].length; i++) {
+                if (this.tickets[option][i].card_id == 0) {
                     ret = i;
                     break;
                 }
             }
             return ret;
         },
-        set_ticket_empty: function(option){
+        set_ticket_empty: function(option) {
             var idx = this.get_ticket_empty(option);
             this.tickets.select.idx = idx;
             this.tickets.select.option = 'match';
             this.tickets.option = 'match';
-            if(idx >= 0){
+            if (idx >= 0) {
                 this.show_battle(idx, option);
             }
         },
-        get_ticket_prop: function(attr, option){
+        get_ticket_prop: function(attr, option) {
             var ret = 0;
-            for(var i = 0; i < this.tickets[option].length; i++){
+            for (var i = 0; i < this.tickets[option].length; i++) {
                 var card = this.tickets[option][i];
-                if(card.card_id != 0){
+                if (card.card_id != 0) {
                     ret += card[attr];
                 }
             }
@@ -2528,7 +2524,7 @@ var vm = new Vue({
             this.tickets.select.idx = idx;
             this.tickets.select.option = option;
             var card = this.tickets[option][idx];
-            if(card.card_id != 0){
+            if (card.card_id != 0) {
                 this.tickets.select.card_id = card.card_id;
                 // this.tickets.select.type = card.type;
                 // this.tickets.select.category = card.category;
@@ -2540,7 +2536,7 @@ var vm = new Vue({
                 this.tickets.select.kindness = card.kindness;
                 this.tickets.select.activity = card.activity;
                 // this.tickets.select.name = card.name;
-            
+
                 $('#battle_typeahead').val(card.name);
             } else {
                 this.tickets.select.card_id = 0;
@@ -2579,7 +2575,7 @@ var vm = new Vue({
 
             $('#battle').modal('hide');
         },
-        save_ticket_company: function(){
+        save_ticket_company: function() {
             var prop = this.prop;
             var company = this.tickets.company;
             var option = company.option;
@@ -2590,7 +2586,7 @@ var vm = new Vue({
 
             $('#ticket').modal('hide');
         },
-        show_ticket_company: function(option){
+        show_ticket_company: function(option) {
             var prop = this.prop;
 
             for (var i = 0; i < prop.length; i++) {
@@ -2600,8 +2596,8 @@ var vm = new Vue({
 
             $('#ticket').modal();
         },
-        show_ticket: function(){
-            if(!this.empty(this.today) && this.list.length >= 3){
+        show_ticket: function() {
+            if (!this.empty(this.today) && this.list.length >= 3) {
                 this.tickets.ticket_id = this.today.ticket_id;
                 this.tickets.category = this.today.category;
                 this.tickets.star = this.today.star;
@@ -2609,7 +2605,7 @@ var vm = new Vue({
             }
             this.nav = 'ticket';
         },
-        get_tickets: function(){
+        get_tickets: function() {
             var ticket = {
                 ticket_id: this.tickets.ticket_id,
                 category: this.tickets.category,
@@ -2623,10 +2619,10 @@ var vm = new Vue({
             this.reset_config();
             this.ticket_cards();
         },
-        ticket_cards: function(){
+        ticket_cards: function() {
             var self = this;
 
-            if(self.list.length < 3 || self.empty(self.tickets.ticket)){
+            if (self.list.length < 3 || self.empty(self.tickets.ticket)) {
                 return false;
             }
 
@@ -2701,7 +2697,7 @@ var vm = new Vue({
                     score += card[prop[j]] * factor[prop[j]];
                 }
 
-                if(card.category == self.tickets.ticket.category){
+                if (card.category == self.tickets.ticket.category) {
                     score *= weight;
                 }
 
@@ -2732,7 +2728,7 @@ var vm = new Vue({
         },
         //更新羁绊选择
         update_battle_select: function() {
-            if(this.tickets.select.card_id == 0){
+            if (this.tickets.select.card_id == 0) {
                 return false;
             }
 
@@ -2750,14 +2746,14 @@ var vm = new Vue({
                 score += data[prop[i]] * factor[prop[i]];
             }
 
-            if(this.tickets.select.category == this.tickets.ticket.category){
+            if (this.tickets.select.category == this.tickets.ticket.category) {
                 score *= weight;
             }
 
             this.tickets.select.total = total;
             this.tickets.select.score = Math.round(score);
         },
-        get_battle_score: function(card){
+        get_battle_score: function(card) {
             var prop = this.prop;
             var score = 0;
 
@@ -2768,21 +2764,21 @@ var vm = new Vue({
                 score += card[prop[i]] * factor[prop[i]];
             }
 
-            if(card.category == this.tickets.ticket.category){
+            if (card.category == this.tickets.ticket.category) {
                 score *= weight;
             }
 
             return Math.round(score);
         },
-        show_today: function(){
-            if(this.today){
+        show_today: function() {
+            if (this.today) {
                 this.ticket_select.ticket_id = this.today.ticket_id;
                 this.ticket_select.category = this.today.category;
                 this.ticket_select.star = this.today.star;
             }
             $('#today').modal();
         },
-        save_today: function(){
+        save_today: function() {
             var self = this;
             var data = {
                 ticket_id: self.ticket_select.ticket_id,
@@ -2814,8 +2810,8 @@ var vm = new Vue({
                 }
             });
         },
-        ticket_combine: function(){
-            if(this.list.length < 3 || this.empty(this.today)){
+        ticket_combine: function() {
+            if (this.list.length < 3 || this.empty(this.today)) {
                 return false;
             }
 
@@ -2826,15 +2822,15 @@ var vm = new Vue({
             var prop = this.prop;
             var combine = [];
 
-            for(var i = 0; i < list.length; i++){
+            for (var i = 0; i < list.length; i++) {
                 var card = list[i];
                 var score = 0;
 
-                for(var j = 0; j < prop.length; j++){
+                for (var j = 0; j < prop.length; j++) {
                     score += card[prop[j]] * factor[prop[j]];
                 }
 
-                if(card.category == this.today.category){
+                if (card.category == this.today.category) {
                     score *= weight;
                 }
 
@@ -2844,20 +2840,20 @@ var vm = new Vue({
                 });
             }
 
-            scores.sort(function(a, b){
+            scores.sort(function(a, b) {
                 return b.score - a.score;
             });
 
-            for(var i = 0; i < 3; i++){
+            for (var i = 0; i < 3; i++) {
                 combine.push(scores[i].card.name);
             }
 
             this.tickets.combine = combine;
         },
-        get_ticket_weight: function(star){
+        get_ticket_weight: function(star) {
             star = parseInt(star, 10);
             var ret = 1;
-            switch(star){
+            switch (star) {
                 case 3:
                     ret = 1.1;
                     break;
@@ -2870,11 +2866,11 @@ var vm = new Vue({
             }
             return ret;
         },
-        get_ticket_factor: function(ticket_id){
+        get_ticket_factor: function(ticket_id) {
             var ret = {};
 
-            for(var i = 0; i < this.ticket.length; i++){
-                if(this.ticket[i].id == ticket_id){
+            for (var i = 0; i < this.ticket.length; i++) {
+                if (this.ticket[i].id == ticket_id) {
                     ret = this.ticket[i];
                     break;
                 }
@@ -2887,7 +2883,7 @@ var vm = new Vue({
             this.levels.select.idx = idx;
             var card = this.levels.combine[idx];
 
-            if(card.card_id > 0){
+            if (card.card_id > 0) {
                 this.levels.select.card_id = card.card_id;
                 // this.levels.select.type = card.type;
                 // this.levels.select.category = card.category;
@@ -2997,14 +2993,14 @@ var vm = new Vue({
             return ret;
         },
         //关卡计算
-        get_pass: function(line, score){
+        get_pass: function(line, score) {
             var ret = '';
-            if(score >= line){
+            if (score >= line) {
                 ret = '√';
             } else {
                 ret = '×';
             }
-            if(line == 0){
+            if (line == 0) {
                 ret = '';
             }
             return ret;
@@ -3064,7 +3060,7 @@ var vm = new Vue({
                             item.combine = [];
                             var total = 0;
                             for (var j = 0; j < 3; j++) {
-                                if(my_cards.length > j){
+                                if (my_cards.length > j) {
                                     item.combine.push(my_cards[j].name);
                                     total += my_cards[j].score;
                                 } else {
@@ -3144,7 +3140,7 @@ var vm = new Vue({
                 }
             });
         },
-        reset_config: function(){
+        reset_config: function() {
             this.levels.config = false;
             this.levels.card = 'my';
             this.levels.r = 'remain';
@@ -3155,7 +3151,7 @@ var vm = new Vue({
         level_cards: function() {
             var self = this;
 
-            if(self.list.length < 3 || self.empty(self.level)){
+            if (self.list.length < 3 || self.empty(self.level)) {
                 return false;
             }
 
@@ -3249,7 +3245,7 @@ var vm = new Vue({
             //高分羁绊
             var combine = [];
             for (var i = 0; i < 3; i++) {
-                if(my_cards.length > i){
+                if (my_cards.length > i) {
                     var score = my_cards[i].score;
                     var my_card = my_cards[i].card;
                     var card = {};
@@ -3313,32 +3309,103 @@ var vm = new Vue({
             } else if (this.batch.source == 'debug') {
                 var self = this;
                 $('#export_data').button('loading');
-                
-                setTimeout(function(){
+
+                setTimeout(function() {
                     var export_data = JSON.stringify(self.$data);
                     self.batch.export = export_data;
                     $('#export_data').button('reset');
                 }, 500);
             }
         },
+        //导出数据下载
+        export_data_download: function() {
+            var list = this.list;
+            var data = [];
+
+            if (this.batch.source == 'calculator') {
+                for (var i = 0; i < list.length; i++) {
+                    var arr = list[i].name.split('·');
+                    data.push({
+                        name: arr[1],
+                        rarity: this.get_type_tag(list[i].type),
+                        character: this.get_character_tag(list[i].category),
+                        decision: list[i].decisiveness,
+                        creativity: list[i].creativity,
+                        appetency: list[i].kindness,
+                        action: list[i].activity,
+                        way: this.get_gain_tag(list[i].gain),
+                        id: list[i].card_id
+                    });
+                }
+                var export_data = JSON.stringify({
+                    'user-defined': data,
+                    'pre-defined': [],
+                    'company': this.company
+                });
+                self.download_data(export_data);
+            } else if (this.batch.source == 'excel') {
+                data.push(['公司属性', this.company.decisiveness, this.company.creativity, this.company.kindness, this.company.activity].join("\t"));
+                for (var i = 0; i < list.length; i++) {
+                    var arr = list[i].name.split('·');
+                    data.push([arr[1], list[i].decisiveness, list[i].creativity, list[i].kindness, list[i].activity].join("\t"));
+                }
+                var export_data = data.join("\n");
+                self.download_data(export_data);
+            } else if (this.batch.source == 'debug') {
+                var self = this;
+                $('#export_data_download').button('loading');
+
+                setTimeout(function() {
+                    var export_data = JSON.stringify(self.$data);
+                    self.download_data(export_data);
+                    $('#export_data_download').button('reset');
+                }, 500);
+            }
+        },
+        download_data(data) {
+            zip.workerScriptsPath = 'lib/';
+            zip.createWriter(new zip.BlobWriter(), function(writer) {
+                // use a TextReader to read the String to add
+                writer.add("export.txt", new zip.TextReader(data), function() {
+                    // onsuccess callback
+
+                    // close the zip writer
+                    writer.close(function(blob) {
+                        // blob contains the zip file as a Blob object
+
+                        var URL = window.webkitURL || window.mozURL || window.URL;
+                        var downloadLink = document.createElement("a");
+                        downloadLink.href = URL.createObjectURL(blob);
+                        downloadLink.download = "debug.zip";
+                        document.body.appendChild(downloadLink);
+                        downloadLink.click();
+                        document.body.removeChild(downloadLink);
+                    });
+                }, function(currentIndex, totalIndex) {
+                    // onprogress callback
+                });
+            }, function(error) {
+                // onerror callback
+            });
+        },
         //导入数据
         import_data: function() {
             var self = this;
             var data = self.batch.data;
             var list = [];
-            if (self.batch.source == 'all'){
+            if (self.batch.source == 'all') {
                 var names = [];
-                for(id in this.cards){
+                for (id in this.cards) {
                     var card = this.cards[id];
-                    if(card.type < 3){
+                    if (card.type < 3) {
                         continue;
                     }
 
                     var arr = card.name.split('·');
                     names.push(arr[1]);
-                    data = JSON.stringify({'user-defined':[],'pre-defined':names});
+                    data = JSON.stringify({ 'user-defined': [], 'pre-defined': names });
                 }
-            } 
+            }
 
             if (self.batch.source == 'calculator' || self.batch.source == 'all') {
                 //测试数据：
@@ -3350,7 +3417,7 @@ var vm = new Vue({
                     return false;
                 }
 
-                if(data.company){
+                if (data.company) {
                     list.push({
                         name: '公司属性',
                         decisiveness: data.company.decisiveness,
@@ -3396,7 +3463,7 @@ var vm = new Vue({
                     if (self.empty(arr) || arr.length < 5) {
                         continue;
                     }
-                    if(arr[0] == '公司属性'){
+                    if (arr[0] == '公司属性') {
                         self.company.decisiveness = arr[1];
                         self.company.creativity = arr[2];
                         self.company.kindness = arr[3];
@@ -3447,22 +3514,22 @@ var vm = new Vue({
             });
         },
         //导入数据合并
-        merge: function(data){
+        merge: function(data) {
             var ids = this.my_cards;
             var list = this.list;
-            for(var i = 0; i < data.length; i++){
+            for (var i = 0; i < data.length; i++) {
                 var card = data[i];
-                if(ids.indexOf(card.card_id) < 0){
+                if (ids.indexOf(card.card_id) < 0) {
                     list.push(card);
                 } else {
                     list[ids.indexOf(card.card_id)] = card;
                 }
             }
-            list.sort(function(a,b){
+            list.sort(function(a, b) {
                 return b.total - a.total;
             });
             var my_cards = [];
-            for(var i = 0; i < list.length; i++){
+            for (var i = 0; i < list.length; i++) {
                 my_cards.push(list[i].card_id);
             }
 
@@ -3471,7 +3538,7 @@ var vm = new Vue({
         },
         //批量导入
         show_batch: function(option) {
-            if(option == 'import_data' && ['calculator','excel'].indexOf(this.batch.source) < 0){
+            if (option == 'import_data' && ['calculator', 'excel'].indexOf(this.batch.source) < 0) {
                 this.batch.source = 'calculator';
             }
             this.batch.option = option;
@@ -3479,24 +3546,24 @@ var vm = new Vue({
             $('#batch').modal();
         },
         //筛选
-        update_list_filtered: function(){
+        update_list_filtered: function() {
             var list = this.list;
             var filter = this.card_filter;
 
             this.list_filtered = [];
-            for(var i = 0; i < list.length; i++){
-                if(this.use_filter(filter, list[i])){
+            for (var i = 0; i < list.length; i++) {
+                if (this.use_filter(filter, list[i])) {
                     this.list_filtered.push(list[i]);
                 }
             }
         },
-        update_all_cards_filtered: function(){
+        update_all_cards_filtered: function() {
             var list = this.all_cards;
             var filter = this.all_card_filter;
 
             this.all_cards_filtered = [];
-            for(var i = 0; i < list.length; i++){
-                if(this.use_filter(filter, list[i])){
+            for (var i = 0; i < list.length; i++) {
+                if (this.use_filter(filter, list[i])) {
                     this.all_cards_filtered.push(list[i]);
                 }
             }
@@ -3512,22 +3579,22 @@ var vm = new Vue({
             return ret;
         },
         //添加羁绊
-        add_all_card: function(){
+        add_all_card: function() {
             var ack = confirm('确定添加全部吗？');
-            if(!ack){
+            if (!ack) {
                 return false;
             }
 
             this.batch.source = 'all';
             this.import_data();
         },
-        add_custom_card: function(card_id){
+        add_custom_card: function(card_id) {
             var card = this.cards[card_id];
             this.card_select.card_id = card.card_id;
             this.card_select.name = card.name;
             this.show_card();
         },
-        add_my_card: function(card_id, option){
+        add_my_card: function(card_id, option) {
             var self = this;
             var card = this.cards[card_id];
             var evolved = option == 'evolved' ? 1 : 0;
@@ -3738,7 +3805,7 @@ var vm = new Vue({
             this.levels.select.total = total;
             this.levels.select.score = Math.round(score);
         },
-        get_combine_score: function(card){
+        get_combine_score: function(card) {
             var prop = this.prop;
             var score = 0;
 
@@ -3761,7 +3828,7 @@ var vm = new Vue({
         predict_card: function(card_id, evolved, star, level) {
             var card = this.cards[card_id];
 
-            if(this.empty(card.base) || this.empty(card.inc)){
+            if (this.empty(card.base) || this.empty(card.inc)) {
                 var key = evolved + ':' + star + ':' + level;
                 if (card.correction[key]) {
                     return card.correction[key];
@@ -3874,9 +3941,9 @@ var vm = new Vue({
             });
         },
         //羁绊导入JSON
-        get_json_list: function(){
+        get_json_list: function() {
             var list = this.list;
-            if(this.empty(list)){
+            if (this.empty(list)) {
                 return '';
             }
 
@@ -3888,7 +3955,7 @@ var vm = new Vue({
                 kindness: this.company.kindness,
                 activity: this.company.activity
             });
-            for(var i = 0; i < list.length; i++){
+            for (var i = 0; i < list.length; i++) {
                 json.push({
                     name: list[i].name,
                     decisiveness: list[i].decisiveness,
@@ -4010,10 +4077,10 @@ var vm = new Vue({
             return ret;
         },
         //票房主题
-        get_ticket_name: function(ticket_id){
+        get_ticket_name: function(ticket_id) {
             var ret = '';
-            for(var i = 0; i < this.ticket.length; i++){
-                if(this.ticket[i].id == ticket_id){
+            for (var i = 0; i < this.ticket.length; i++) {
+                if (this.ticket[i].id == ticket_id) {
                     ret = this.ticket[i].name;
                     break;
                 }
@@ -4085,7 +4152,7 @@ var vm = new Vue({
                             self.card_list.push(card.name);
                             self.all_cards.push(card);
                         }
-                        self.all_cards.sort(function(a, b){
+                        self.all_cards.sort(function(a, b) {
                             return (b.type * 100 + b.category) - (a.type * 100 + a.category);
                         });
 
@@ -4110,7 +4177,7 @@ var vm = new Vue({
                             self.challenge = res.challenge;
                         }
 
-                        if (!self.empty(res.today) && self.empty(self.today)){
+                        if (!self.empty(res.today) && self.empty(self.today)) {
                             self.today = res.today;
                             self.ticket_combine();
                         }
@@ -4194,7 +4261,7 @@ var vm = new Vue({
                             self.dom_init = true;
                         }
 
-                        if(self.empty(self.list)){
+                        if (self.empty(self.list)) {
                             self.nav = 'card';
                         }
                     } else if (res.info) {

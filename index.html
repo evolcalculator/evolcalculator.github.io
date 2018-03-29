@@ -33,6 +33,7 @@
     <script type='text/javascript' charset="utf-8" src='js/bootstrap.js'></script>
     <script type='text/javascript' charset="utf-8" src='js/bootstrap3-typeahead.min.js'></script>
     <script type='text/javascript' charset="utf-8" src='js/vue.min.js'></script>
+    <script type='text/javascript' charset="utf-8" src='lib/zip.js'></script>
 </head>
 
 <body>
@@ -2006,7 +2007,8 @@
                         </div>
                         <div class="modal-footer" v-show="batch.option == 'export_data'">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" id="export_data" class="btn btn-primary" data-loading-text="导出中..." @click="export_data()">导出</button>
+                            <button type="button" id="export_data" class="btn btn-primary" data-loading-text="导出中..." @click="export_data()" v-show="batch.source != 'debug'">导出</button>
+                            <button type="button" id="export_data_download" class="btn btn-primary" data-loading-text="导出中..." @click="export_data_download()" v-show="batch.source == 'debug'">下载</button>
                         </div>
                     </div>
                 </div>
@@ -2125,7 +2127,7 @@
     </div>
     <p id="tips">加载中...</p>
 
-    <script type="text/javascript" src="js/vm.js?v=2.3.26"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.3.27"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
