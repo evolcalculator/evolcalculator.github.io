@@ -3363,39 +3363,55 @@ var vm = new Vue({
             }
         },
         download_data: function(data) {
-            zip.workerScriptsPath = 'lib/';
-            zip.createWriter(new zip.BlobWriter(), function(writer) {
-                // use a TextReader to read the String to add
-                writer.add("export.txt", new zip.TextReader(data), function() {
-                    // onsuccess callback
+            var self = this;
 
-                    // close the zip writer
-                    writer.close(function(blob) {
-                        // blob contains the zip file as a Blob object
+            // zip.workerScriptsPath = 'lib/';
+            // zip.createWriter(new zip.BlobWriter(), function(writer) {
+            //     // use a TextReader to read the String to add
+            //     writer.add("export.txt", new zip.TextReader(data), function() {
+            //         // onsuccess callback
 
-                        var URL = window.webkitURL || window.mozURL || window.URL;
-                        var downloadLink = document.createElement("a");
-                        downloadLink.href = URL.createObjectURL(blob);
-                        downloadLink.download = "debug.zip";
-                        document.body.appendChild(downloadLink);
-                        downloadLink.click();
-                        document.body.removeChild(downloadLink);
-                    });
-                }, function(currentIndex, totalIndex) {
-                    // onprogress callback
-                });
-            }, function(error) {
-                // onerror callback
+            //         // close the zip writer
+            //         writer.close(function(blob) {
+            //             // blob contains the zip file as a Blob object
+
+            //             var URL = window.webkitURL || window.mozURL || window.URL;
+            //             var downloadLink = document.createElement("a");
+            //             downloadLink.href = URL.createObjectURL(blob);
+            //             downloadLink.download = "debug.zip";
+            //             document.body.appendChild(downloadLink);
+            //             downloadLink.click();
+            //             document.body.removeChild(downloadLink);
+            //             URL.revokeObjectURL(blob);
+            //         });
+            //     }, function(currentIndex, totalIndex) {
+            //         // onprogress callback
+            //     });
+            // }, function(error) {
+            //     // onerror callback
+            // });
+
+            var blob = new Blob([data], {type : 'text/plain'});
+            var formData = new FormData();
+            formData.append('file', blob, 'export.log');
+
+            $.ajax({
+                url: self.base_url + 'debug',
+                type: 'post',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    if (res.status == 1) {
+                        self.batch.export = '上传ID：' + res.id;
+                    } else if (res.info) {
+                        self.show_msg(res.info);
+                    }
+                },
+                error: function() {
+                    self.show_msg('请求失败');
+                }
             });
-            
-            // var blob = new Blob([data], {type : 'application/octet-stream'});
-            // var URL = window.webkitURL || window.mozURL || window.URL;
-            // var downloadLink = document.createElement('a');
-            // downloadLink.href = URL.createObjectURL(blob);
-            // downloadLink.download = 'export.log';
-            // document.body.appendChild(downloadLink);
-            // downloadLink.click();
-            // document.body.removeChild(downloadLink);
         },
         //导入数据
         import_data: function() {
