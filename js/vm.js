@@ -2032,6 +2032,8 @@ var vm = new Vue({
                     this.challenges['company'][prop[i]] = Math.round(total/4);
                 }
             }
+
+            this.save_challenge_company();
         },
         save_challenge_company: function(){
             var prop = this.prop;
