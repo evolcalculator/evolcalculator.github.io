@@ -1112,6 +1112,7 @@
                             <span>我的羁绊</span>
                             <small><a href="javascript:;" @click="challenge_reset_click()">重置</a></small>
                         </h4>
+                        <p><small>已添加：{{challenges.cards.length}}</small></p>
                         <p v-show="challenges.cards.length < 30"><a href="javascript:;" @click="nav = 'card'">添加更多羁绊</a></p>
                         <table class="table table-bordered table-hover" v-show="!empty(challenges.cards)">
                             <thead>
