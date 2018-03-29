@@ -3363,30 +3363,39 @@ var vm = new Vue({
             }
         },
         download_data(data) {
-            zip.workerScriptsPath = 'lib/';
-            zip.createWriter(new zip.BlobWriter(), function(writer) {
-                // use a TextReader to read the String to add
-                writer.add("export.txt", new zip.TextReader(data), function() {
-                    // onsuccess callback
+            // zip.workerScriptsPath = 'lib/';
+            // zip.createWriter(new zip.BlobWriter(), function(writer) {
+            //     // use a TextReader to read the String to add
+            //     writer.add("export.txt", new zip.TextReader(data), function() {
+            //         // onsuccess callback
 
-                    // close the zip writer
-                    writer.close(function(blob) {
-                        // blob contains the zip file as a Blob object
+            //         // close the zip writer
+            //         writer.close(function(blob) {
+            //             // blob contains the zip file as a Blob object
 
-                        var URL = window.webkitURL || window.mozURL || window.URL;
-                        var downloadLink = document.createElement("a");
-                        downloadLink.href = URL.createObjectURL(blob);
-                        downloadLink.download = "debug.zip";
-                        document.body.appendChild(downloadLink);
-                        downloadLink.click();
-                        document.body.removeChild(downloadLink);
-                    });
-                }, function(currentIndex, totalIndex) {
-                    // onprogress callback
-                });
-            }, function(error) {
-                // onerror callback
-            });
+            //             var URL = window.webkitURL || window.mozURL || window.URL;
+            //             var downloadLink = document.createElement("a");
+            //             downloadLink.href = URL.createObjectURL(blob);
+            //             downloadLink.download = "debug.zip";
+            //             document.body.appendChild(downloadLink);
+            //             downloadLink.click();
+            //             document.body.removeChild(downloadLink);
+            //         });
+            //     }, function(currentIndex, totalIndex) {
+            //         // onprogress callback
+            //     });
+            // }, function(error) {
+            //     // onerror callback
+            // });
+            
+            var blob = new Blob([data], {type : 'application/octet-stream'});
+            var URL = window.webkitURL || window.mozURL || window.URL;
+            var downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = 'export.log';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
         },
         //导入数据
         import_data: function() {
