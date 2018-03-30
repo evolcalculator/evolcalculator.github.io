@@ -26,6 +26,7 @@
         }
         .image-load span.image-load-text {
             display: inline;
+            font-size: small;
         }
     </style>
     <script type='text/javascript' charset="utf-8" src='js/jquery.js'></script>
@@ -1768,7 +1769,7 @@
                             <div class="form-group clearfix" v-if="challenges.select.card_id != 0" v-show="challenges.select.check_head">
                                 <div class="col-xs-4 col-md-3 col-lg-2 image-load" v-for="(icon,evol) in cards[challenges.select.card_id].head.split(',')">
                                     <span class="image-load-text">图片加载中...</span>
-                                    <a href="javascript:;" @click="use_challenge_card(0, evol)"><img :src="'img/card/' + icon + '.png'" width="80%" @load="image_load($event)"></a>
+                                    <a href="javascript:;" @click="use_challenge_card(0, evol)"><img :src="path + 'card/' + icon + '.png'" width="80%" @load="image_load($event)"></a>
                                 </div>
                             </div>
                             <p class="help-block">
@@ -1812,9 +1813,15 @@
                                     </div>
                                     <div class="col-xs-4 col-md-3 col-lg-2 image-load" v-for="(icon,evol) in item.head.split(',')">
                                         <span class="image-load-text">图片加载中...</span>
-                                        <a href="javascript:;" @click="use_challenge_card(item.card_id, evol)"><img :src="'img/card/' + icon + '.png'" width="80%" @load="image_load($event)"></a>
+                                        <a href="javascript:;" @click="use_challenge_card(item.card_id, evol)"><img :src="path + 'card/' + icon + '.png'" width="80%" @load="image_load($event)"></a>
                                     </div>
                                 </div>
+
+                                <p style="text-align: right; font-size: small;"><a href="javascript:;" @click="show_path = !show_path">设置图片地址</a></p>
+                                <p v-show="show_path" style="text-align: right; font-size: small;">
+                                    <label><input type="radio" v-model="path" value="img/">默认</label>&nbsp;&nbsp;
+                                    <label><input type="radio" v-model="path" value="https://evolcalculator.coderprepares.com/">国内加速</label>
+                                </p>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -2128,7 +2135,7 @@
     </div>
     <p id="tips">加载中...</p>
 
-    <script type="text/javascript" src="js/vm.js?v=2.3.32"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.3.33"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');

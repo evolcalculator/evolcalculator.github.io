@@ -1,6 +1,9 @@
 var vm = new Vue({
     el: "#app",
     data: {
+        version: '2.3.33',
+        path: $.LS.get('path') || 'img/',
+        show_path: false,
         base_url: 'https://app.coderprepares.com/evol/calculator/',
         prop: ['decisiveness', 'creativity', 'kindness', 'activity'],
         dom_init: false, // 初始化dom元素
@@ -453,6 +456,9 @@ var vm = new Vue({
     },
     watch: {
         //数据本地存储
+        'path': function(newVal, oldVal){
+            $.LS.set('path', newVal);
+        },
         'challenges.cards': function(newVal, oldVal) {
             $.LS.set('challenges.cards', JSON.stringify(newVal));
         },
@@ -913,6 +919,14 @@ var vm = new Vue({
             return ret;
         },
         challenge_next: function() {
+            var ready = this.challenge_ready();
+            if(ready){
+                var ack = confirm('尚未记录损耗，确定进入下一关吗？');
+                if(!ack){
+                    return false;
+                }
+            }
+
             if (this.challenge_select.next_level != -1) {
                 this.challenge_select.level = this.challenge_select.next_level;
             }
