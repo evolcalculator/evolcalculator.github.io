@@ -26,18 +26,26 @@
         }
         .image-load span.image-load-text {
             display: inline;
-            font-size: small;
         }
+        template {display: block;}
     </style>
-    <script type='text/javascript' charset="utf-8" src='js/jquery.js'></script>
-    <script type='text/javascript' charset="utf-8" src='js/storage.js'></script>
-    <script type='text/javascript' charset="utf-8" src='js/bootstrap.js'></script>
-    <script type='text/javascript' charset="utf-8" src='js/bootstrap3-typeahead.min.js'></script>
-    <script type='text/javascript' charset="utf-8" src='js/vue.min.js'></script>
-    <script type='text/javascript' charset="utf-8" src='lib/zip.js'></script>
+    <script type="text/javascript">
+        window.onerror = function(sMsg,sUrl,sLine){
+            var log = sMsg + '：' + sUrl + ':' + sLine + ';';
+            document.getElementById('tips').innerHTML += ('<br>'+log);
+        }
+    </script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/storage.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/bootstrap3-typeahead.min.js"></script>
+    <script type="text/javascript" src="lib/zip.js"></script>
 </head>
 
 <body>
+	<template>
+		<p>你的浏览器不支持此版本，可尝试在QQ浏览器、Chrome浏览器中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a></p>
+	</template>
     <div id="app" v-cloak>
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container">
@@ -2134,12 +2142,12 @@
         </div>
     </div>
     <p id="tips">加载中...</p>
-
-    <script type="text/javascript" src="js/vm.js?v=2.3.33"></script>
+    <script type='text/javascript' src='js/vue.min.js'></script>
+    <script type="text/javascript" src="js/vm.js?v=2.3.34"></script>
     <script type="text/javascript">
-        $(document).ready(function(){
-            $('#tips').html('你的浏览器不支持此版本，可尝试在<b>QQ浏览器</b>或<b>微信</b>中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
-        });
+    	$(document).ready(function(){
+    		$('#tips').html('你的浏览器不支持此版本，可尝试在QQ浏览器、Chrome浏览器中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
+    	});
     </script>
 </body>
 

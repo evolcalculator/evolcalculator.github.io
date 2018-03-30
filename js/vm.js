@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.33',
+        version: '2.3.34',
         path: $.LS.get('path') || 'img/',
         show_path: false,
         base_url: 'https://app.coderprepares.com/evol/calculator/',
@@ -244,12 +244,12 @@ var vm = new Vue({
         challenges: {
             mode: '0',
             expand: false,
-            threshold: 2000,
-            select_threshold: 2000,
+            threshold: $.LS.get('challenges.threshold') || 2000,
+            select_threshold: $.LS.get('challenges.threshold') || 2000,
             sort: 'score',
             desc: 1,
-            my_bonus: 0,
-            match_bonus: 0,
+            my_bonus: $.LS.get('challenges.my_bonus') || 0,
+            match_bonus: $.LS.get('challenges.match_bonus') || 0,
             combine: [],
             challenge: {},
             record: $.LS.get('challenges.record') ? JSON.parse($.LS.get('challenges.record')) : [],
@@ -456,6 +456,15 @@ var vm = new Vue({
     },
     watch: {
         //数据本地存储
+        'challenges.threshold': function(newVal, oldVal){
+            $.LS.set('challenges.threshold', newVal);
+        },
+        'challenges.my_bonus': function(newVal, oldVal){
+            $.LS.set('challenges.my_bonus', newVal);
+        },
+        'challenges.match_bonus': function(newVal, oldVal){
+            $.LS.set('challenges.match_bonus', newVal);
+        },
         'path': function(newVal, oldVal){
             $.LS.set('path', newVal);
         },
@@ -1314,7 +1323,7 @@ var vm = new Vue({
             var result = [];
             var count = cards.length;
             var match_score = this.get_challenge_total_score('match');
-            var threshold = this.challenges.threshold;
+            var threshold = parseInt(this.challenges.threshold, 10) || 0;
             var vo = [];
             var loss = [-1, -1, -1];
 
