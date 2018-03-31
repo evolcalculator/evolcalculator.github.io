@@ -916,6 +916,9 @@
                                     </td>
                                     <td><a href="javascript:;" @click="challenge_record_retract()" v-if="idx == 0">撤回损耗</a></td>
                                 </tr>
+                                <tr>
+                                    <td colspan="5"><a href="javascript:;" @click="challenge_reset()">重置损耗</a></td>
+                                </tr>
                             </tbody>
                         </table>
                         <table class="table table-bordered table-hover table-condensed" v-show="challenges.option == 'my'">
@@ -2143,7 +2146,7 @@
     </div>
     <p id="tips">加载中...</p>
     <script type='text/javascript' src='js/vue.min.js'></script>
-    <script type="text/javascript" src="js/vm.js?v=2.3.34"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.3.35"></script>
     <script type="text/javascript">
     	$(document).ready(function(){
     		$('#tips').html('你的浏览器不支持此版本，可尝试在QQ浏览器、Chrome浏览器中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
