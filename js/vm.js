@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.34',
+        version: '2.3.35',
         path: $.LS.get('path') || 'img/',
         show_path: false,
         base_url: 'https://app.coderprepares.com/evol/calculator/',
@@ -1268,7 +1268,10 @@ var vm = new Vue({
             });
 
             var limit = 30 - choice.length;
-            if (list.length > limit) {
+
+            if(limit <= 0){
+                //do nothing
+            } else if (list.length > limit) {
                 var line = list[limit - 1].total;
                 var gap = 200;
                 for (var i = 0; i < list.length; i++) {
