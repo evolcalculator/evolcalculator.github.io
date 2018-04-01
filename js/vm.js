@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.36',
+        version: '2.3.37',
         path: $.LS.get('path') || 'img/',
         show_path: false,
         base_url: 'https://app.coderprepares.com/evol/calculator/',
@@ -3089,10 +3089,10 @@ var vm = new Vue({
                                 var score = 0;
                                 var card = self.list[j];
 
-                                if ((item.category == 3 && [2, 5].indexOf(card.category) < 0) ||
-                                    (item.category == 4 && [4, 5].indexOf(card.category) < 0) ||
-                                    (item.category == 5 && [1, 5].indexOf(card.category) < 0) ||
-                                    (item.category == 6 && [3, 5].indexOf(card.category) < 0)) {
+                                if (([3].indexOf(item.category) >=0 && [2, 5].indexOf(card.category) < 0) ||
+                                    ([4,8].indexOf(item.category) >= 0 && [4, 5].indexOf(card.category) < 0) ||
+                                    ([5,7].indexOf(item.category) >=0 && [1, 5].indexOf(card.category) < 0) ||
+                                    ([6,9].indexOf(item.category) >= 0 && [3, 5].indexOf(card.category) < 0)) {
                                     continue;
                                 }
 
@@ -3123,6 +3123,10 @@ var vm = new Vue({
 
                             var prop = self.prop;
                             for (var k = 0; k < prop.length; k++) {
+                                if(!self.company[prop[k]]){
+                                    self.company[prop[k]] = 0;
+                                }
+
                                 //公司得分
                                 total += self.company[prop[k]] * item[prop[k]] * item['company'];
                                 //专家得分
@@ -3152,6 +3156,9 @@ var vm = new Vue({
             var self = this;
             self.levels.list = [];
             for (key in self.company) {
+                if(!self.company[key]){
+                    self.company[key] = 0;
+                }
                 self.levels.company[key] = self.company[key];
             }
             self.reset_config();
@@ -3224,10 +3231,10 @@ var vm = new Vue({
                 var card = list[i];
                 var prop = self.prop;
 
-                if ((self.levels.level.category == 3 && [2, 5].indexOf(card.category) < 0) ||
-                    (self.levels.level.category == 4 && [4, 5].indexOf(card.category) < 0) ||
-                    (self.levels.level.category == 5 && [1, 5].indexOf(card.category) < 0) ||
-                    (self.levels.level.category == 6 && [3, 5].indexOf(card.category) < 0)) {
+                if (([3].indexOf(self.levels.level.category) >= 0 && [2, 5].indexOf(card.category) < 0) ||
+                    ([4,8].indexOf(self.levels.level.category) >= 0 && [4, 5].indexOf(card.category) < 0) ||
+                    ([5,7].indexOf(self.levels.level.category) >= 0 && [1, 5].indexOf(card.category) < 0) ||
+                    ([6,9].indexOf(self.levels.level.category) >= 0 && [3, 5].indexOf(card.category) < 0)) {
                     continue;
                 }
 
@@ -4152,6 +4159,15 @@ var vm = new Vue({
                     break;
                 case 6:
                     ret = '副本-周棋洛';
+                    break;
+                case 7:
+                    ret = '李泽言生日';
+                    break;
+                case 8:
+                    ret = '白起情人节';
+                    break;
+                case 9:
+                    ret = '周棋洛生日';
                     break;
             }
             return ret;
