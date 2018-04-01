@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.35',
+        version: '2.3.36',
         path: $.LS.get('path') || 'img/',
         show_path: false,
         base_url: 'https://app.coderprepares.com/evol/calculator/',
@@ -4071,8 +4071,10 @@ var vm = new Vue({
                 return '副本';
             } else if (gain.indexOf('充值') >= 0) {
                 return '充值';
-            } else if (gain.indexOf('奖励') >= 0) {
-                return '奖励';
+            } else if (gain.indexOf('签到') >= 0) {
+                return '签到';
+            } else if (gain.indexOf('公测') >= 0) {
+                return '公测';
             } else if (gain.indexOf('许愿') >= 0) {
                 return '许愿';
             } else if (gain.indexOf('登录') >= 0) {
