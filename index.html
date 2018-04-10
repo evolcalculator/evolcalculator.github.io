@@ -1636,7 +1636,8 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <span>点击名称选择上阵羁绊</span>
+                            <span>点击名称选择上阵羁绊
+                                &nbsp;&nbsp;<a href="javascript:;" @click="save_challenge_card(true)">取消上阵</a></span>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
@@ -1646,7 +1647,7 @@
                                 模式：
                                 <label><input type="radio" name="mode" v-model="challenges.mode" value="0"> 得分</label>&nbsp;&nbsp;
                                 <label><input type="radio" name="mode" v-model="challenges.mode" value="1"> 磨卡</label>&nbsp;&nbsp;
-                                &nbsp;&nbsp;<a href="javascript:;" @click="save_challenge_card(true)">取消上阵</a>
+                                &nbsp;&nbsp;<label style="font-size: small;"><input type="checkbox" name="config" v-model="challenges.config" value="hide_weak"> 隐藏低级卡</label>
                             </p>
                             <div style="overflow-x: scroll;">
                                 <ul class="nav nav-tabs">
@@ -1707,7 +1708,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="item in challenges.field_list" v-show="(challenges.field_ids.indexOf(item.card.card_id) >= 0 || challenges.field_ids.length < 30) && (challenges.field_option == 0 || challenges.field_option == item.card.type)">
+                                        <tr v-for="item in challenges.field_list" v-show="(challenges.field_ids.indexOf(item.card.card_id) >= 0 || challenges.field_ids.length < 30) && (challenges.field_option == 0 || challenges.field_option == item.card.type) && (challenges.config.indexOf('hide_weak') < 0 || challenges.recommend_choice.indexOf(item.card.card_id) >= 0)">
                                             <td v-if="item.score > 0 && challenges.my_ids.indexOf(item.card.card_id) < 0">
                                                 <a href="javascript:;" @click="select_challenge_card(item)">
                                                     {{item.card.name}} <sub>（{{get_damage_rate(item.card)}}）</sub>
@@ -2147,7 +2148,7 @@
     </div>
     <p id="tips">加载中...</p>
     <script type='text/javascript' src='js/vue.min.js'></script>
-    <script type="text/javascript" src="js/vm.js?v=2.3.37"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.3.38"></script>
     <script type="text/javascript">
     	$(document).ready(function(){
     		$('#tips').html('你的浏览器不支持此版本，可尝试在QQ浏览器、Chrome浏览器中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
