@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <title>精英掉落查询</title>
+    <script type="text/javascript" src="https://app.coderprepares.com/evolcalculator/js/jquery.js"></script>
+    <script type="text/javascript" src="https://app.coderprepares.com/evolcalculator/js/vue.min.js"></script>
+    <style type="text/css">
+        table {
+            width: 100%;
+            max-width: 600px;
+            border-collapse: collapse;
+        }
+        table tr th, table tr td{
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>精英掉落</h1>
+
+        <template v-for="(item_list,key) in list">
+            <h2>第{{key}}章 <small><a href="javascript:;" @click="show_chapter[key] = !show_chapter[key]">显示/隐藏</a></small></h2>
+            <table v-show="show_chapter[key]">
+                <tr>
+                    <th>关卡</th>
+                    <th>物品</th>
+                    <th>羁绊</th>
+                    <th>稀有度</th>
+                    <th>进化</th>
+                </tr>
+                <template v-for="(level,item) in item_list">
+                    <tr v-for="(vo,idx) in evolution_card_map[item]" style="border-top: 1px solid rgba(0,0,0,0.2);">
+                        <td v-if="idx == 0" :rowspan="evolution_card_map[item].length">
+                            <template v-for="lv in level">{{lv}}<br></template>
+                        </td>
+                        <td v-if="idx == 0" :rowspan="evolution_card_map[item].length">{{goods_map[item]}}</td>
+                        <td>{{card_map[vo].name}}</td>
+                        <td>{{get_rare(card_map[vo].rare)}}</td>
+                        <td>{{evolution_map[vo].join(' ')}}</td>
+                    </tr>
+                </template>
+            </table>
+        </template>
+    </div>
+    <script type="text/javascript">
+    var base_url = 'https://app.coderprepares.com/evol/data/';
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            list: {},
+            goods_map: {},
+            card_map: {},
+            evolution_map: {},
+            evolution_card_map: {},
+            show_chapter: {
+                1: false,
+                2: false,
+                3: false,
+                4: false,
+                5: false,
+                6: false,
+                7: false,
+                8: false,
+                9: false,
+                10: false,
+            }
+        },
+        methods: {
+            get_rare: function(rare){
+                var ret = '';
+                rare = parseInt(rare, 10);
+                switch(rare){
+                    case 5:
+                        ret = 'SSR';
+                        break;
+                    case 4:
+                        ret = 'SR';
+                        break;
+                    case 3:
+                        ret = 'R';
+                        break;
+                    case 2:
+                        ret = 'NH';
+                        break;
+                    case 1:
+                        ret = 'N';
+                        break;
+                }
+                return ret;
+            }
+        },
+        mounted: function() {
+            var self = this;
+
+            $.ajax({
+                url: base_url + 'task_night',
+                type: 'get',
+                success: function(res) {
+                    if (res.status == 1) {
+                        self.list = res.list;
+                        self.goods_map = res.goods_map;
+                        self.card_map = res.card_map;
+                        self.evolution_map = res.evolution_map;
+                        self.evolution_card_map = res.evolution_card_map;
+                    } else if (res.info) {
+                        alert(res.info);
+                    }
+                },
+                error: function() {
+                    alert('请求失败');
+                }
+            });
+        }
+    });
+    </script>
+</body>
+
+</html>
