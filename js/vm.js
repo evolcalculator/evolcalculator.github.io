@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.39',
+        version: '2.3.40',
         path: $.LS.get('path') || 'img/',
         show_path: false,
         base_url: 'https://app.coderprepares.com/evol/calculator/',
@@ -2337,6 +2337,10 @@ var vm = new Vue({
                     card.evolved = 1;
                     card.star = card.type + 1;
                     card.level = card.type * 10;
+                } else if (config == 'evolved2') {
+                    card.evolved = 1;
+                    card.star = card.type + 2;
+                    card.level = (card.type + 1) * 10;
                 }
 
                 // if (card.type == 1 || card.type == 2) {
@@ -2788,6 +2792,10 @@ var vm = new Vue({
                     card.evolved = 1;
                     card.star = card.type + 1;
                     card.level = card.type * 10;
+                } else if (config == 'evolved2') {
+                    card.evolved = 1;
+                    card.star = card.type + 2;
+                    card.level = (card.type + 1) * 10;
                 }
 
                 if (card.type == 1 || card.type == 2) {
@@ -3329,6 +3337,10 @@ var vm = new Vue({
                     card.evolved = 1;
                     card.star = card.type + 1;
                     card.level = card.type * 10;
+                } else if (config == 'evolved2') {
+                    card.evolved = 1;
+                    card.star = card.type + 2;
+                    card.level = (card.type + 1) * 10;
                 }
 
                 if (card.type == 1 || card.type == 2) {
