@@ -270,8 +270,9 @@
                                     已添加
                                 </td>
                                 <td v-else>
-                                    <a href="javascript:;" @click="add_my_card(item.card_id, 'evolved')" v-show="item.type >= 3">添加满级</a>
-                                    <a href="javascript:;" @click="add_my_card(item.card_id, 'normal')">添加未进化</a>
+                                    <a href="javascript:;" @click="add_my_card(item.card_id, 'evolved', true)" v-show="item.type >= 3">添加新满级</a>
+                                    <a href="javascript:;" @click="add_my_card(item.card_id, 'evolved', false)" v-show="item.type >= 3">添加满级</a>
+                                    <a href="javascript:;" @click="add_my_card(item.card_id, 'normal', false)">添加未进化</a>
                                     <a href="javascript:;" @click="add_custom_card(item.card_id)">添加自定义</a>
                                 </td>
                             </tr>
@@ -1787,9 +1788,10 @@
                             </div>
                             <p class="help-block">
                                 <a href="javascript:;" @click="challenges.select.show_head = !challenges.select.show_head">显示头像▼</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <a href="javascript:;" @click="use_challenge_card(0, 2)" v-show="this.challenges.select.card_id != 0">初级</a>&nbsp;
-                                <a href="javascript:;" @click="use_challenge_card(0, 0)" v-show="this.challenges.select.card_id != 0">未进化</a>&nbsp;
-                                <a href="javascript:;" @click="use_challenge_card(0, 1)" v-show="this.challenges.select.card_id != 0">满级</a>
+                                <a href="javascript:;" @click="use_challenge_card(0, 2, false)" v-show="this.challenges.select.card_id != 0">初级</a>&nbsp;
+                                <a href="javascript:;" @click="use_challenge_card(0, 0, false)" v-show="this.challenges.select.card_id != 0">未进化</a>&nbsp;
+                                <a href="javascript:;" @click="use_challenge_card(0, 1, false)" v-show="this.challenges.select.card_id != 0">满级</a>
+                                <a href="javascript:;" @click="use_challenge_card(0, 1, true)" v-show="this.challenges.select.card_id != 0">新满级</a>
                             </p>
                             <div v-show="challenges.select.show_head">
                                 <div class="form-group clearfix">
@@ -2148,7 +2150,7 @@
     </div>
     <p id="tips">加载中...</p>
     <script type='text/javascript' src='js/vue.min.js'></script>
-    <script type="text/javascript" src="js/vm.js?v=2.3.38"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.3.39"></script>
     <script type="text/javascript">
     	$(document).ready(function(){
     		$('#tips').html('你的浏览器不支持此版本，可尝试在QQ浏览器、Chrome浏览器中打开，或<a href="https://evolcalculator.github.io/index-v1">使用1.0版本</a>');
