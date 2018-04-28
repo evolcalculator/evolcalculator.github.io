@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.38',
+        version: '2.3.39',
         path: $.LS.get('path') || 'img/',
         show_path: false,
         base_url: 'https://app.coderprepares.com/evol/calculator/',
@@ -595,6 +595,9 @@ var vm = new Vue({
             if (this.card_select.type < 3) {
                 max_star = 1;
                 max_level = this.card_select.type == 2 ? 10 : 5;
+            } else {
+                max_star += 1;
+                max_level += 10;
             }
 
             if (this.card_select.star > max_star) {
@@ -633,6 +636,9 @@ var vm = new Vue({
                 if (this.levels.select.type < 3) {
                     max_star = 1;
                     max_level = this.levels.select.type == 2 ? 10 : 5;
+                } else {
+                    max_star += 1;
+                    max_level += 10;
                 }
 
                 if (this.levels.select.star > max_star) {
@@ -685,6 +691,9 @@ var vm = new Vue({
                 if (this.tickets.select.type < 3) {
                     max_star = 1;
                     max_level = this.tickets.select.type == 2 ? 10 : 5;
+                } else {
+                    max_star += 1;
+                    max_level += 10;
                 }
 
                 if (this.tickets.select.star > max_star) {
@@ -736,6 +745,9 @@ var vm = new Vue({
                 if (this.challenges.select.type < 3) {
                     max_star = 1;
                     max_level = this.challenges.select.type == 2 ? 10 : 5;
+                } else {
+                    max_star += 1;
+                    max_level += 10;
                 }
 
                 if (this.challenges.select.star > max_star) {
@@ -1987,7 +1999,7 @@ var vm = new Vue({
 
             $('#field').modal('hide');
         },
-        use_challenge_card: function(card_id, evolved) {
+        use_challenge_card: function(card_id, evolved, is_new) {
             evolved = parseInt(evolved, 10);
             if (card_id == 0) {
                 card_id = this.challenges.select.card_id;
@@ -2004,8 +2016,8 @@ var vm = new Vue({
                         break;
                     case 1:
                         this.challenges.select.evolved = 1;
-                        this.challenges.select.star = card.type + 1;
-                        this.challenges.select.level = card.type * 10;
+                        this.challenges.select.star = is_new ? card.type + 2 : card.type + 1;
+                        this.challenges.select.level = is_new ? (card.type + 1) * 10 : card.type * 10;
                         break;
                     case 2:
                         this.challenges.select.evolved = 0;
@@ -3739,12 +3751,17 @@ var vm = new Vue({
             this.card_select.name = card.name;
             this.show_card();
         },
-        add_my_card: function(card_id, option) {
+        add_my_card: function(card_id, option, is_new) {
             var self = this;
             var card = this.cards[card_id];
             var evolved = option == 'evolved' ? 1 : 0;
             var star = option == 'evolved' ? card.type + 1 : card.type;
             var level = card.type >= 3 ? (star - 1) * 10 : card.type * 5;
+
+            if(is_new && card.type >= 3){
+                star += 1;
+                level += 10;
+            }
 
             var user_correct = 0;
             var data = self.predict_card(card.card_id, evolved, star, level);
