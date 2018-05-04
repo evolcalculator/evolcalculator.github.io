@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.40',
+        version: '2.3.41',
         path: $.LS.get('path') || 'img/',
         show_path: false,
         base_url: 'https://app.coderprepares.com/evol/calculator/',
@@ -4161,9 +4161,7 @@ var vm = new Vue({
         },
         //获取标签
         get_gain_tag: function(gain) {
-            if (gain.indexOf('限定') >= 0) {
-                return '限定';
-            } else if (gain.indexOf('副本') >= 0) {
+            if (gain.indexOf('副本') >= 0) {
                 return '副本';
             } else if (gain.indexOf('充值') >= 0) {
                 return '充值';
@@ -4177,6 +4175,10 @@ var vm = new Vue({
                 return '登录';
             } else if (gain.indexOf('24小时') >= 0) {
                 return '24小时';
+            } else if (gain.indexOf('梦心湖') >= 0) {
+                return '梦心湖';
+            } else if (gain.indexOf('限定') >= 0) {
+                return '限定';
             } else {
                 return gain;
             }
