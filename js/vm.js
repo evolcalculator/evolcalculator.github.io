@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.41',
+        version: '2.3.42',
         path: $.LS.get('path') || 'img/',
         show_path: false,
         base_url: 'https://app.coderprepares.com/evol/calculator/',
@@ -495,7 +495,7 @@ var vm = new Vue({
             $.LS.set('my_cards', JSON.stringify(newVal));
         },
         'company.decisiveness': function(newVal, oldVal) {
-            var max = 5000;
+            var max = 7000;
             var val = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             if (val && val > max) {
                 val = max;
@@ -505,7 +505,7 @@ var vm = new Vue({
             $.LS.set('company', JSON.stringify(this.company));
         },
         'company.creativity': function(newVal, oldVal) {
-            var max = 5000;
+            var max = 7000;
             var val = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             if (val && val > max) {
                 val = max;
@@ -514,7 +514,7 @@ var vm = new Vue({
             $.LS.set('company', JSON.stringify(this.company));
         },
         'company.kindness': function(newVal, oldVal) {
-            var max = 5000;
+            var max = 7000;
             var val = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             if (val && val > max) {
                 val = max;
@@ -523,7 +523,7 @@ var vm = new Vue({
             $.LS.set('company', JSON.stringify(this.company));
         },
         'company.activity': function(newVal, oldVal) {
-            var max = 5000;
+            var max = 7000;
             var val = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             if (val && val > max) {
                 val = max;
