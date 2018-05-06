@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <title>恋与制作人计算器</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="evol calculator">
+    <meta name="keywords" content="calculator">
+    <meta name="author" content="Darina">
+    <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> -->
+    <!-- <link rel="shortcut icon" href="img/favicon.ico"> -->
+
+    <!-- CSS | STYLE -->
+    <link rel="stylesheet" type="text/css" href="css/cal_style.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-cal.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" /> -->
+    <!-- END CSS | STYLE -->
+
+    <script type='text/javascript' charset="UTF-8" src='js/jquery.js'></script>
+    <script type='text/javascript' charset="UTF-8" src='js/bootstrap.js'></script>
+    <script type='text/javascript' charset="UTF-8" src='data/weights.js'></script>
+    <script type='text/javascript' charset="UTF-8" src='data/bonds.js'></script>
+    <script type='text/javascript' charset="UTF-8" src='js/calculator.js'></script>
+    <script type='text/javascript' charset="UTF-8" src='js/cardsAndBonds.js'></script>
+    <script type='text/javascript' charset="UTF-8" src='js/drawui.js'></script>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+            <span class="sr-only">切换导航</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a href="#" class="navbar-brand nav-title"><img src="img/logo-s.png" alt="header"/></a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-menu">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="cative"><a href="#point1">说明</a></li>
+            <li class="cative"><a href="#point2">得分计算</a></li>
+            <li class="cative"><a href="#point3">我的羁绊信息</a></li>
+            <li class="cative"><a href="#point4">添加羁绊</a></li>
+            <li class="cative"><a href="#point5">自定义羁绊</a></li>
+            <li class="cative"><a href="#point6">导出/导入</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav> 
+
+    <!-- Go To Top Button -->
+    <!-- <a href="#hs-menu" class="hs-totop-link"><i class="fa fa-chevron-up"></i></a> -->
+    <!-- End Go To Top Button -->
+
+    <div class="container-fluid">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-10 mycontainer" id="Container">
+
+        <div class="item_body">
+
+            <div id="point1"></div>
+            <div class="mycard" id="section1">
+                <h3>恋与制作人计算器v1.0</h3><br/>
+                <p>
+                    <!-- 傻瓜版羁绊选择和竞技场算分功能持续更新中……<br/><br/> -->
+                    <h4>使用说明</h4>
+                    1.请先<a href="#point4">添加羁绊</a>，或者<a href="#point5">输入</a>/<a href="#point6">导入</a>拥有的羁绊信息，然后再开始<a href="#point2">计算</a><br/>
+                    2.<a href="#point4">"添加羁绊"</a>中的羁绊数据为满星满级的羁绊数据，未达到满星满级请<a href="#point5">自定义输入羁绊信息</a><br/>
+                    3.为保证使用体验，清理浏览器cookie前请保存羁绊记录(点击最下方<a href="#point6">"导出羁绊记录"</a>)<br/>
+                    <h4>数据来源</h4>
+                    权重数据来源 <a href="https://weibo.com/unnamedgroup">@恋与制作人未命名攻略组</a><br/>
+<!--                     图片来源 <a href="http://evol.papegames.cn/index.html">恋与制作人官网</a><br/> -->
+                    计算器制作 @达尔娜 @清澄<br/>
+                </p>
+            </div>
+            <!-- SELF INTRODUCE -->
+            <br/>
+            <div id="point2"></div>
+            <div class="mycard" id="section2">
+                <h4>得分计算</h4>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>关卡类别</th>
+                            <th>关卡名</th>
+                            <th colspan="2">附加要求</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <select id="stage-category">
+                                    <option value ="normal">普通</option>
+                                    <option value ="hard">精英</option>
+                                    <option value="instance">拍摄副本</option>
+                                    <option value="arena">票房争夺战</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select id="stage-name">
+                                </select>
+                            </td>
+                            <td id="div-character">
+                                <select id="stage-character">
+                                </select>
+                            </td>
+                            <!-- <td id="stage-decision"></td>
+                            <td id="stage-creativity"></td>
+                            <td id="stage-appetency"></td>
+                            <td id="stage-action"></td> -->
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-default" id="btn-start">一键攻略</button>
+                <br/><br/>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>关卡掉落</th>
+                            <td id="stage-goods"></td>
+                        </tr>
+                        <tr>
+                            <th>特殊要求</th>
+                            <th>专家推荐</th>
+                        </tr>
+                    </thead>
+                    <tbody id="div-request">
+                    </tbody>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th colspan="5">推荐羁绊&nbsp;&nbsp;
+                                <select id="num-cards">
+                                    <option value ="-1">显示全部</option>
+                                    <option value ="3">前 3 张</option>
+                                    <option value="5">前 5 张</option>
+                                    <option value="10">前 10 张</option>
+                                </select>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>羁绊名</th>
+                            <th>稀有度</th>
+                            <th>人物</th>
+                            <th>获取途径</th>
+                            <th>得分</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recommendation">
+                    </tbody>
+                </table>
+            </div>
+            <br/>
+            <div id="point3"></div>
+            <div class="mycard" id="section3">
+                <h4>我的羁绊信息</h4>
+                <p><a href="javascript:void(0);" onclick="deleteAll()">删除全部</a></p>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>羁绊名</th>
+                            <th>稀有度 &nbsp;&nbsp;
+                                <select id="mycard-rarity">
+                                    <option value ="all">全部</option>
+                                    <option value ="SSR">SSR</option>
+                                    <option value="SR">SR</option>
+                                    <option value="R">R</option>
+                                </select>
+                            </th>
+                            <th>人物 &nbsp;&nbsp;
+                                <select id="mycard-character">
+                                    <option value ="all">全部</option>
+                                    <option value ="李泽言">李泽言</option>
+                                    <option value="许墨">许墨</option>
+                                    <option value="周棋洛">周棋洛</option>
+                                    <option value="白起">白起</option>
+                                </select>
+                            </th>
+                            <th>四维</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="card-table">
+                    </tbody>
+                </table>
+            </div>
+            <br/>
+            <div id="point4"></div>
+            <div class="mycard" id="section4">
+                <h4>添加羁绊</h4>
+                <p>(以下属性均为满星满级，未满星满级请移步<a href="#point5">自定义羁绊</a>)</p>
+                <p><a href="javascript:void(0);" onclick="addAll()">添加全部</a></p>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>羁绊名</th>
+                            <th>稀有度 &nbsp;&nbsp;
+                                <select id="select-rarity">
+                                    <option value ="all">全部</option>
+                                    <option value ="SSR">SSR</option>
+                                    <option value="SR">SR</option>
+                                    <option value="R">R</option>
+                                </select>
+                            </th>
+                            <th>人物 &nbsp;&nbsp;
+                                <select id="select-character">
+                                    <option value ="all">全部</option>
+                                    <option value ="李泽言">李泽言</option>
+                                    <option value="许墨">许墨</option>
+                                    <option value="周棋洛">周棋洛</option>
+                                    <option value="白起">白起</option>
+                                </select>
+                            </th>
+                            <th>获取途径</th>
+                            <th>操作</button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="bonds-table">
+                    </tbody>
+                </table>
+            </div>
+            <br/>
+            <div id="point5"></div>
+            <div class="mycard" id="section5">
+                <h4>自定义羁绊</h4>
+                <div class="form-inline">
+                    <label for="card-name" class="control-label">羁绊名</label>
+                    <input type="text" class="form-control" id="card-name" name="card-name">
+                </div>
+                <br/>
+                <div class="form-inline">
+                    <label for="card-rarity" class="control-label">稀有度</label>
+                    <select id="card-rarity" name="card-rarity">
+                        <option value ="SSR">SSR</option>
+                        <option value ="SR">SR</option>
+                        <option value="R">R</option>
+                        <option value="NH">NH</option>
+                        <option value="N">N</option>
+                    </select>
+                </div>
+                <br/>
+                <div class="form-inline">
+                    <label for="card-character" class="control-label">人物</label>
+                    <select id="card-character" name="card-character">
+                        <option value ="白起">白起</option>
+                        <option value ="李泽言">李泽言</option>
+                        <option value="许墨">许墨</option>
+                        <option value="周棋洛">周棋洛</option>
+                    </select>
+                </div>
+                <br/>
+                <div class="form-inline">
+                    <label for="card-decision" class="control-label">决策力</label>
+                    <input type="text" class="form-control" id="card-decision" name="card-decision">
+                </div>
+                <br/>
+                <div class="form-inline">
+                    <label for="card-creativity" class="control-label">创造力</label>
+                    <input type="text" class="form-control" id="card-creativity" name="card-creativity">
+                </div>
+                <br/>
+                <div class="form-inline">
+                    <label for="card-appetency" class="control-label">亲和力</label>
+                    <input type="text" class="form-control" id="card-appetency" name="card-appetency">
+                </div>
+                <br/>
+                <div class="form-inline">
+                    <label for="card-action" class="control-label">行动力</label>
+                    <input type="text" class="form-control" id="card-action" name="card-action">
+                </div>
+                <br/>
+                <button class="btn btn-default" onclick="addCard();">添加</button>
+                <br/><br/>
+            </div>
+            <br/>
+            <div id="point6"></div>
+            <div class="mycard" id="section6">
+                <h4>批量导出/导入</h4>
+                <div class="form-group">
+                    <textarea id="import-text" class="form-control" rows="8" style="width:90%; margin:0 auto;"></textarea><br/>
+                    <button id="export-button" class='btn btn-default' onclick="exportCard()">导出</button>&nbsp;&nbsp;
+                    <button id="import-button" class='btn btn-primary' onclick="importCard();">导入</button>
+                </div>
+                <a href="#">返回顶部</a><br/><br/>
+            </div>
+            <br/><br/>
+        </div>
+        <div class="col-md-1">
+        </div>
+    </div>
+    </div>
+
+    <!-- PLUGIN SCRIPTS -->
+    <script type='text/javascript' charset="UTF-8" src='js/main.js'></script>
+    <!-- END PLUGIN SCRIPTS -->
+
+</body>
+</html>
