@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.42',
+        version: '2.3.43',
         path: $.LS.get('path') || 'img/',
         show_path: false,
         base_url: 'https://app.coderprepares.com/evol/calculator/',
@@ -4179,6 +4179,8 @@ var vm = new Vue({
                 return '梦心湖';
             } else if (gain.indexOf('限定') >= 0) {
                 return '限定';
+            } else if (gain.indexOf('票房') >= 0) {
+                return '票房';
             } else {
                 return gain;
             }
@@ -4259,6 +4261,9 @@ var vm = new Vue({
                     break;
                 case 9:
                     ret = '周棋洛生日';
+                    break;
+                case 10:
+                    ret = '周棋洛活动';
                     break;
             }
             return ret;
