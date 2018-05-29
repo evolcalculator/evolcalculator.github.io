@@ -1138,6 +1138,30 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <table class="table table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>实力对比</th>
+                                    <th>公司实力</th>
+                                    <th>羁绊实力</th>
+                                    <th>总实力</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>自己</th>
+                                    <td>{{get_challenge_company_total('my')}}</td>
+                                    <td>{{get_challenge_card_total('my')}}</td>
+                                    <td>{{get_challenge_company_total('my') + get_challenge_card_total('my')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>对手</th>
+                                    <td>{{get_challenge_company_total('match')}}</td>
+                                    <td>{{get_challenge_card_total('match')}}</td>
+                                    <td>{{get_challenge_company_total('match') + get_challenge_card_total('match')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div v-show="!empty(challenges.challenge)">
                         <h4>
