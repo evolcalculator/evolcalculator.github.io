@@ -526,7 +526,7 @@
                 <!--今日票房-->
                 <div class="mycard" v-show="nav == 'ticket'">
                     <h4>{{get_string('TICKET_TODAY')}}</h4>
-                    <p><a href="javascript:;" @click="show_today()">{{get_string('config')}}</a></p>
+                    <p><a href="javascript:;" @click="show_today()">{{get_string('CONFIG')}}</a></p>
                     <table class="table table-bordered table-hover table-condensed">
                         <thead>
                             <th>{{get_string('THEME')}}</th>
@@ -842,7 +842,7 @@
 
                     <div class="form-group clearfix" v-if="!empty(ticket)">
                         <div class="col-xs-4 col-md-3 col-lg-2">
-                            <label class="label-above">{{get_string('FISRT_LEVEL')}}</label>
+                            <label class="label-above">{{get_string('FIRST_LEVEL')}}</label>
                             <select class="form-control" v-model="challenge_select.library">
                                 <option :value="item.library" v-for="item in challenge" v-if="item.level == 1">{{item.name}}</option>
                             </select>
