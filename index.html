@@ -15,7 +15,7 @@
         div[v-cloak] {
             display: none;
         }
-        #tips {
+        #tips, #ajax_tips {
             padding: 15px;
         }
         .img-icon {
@@ -35,6 +35,8 @@
             var log = sMsg + '：' + sUrl + ':' + sLine + ';';
             document.getElementById('tips').innerHTML += ('<br>'+log);
         }
+
+        var LANGUAGE = '';
     </script>
     <script type="text/javascript" src="js/strings.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
@@ -240,9 +242,9 @@
                             </select>
                         </div>
                         <div class="col-xs-4 col-md-3 col-lg-2">
-                            <label class="label-above">>{{get_string('RARE')}}</label>
+                            <label class="label-above">{{get_string('RARE')}}</label>
                             <select class="form-control" v-model="all_card_filter.type">
-                                <option value="0">>{{get_string('ALL')}}</option>
+                                <option value="0">{{get_string('ALL')}}</option>
                                 <option value="5">SSR</option>
                                 <option value="4">SR</option>
                                 <option value="3">R</option>
@@ -2177,8 +2179,9 @@
         </div>
     </div>
     <p id="tips" data-strings="text">LOADING</p>
+    <p id="ajax_tips" style="display: none;" data-strings="text">LOADING</p>
     <script type='text/javascript' src='js/vue.min.js'></script>
-    <script type="text/javascript" src="js/vm.js?v=2.3.44"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.3.45"></script>
     <script type="text/javascript">
     	$(document).ready(function(){
             $('[data-strings]').each(function(){

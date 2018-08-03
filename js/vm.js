@@ -1,7 +1,8 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.44',
+        version: '2.3.45',
+        location: LANGUAGE || '',
         path: $.LS.get('path') || 'img/',
         show_path: false,
         base_url: 'https://app.coderprepares.com/evol/calculator/',
@@ -2920,7 +2921,8 @@ var vm = new Vue({
             var data = {
                 ticket_id: self.ticket_select.ticket_id,
                 category: self.ticket_select.category,
-                star: self.ticket_select.star
+                star: self.ticket_select.star,
+                location: self.location
             };
 
             $('#save_today').button('loading');
@@ -3160,7 +3162,8 @@ var vm = new Vue({
                 type: 'post',
                 data: {
                     category: self.category,
-                    chapter: self.chapter
+                    chapter: self.chapter,
+                    location: self.location
                 },
                 success: function(res) {
                     if (res.status == 1) {
@@ -3252,7 +3255,8 @@ var vm = new Vue({
                 url: self.base_url + 'level',
                 type: 'post',
                 data: {
-                    id: id
+                    id: id,
+                    location: self.location
                 },
                 success: function(res) {
                     if (res.status == 1) {
@@ -3664,7 +3668,8 @@ var vm = new Vue({
                 type: 'post',
                 data: {
                     token: self.get_token(),
-                    list: JSON.stringify(list)
+                    list: JSON.stringify(list),
+                    location: self.location
                 },
                 success: function(res) {
                     if (res.status == 1) {
@@ -3796,7 +3801,8 @@ var vm = new Vue({
                     creativity: data.creativity,
                     kindness: data.kindness,
                     activity: data.activity,
-                    user_correct: user_correct
+                    user_correct: user_correct,
+                    location: self.location
                 },
                 success: function(res) {
                     if (res.status == 1) {
@@ -3862,7 +3868,8 @@ var vm = new Vue({
                     creativity: self.card_select.creativity,
                     kindness: self.card_select.kindness,
                     activity: self.card_select.activity,
-                    user_correct: user_correct
+                    user_correct: user_correct,
+                    location: self.location
                 },
                 success: function(res) {
                     if (res.status == 1) {
@@ -3914,7 +3921,8 @@ var vm = new Vue({
                     url: self.base_url + 'remove_all',
                     type: 'post',
                     data: {
-                        token: self.get_token()
+                        token: self.get_token(),
+                        location: self.location
                     },
                     success: function(res) {
                         if (res.status == 1) {
@@ -3943,7 +3951,8 @@ var vm = new Vue({
                     type: 'post',
                     data: {
                         token: self.get_token(),
-                        card_id: id
+                        card_id: id,
+                        location: self.location
                     },
                     success: function(res) {
                         if (res.status == 1) {
@@ -4043,7 +4052,8 @@ var vm = new Vue({
                     decisiveness: self.company.decisiveness,
                     creativity: self.company.creativity,
                     kindness: self.company.kindness,
-                    activity: self.company.activity
+                    activity: self.company.activity,
+                    location: self.location
                 },
                 success: function(res) {
                     if (res.info) {
@@ -4080,6 +4090,7 @@ var vm = new Vue({
                     name: self.login.name,
                     code: self.login.code,
                     list: self.login.option == 'create_user' ? self.get_json_list() : '',
+                    location: self.location
                 },
                 success: function(res) {
                     if (res.status == 1) {
@@ -4325,7 +4336,8 @@ var vm = new Vue({
                 url: self.base_url + 'init',
                 type: 'post',
                 data: {
-                    token: self.get_token()
+                    token: self.get_token(),
+                    location: self.location
                 },
                 success: function(res) {
                     if (res.status == 1) {
@@ -4461,6 +4473,9 @@ var vm = new Vue({
                 },
                 error: function(res) {
                     self.show_msg(self.get_string('TIP_REQUEST_FAIL'));
+                },
+                complete: function(){
+                    $('#ajax_tips').hide();
                 }
             });
 
@@ -4472,6 +4487,7 @@ var vm = new Vue({
     },
     mounted: function() {
         $('#tips').hide();
+        $('#ajax_tips').show();
         this.list = $.LS.get('list') ? JSON.parse($.LS.get('list')) : [];
         this.my_cards = $.LS.get('my_cards') ? JSON.parse($.LS.get('my_cards')) : [];
         this.load();
