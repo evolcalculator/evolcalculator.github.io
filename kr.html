@@ -856,7 +856,7 @@
                                 <option :value="item.level" v-for="item in challenge" v-if="item.library == challenge_select.library">{{item.level}}. {{item.name}}</option>
                             </select>
                         </div>
-                        <div class="col-xs-4 col-sm-2 col-lg-1">
+                        <div class="col-xs-4 col-sm-2">
                             <button id="get_levels" type="button" :data-loading-text="get_string('LOADING')" class="btn btn-primary form-control" autocomplete="off" @click="get_challenges()">{{get_string('LEVEL_ANALYSE')}}</button>
                         </div>
                     </div>
