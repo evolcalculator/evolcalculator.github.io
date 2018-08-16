@@ -36,9 +36,9 @@
             document.getElementById('tips').innerHTML += ('<br>'+log);
         }
 
-        var LANGUAGE = '';
+        var LANGUAGE = 'kr';
     </script>
-    <script type="text/javascript" src="js/strings.js"></script>
+    <script type="text/javascript" src="js/strings.kr.js?v=1.0.0"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/storage.js"></script>
     <script type="text/javascript" src="js/bootstrap.js"></script>
@@ -82,9 +82,8 @@
                 <div class="mycard">
                     <h3>{{get_string('SUB_TITLE')}}</h3>
                     <p>
-                        其他版本：<a href="kr.html" target="_blank">韩文版</a>
                         <!-- <a href="https://evolcalculator.github.io/index-v1.html">{{get_string('PREV_VERSION')}}</a> -->
-                        <br>
+                        <!-- <br> -->
                         <h4>{{get_string('HELP')}}</h4>
                         {{get_string('TIP_HELP_FIRST')}}<a href="javascript:;" @click="nav = 'card'">{{get_string('ADD_CARD')}}</a>{{get_string('TIP_HELP_SUPPORT')}}<a href="javascript:;" @click="show_batch('import_data')">{{get_string('IMPORT')}}/{{get_string('EXPORT')}}</a>{{get_string('TIP_HELP_AND')}}<a href="javascript:;" @click="show_login('create_user')">{{get_string('DATA_PRESERVE')}}</a>{{get_string('TIP_HELP_LAST')}}
                         <br>
@@ -92,6 +91,7 @@
                         <br>
 
                         <h4>{{get_string('SOURCE')}}</h4> {{get_string('TIP_SOURCE')}} <a href="https://weibo.com/unnamedgroup" target="_blank">{{get_string('GROUP_ACCOUNT')}}</a>
+                        <br> 번역가 <a href="https://weibo.com/u/1994624573" target="_blank">@awing</a> <a href="https://weibo.com/u/5696002721" target="_blank">@清葉楠</a>
                         <br> {{get_string('TIP_CREATOR')}}
                     </p>
                 </div>
@@ -151,8 +151,8 @@
                             <p class="help-block">{{get_string('HELP_ADD_CARD')}}</p>
                         </div>
                         <div class="form-group">
-                            <a href="javascript:;" class="btn btn-default" @click="show_batch('export_data')">{{get_string('IMPORT')}}</a>
-                            <a href="javascript:;" class="btn btn-primary" @click="show_batch('import_data')">{{get_string('EXPORT')}}</a>
+                            <a href="javascript:;" class="btn btn-default" @click="show_batch('export_data')">{{get_string('EXPORT')}}</a>
+                            <a href="javascript:;" class="btn btn-primary" @click="show_batch('import_data')">{{get_string('IMPORT')}}</a>
                         </div>
                         <div class="alert alert-warning" role="alert" v-show="!empty(batch.fail)">
                             {{get_string('TIP_IMPORT_PART_FAIL')}}：
@@ -856,7 +856,7 @@
                                 <option :value="item.level" v-for="item in challenge" v-if="item.library == challenge_select.library">{{item.level}}. {{item.name}}</option>
                             </select>
                         </div>
-                        <div class="col-xs-4 col-sm-2 col-lg-1">
+                        <div class="col-xs-4 col-sm-2">
                             <button id="get_levels" type="button" :data-loading-text="get_string('LOADING')" class="btn btn-primary form-control" autocomplete="off" @click="get_challenges()">{{get_string('LEVEL_ANALYSE')}}</button>
                         </div>
                     </div>
