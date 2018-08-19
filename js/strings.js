@@ -1,3 +1,4 @@
+//中文
 var strings = {
 	'TITLE': '恋与制作人计算器',
 	'SUB_TITLE': '恋与制作人计算器v2.0',
