@@ -3823,9 +3823,9 @@ var vm = new Vue({
                     location: self.location
                 },
                 success: function(res) {
-                var res = {}
-                res.status = 1
-                res.card = card
+                // var res = {}
+                // res.status = 1
+                // res.card = card
 
                     if (res.status == 1) {
                         var card = res.card;
