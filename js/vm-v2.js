@@ -3690,6 +3690,10 @@ var vm = new Vue({
                     location: self.location
                 },
                 success: function(res) {
+                    // var res = {}
+                    // res.status = 1
+                    // res.fail = []
+                    // res.success = self.list
                     if (res.status == 1) {
                         self.batch.data = '';
                         self.batch.fail = res.fail;
@@ -3699,6 +3703,9 @@ var vm = new Vue({
                     } else if (res.info) {
                         self.show_msg(self.get_string(res.info));
                     }
+
+                    // $('#import_data').button('reset');
+                    // self.batch.source = 'calculator';
                 },
                 error: function(res) {
                     self.show_msg(self.get_string('TIP_REQUEST_FAIL'));
@@ -3877,6 +3884,7 @@ var vm = new Vue({
                 }
             }
 
+
             $.ajax({
                 url: self.base_url + 'save_card',
                 type: 'post',
@@ -3894,6 +3902,11 @@ var vm = new Vue({
                     location: self.location
                 },
                 success: function(res) {
+                    // var res = {}
+                    // res.status = 1
+                    // res.card = Object.assign({}, self.card_select)
+                    // res.card.card_id = Number(res.card.card_id)
+
                     if (res.status == 1) {
                         var card = res.card;
                         var card_id = card.card_id;
@@ -3926,6 +3939,7 @@ var vm = new Vue({
                     } else if (res.info) {
                         self.show_msg(self.get_string(res.info));
                     }
+                    // $('#save_card').button('reset');
                 },
                 error: function(res) {
                     self.show_msg(self.get_string('TIP_REQUEST_FAIL'));
@@ -3947,6 +3961,9 @@ var vm = new Vue({
                         location: self.location
                     },
                     success: function(res) {
+                        // var res = {}
+                        // res.status = 1
+
                         if (res.status == 1) {
                             self.company = {};
                             self.list = [];
@@ -3977,6 +3994,9 @@ var vm = new Vue({
                         location: self.location
                     },
                     success: function(res) {
+                        // res = {}
+                        // res.status = 1
+
                         if (res.status == 1) {
                             var idx = self.my_cards.indexOf(id);
                             self.my_cards.splice(idx, 1);
@@ -4414,19 +4434,6 @@ var vm = new Vue({
                     return (b.type * 100 + b.category) - (a.type * 100 + a.category);
                 });
 
-                if (res.company) {
-                    self.company = res.company;
-                }
-
-                if (res.list) {
-                    self.list = res.list;
-                    self.my_cards = [];
-
-                    for (var i = 0; i < self.list.length; i++) {
-                        self.my_cards.push(self.list[i].card_id);
-                    }
-                }
-
                 if (res.ticket) {
                     self.ticket = res.ticket;
                 }
@@ -4514,37 +4521,48 @@ var vm = new Vue({
                     self.dom_init = true;
                 }
 
-                if (self.empty(self.list)) {
-                    self.nav = 'card';
-                }
             } else if (res.info) {
                 self.show_msg(self.get_string(res.info));
             }
 
             $('#ajax_tips').hide();
 
-            if(is_auto_today){
-                $.ajax({
-                    url: self.base_url + 'init',
-                    type: 'post',
-                    data: {
-                        token: self.get_token(),
-                        location: self.location
-                    },
-                    success: function(res) {
-                        if (!self.empty(res.today) && self.empty(self.today)) {
-                            self.today = res.today;
-                            self.ticket_combine();
+            $.ajax({
+                url: self.base_url + 'init',
+                type: 'post',
+                data: {
+                    token: self.get_token(),
+                    location: self.location
+                },
+                success: function(res) {
+                    if (res.list){
+                        self.list = res.list;
+                        self.my_cards = [];
+
+                        for (var i = 0; i < self.list.length; i++) {
+                            self.my_cards.push(self.list[i].card_id);
                         }
-                    },
-                    error: function(res) {
-                        self.show_msg(self.get_string('TIP_REQUEST_FAIL'));
-                    },
-                    complete: function(){
-                        // $('#ajax_tips').hide();
                     }
-                });
-            }
+                    if (self.empty(self.list)) {
+                        self.nav = 'card';
+                    }
+
+                    if (res.company) {
+                        self.company = res.company;
+                    }
+
+                    if (is_auto_today && !self.empty(res.today) && self.empty(self.today)) {
+                        self.today = res.today;
+                        self.ticket_combine();
+                    }
+                },
+                error: function(res) {
+                    self.show_msg(self.get_string('TIP_REQUEST_FAIL'));
+                },
+                complete: function(){
+                    // $('#ajax_tips').hide();
+                }
+            });
 
             var history = $.LS.get('history') || {};
             if (typeof(history) == 'string') {
