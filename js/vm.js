@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.45',
+        version: '2.3.46',
         location: LANGUAGE || '',
         path: $.LS.get('path') || 'img/',
         show_path: false,
@@ -1267,6 +1267,7 @@ var vm = new Vue({
 
             var choice = [];
             var list = [];
+            var MAX_CARD_LIMIT = 300;
 
             for (var i = 0; i < this.challenges.cards.length; i++) {
                 var card = this.challenges.cards[i].card;
@@ -1281,7 +1282,7 @@ var vm = new Vue({
                 return b.total - a.total;
             });
 
-            var limit = 30 - choice.length;
+            var limit = MAX_CARD_LIMIT - choice.length;
 
             if(limit <= 0){
                 //do nothing
@@ -1308,8 +1309,8 @@ var vm = new Vue({
                     score: this.get_challenge_score(card)
                 });
             }
-            if (cards.length > 30) {
-                cards = cards.slice(0, 30);
+            if (cards.length > MAX_CARD_LIMIT) {
+                cards = cards.slice(0, MAX_CARD_LIMIT);
             }
 
             var ids = [];
@@ -1320,6 +1321,8 @@ var vm = new Vue({
             this.challenges.recommend_choice = ids;
         },
         challenge_recommend: function() {
+            var MAX_CARD_LIMIT = 300;
+
             this.clear_challenge_card('my');
             if (this.challenges.match[0].card_id == 0 && this.challenges.match[1].card_id == 0 && this.challenges.match[2].card_id == 0) {
                 return false;
@@ -1343,7 +1346,7 @@ var vm = new Vue({
                 return b.total - a.total;
             });
 
-            var limit = 30 - choice.length;
+            var limit = MAX_CARD_LIMIT - choice.length;
 
             if(limit <= 0){
                 //do nothing
@@ -1370,8 +1373,8 @@ var vm = new Vue({
                     score: this.get_challenge_score(card)
                 });
             }
-            if (cards.length > 30) {
-                cards = cards.slice(0, 30);
+            if (cards.length > MAX_CARD_LIMIT) {
+                cards = cards.slice(0, MAX_CARD_LIMIT);
             }
 
             var empty_card = {
