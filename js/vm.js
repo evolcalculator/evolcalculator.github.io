@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.47',
+        version: '2.3.48',
         location: LANGUAGE || '',
         path: $.LS.get('path') || 'img/',
         show_path: false,
@@ -1304,7 +1304,9 @@ var vm = new Vue({
             //     }
             // }
             
-            for(var i = 0; i < MAX_CARD_LIMIT; i++){
+            var limit = Math.min(MAX_CARD_LIMIT, list.length);
+
+            for(var i = 0; i < limit; i++){
                 choice.push(list[i]);
             }
 
@@ -1316,9 +1318,9 @@ var vm = new Vue({
                     score: this.get_challenge_score(card)
                 });
             }
-            if (cards.length > MAX_CARD_LIMIT) {
-                cards = cards.slice(0, MAX_CARD_LIMIT);
-            }
+            // if (cards.length > MAX_CARD_LIMIT) {
+            //     cards = cards.slice(0, MAX_CARD_LIMIT);
+            // }
 
             var ids = [];
             for(var i = 0; i < cards.length; i++){
@@ -1374,7 +1376,9 @@ var vm = new Vue({
             //     }
             // }
 
-            for(var i = 0; i < MAX_CARD_LIMIT; i++){
+            var limit = Math.min(MAX_CARD_LIMIT, list.length);
+
+            for(var i = 0; i < limit; i++){
                 choice.push(list[i]);
             }
 
@@ -1386,9 +1390,9 @@ var vm = new Vue({
                     score: this.get_challenge_score(card)
                 });
             }
-            if (cards.length > MAX_CARD_LIMIT) {
-                cards = cards.slice(0, MAX_CARD_LIMIT);
-            }
+            // if (cards.length > MAX_CARD_LIMIT) {
+            //     cards = cards.slice(0, MAX_CARD_LIMIT);
+            // }
 
             var empty_card = {
                 card_id: 0,
