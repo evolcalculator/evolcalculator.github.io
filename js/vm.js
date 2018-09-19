@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.45',
+        version: '2.3.48',
         location: LANGUAGE || '',
         path: $.LS.get('path') || 'img/',
         show_path: false,
@@ -1267,37 +1267,47 @@ var vm = new Vue({
 
             var choice = [];
             var list = [];
+            var MAX_CARD_LIMIT = 30;
 
             for (var i = 0; i < this.challenges.cards.length; i++) {
                 var card = this.challenges.cards[i].card;
-                if (field_ids.indexOf(card.card_id) >= 0) {
-                    choice.push(card);
-                } else {
-                    list.push(card);
-                }
+
+                // if (field_ids.indexOf(card.card_id) >= 0) {
+                //     choice.push(card);
+                // } else {
+                //     list.push(card);
+                // }
+
+                list.push(card);
             }
 
             list.sort(function(a, b) {
                 return b.total - a.total;
             });
 
-            var limit = 30 - choice.length;
+            // var limit = MAX_CARD_LIMIT - choice.length;
 
-            if(limit <= 0){
-                //do nothing
-            } else if (list.length > limit) {
-                var line = list[limit - 1].total;
-                var gap = 200;
-                for (var i = 0; i < list.length; i++) {
-                    var card = list[i];
-                    if (card.total > line - gap) {
-                        choice.push(card);
-                    }
-                }
-            } else {
-                for (var i = 0; i < list.length; i++) {
-                    choice.push(list[i]);
-                }
+            // if(limit <= 0){
+            //     //do nothing
+            // } else if (list.length > limit) {
+            //     var line = list[limit - 1].total;
+            //     var gap = 200;
+            //     for (var i = 0; i < list.length; i++) {
+            //         var card = list[i];
+            //         if (card.total > line - gap) {
+            //             choice.push(card);
+            //         }
+            //     }
+            // } else {
+            //     for (var i = 0; i < list.length; i++) {
+            //         choice.push(list[i]);
+            //     }
+            // }
+            
+            var limit = Math.min(MAX_CARD_LIMIT, list.length);
+
+            for(var i = 0; i < limit; i++){
+                choice.push(list[i]);
             }
 
             var cards = [];
@@ -1308,9 +1318,9 @@ var vm = new Vue({
                     score: this.get_challenge_score(card)
                 });
             }
-            if (cards.length > 30) {
-                cards = cards.slice(0, 30);
-            }
+            // if (cards.length > MAX_CARD_LIMIT) {
+            //     cards = cards.slice(0, MAX_CARD_LIMIT);
+            // }
 
             var ids = [];
             for(var i = 0; i < cards.length; i++){
@@ -1329,37 +1339,47 @@ var vm = new Vue({
 
             var choice = [];
             var list = [];
+            var MAX_CARD_LIMIT = 30;
 
             for (var i = 0; i < this.challenges.cards.length; i++) {
                 var card = this.challenges.cards[i].card;
-                if (field_ids.indexOf(card.card_id) >= 0) {
-                    choice.push(card);
-                } else {
-                    list.push(card);
-                }
+
+                // if (field_ids.indexOf(card.card_id) >= 0) {
+                //     choice.push(card);
+                // } else {
+                //     list.push(card);
+                // }
+
+                list.push(card);
             }
 
             list.sort(function(a, b) {
                 return b.total - a.total;
             });
 
-            var limit = 30 - choice.length;
+            // var limit = MAX_CARD_LIMIT - choice.length;
 
-            if(limit <= 0){
-                //do nothing
-            } else if (list.length > limit) {
-                var line = list[limit - 1].total;
-                var gap = 200;
-                for (var i = 0; i < list.length; i++) {
-                    var card = list[i];
-                    if (card.total > line - gap) {
-                        choice.push(card);
-                    }
-                }
-            } else {
-                for (var i = 0; i < list.length; i++) {
-                    choice.push(list[i]);
-                }
+            // if(limit <= 0){
+            //     //do nothing
+            // } else if (list.length > limit) {
+            //     var line = list[limit - 1].total;
+            //     var gap = 200;
+            //     for (var i = 0; i < list.length; i++) {
+            //         var card = list[i];
+            //         if (card.total > line - gap) {
+            //             choice.push(card);
+            //         }
+            //     }
+            // } else {
+            //     for (var i = 0; i < list.length; i++) {
+            //         choice.push(list[i]);
+            //     }
+            // }
+
+            var limit = Math.min(MAX_CARD_LIMIT, list.length);
+
+            for(var i = 0; i < limit; i++){
+                choice.push(list[i]);
             }
 
             var cards = [];
@@ -1370,9 +1390,9 @@ var vm = new Vue({
                     score: this.get_challenge_score(card)
                 });
             }
-            if (cards.length > 30) {
-                cards = cards.slice(0, 30);
-            }
+            // if (cards.length > MAX_CARD_LIMIT) {
+            //     cards = cards.slice(0, MAX_CARD_LIMIT);
+            // }
 
             var empty_card = {
                 card_id: 0,
