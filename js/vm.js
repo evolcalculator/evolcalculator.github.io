@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.49',
+        version: '2.3.50',
         location: LANGUAGE || '',
         path: $.LS.get('path') || 'img/',
         show_path: false,
@@ -4027,7 +4027,12 @@ var vm = new Vue({
                 this.card_select.card_id = id;
             }
             this.card_select.modified = false;
-            $('#card').modal();
+
+            var self = this;
+            Vue.nextTick(function(){
+                $('#card').modal();
+                self.update_card_select();
+            });
         },
         //更新羁绊选择
         update_combine_select: function() {
@@ -4066,9 +4071,9 @@ var vm = new Vue({
                 && this.card_select.star == my_card.star 
                 && this.card_select.level == my_card.level) {
 
-                // for (var i = 0; i < prop.length; i++) {
-                //     this.card_select[prop[i]] = my_card[prop[i]];
-                // }
+                for (var i = 0; i < prop.length; i++) {
+                    this.card_select[prop[i]] = my_card[prop[i]];
+                }
             } else {
                 if(!this.card_select.modified) {
                     this.card_select.modified = true;
