@@ -1,3 +1,4 @@
+//中文
 var strings = {
 	'TITLE': '恋与制作人计算器',
 	'SUB_TITLE': '恋与制作人计算器v2.0',
@@ -266,5 +267,5 @@ var strings = {
 	'LIMITED': '限定',
 	'TICKET': '票房',
 	'EXCHANGE': '交易所',
-	'UPLOAD_FAIL': '上传失败',
+	'UPLOAD_FAIL': '上传失败'
 };
