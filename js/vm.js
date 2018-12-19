@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.53',
+        version: '2.3.54',
         location: LANGUAGE || '',
         path: $.LS.get('path') || 'img/',
         show_path: false,
@@ -3225,10 +3225,10 @@ var vm = new Vue({
                                 var score = 0;
                                 var card = self.list[j];
 
-                                if ((([3,8].indexOf(item.category) >=0 || item.role == 2) && [2, 5].indexOf(card.category) < 0) ||
-                                    (([4,10].indexOf(item.category) >= 0 || item.role == 4) && [4, 5].indexOf(card.category) < 0) ||
-                                    (([5,7].indexOf(item.category) >=0 || item.role == 1) && [1, 5].indexOf(card.category) < 0) ||
-                                    (([6,9].indexOf(item.category) >= 0 || item.role == 3) && [3, 5].indexOf(card.category) < 0)) {
+                                if ((item.role == 2 && [2, 5].indexOf(card.category) < 0) ||
+                                    (item.role == 4 && [4, 5].indexOf(card.category) < 0) ||
+                                    (item.role == 1 && [1, 5].indexOf(card.category) < 0) ||
+                                    (item.role == 3 && [3, 5].indexOf(card.category) < 0)) {
                                     continue;
                                 }
 
@@ -3371,10 +3371,10 @@ var vm = new Vue({
                 var card = list[i];
                 var prop = self.prop;
 
-                if ((([3,8].indexOf(self.levels.level.category) >=0 || self.levels.level.role == 2) && [2, 5].indexOf(card.category) < 0) ||
-                    (([4,10].indexOf(self.levels.level.category) >= 0 || self.levels.level.role == 4) && [4, 5].indexOf(card.category) < 0) ||
-                    (([5,7].indexOf(self.levels.level.category) >=0 || self.levels.level.role == 1) && [1, 5].indexOf(card.category) < 0) ||
-                    (([6,9].indexOf(self.levels.level.category) >= 0 || self.levels.level.role == 3) && [3, 5].indexOf(card.category) < 0)) {
+                if ((self.levels.level.role == 2 && [2, 5].indexOf(card.category) < 0) ||
+                    (self.levels.level.role == 4 && [4, 5].indexOf(card.category) < 0) ||
+                    (self.levels.level.role == 1 && [1, 5].indexOf(card.category) < 0) ||
+                    (self.levels.level.role == 3 && [3, 5].indexOf(card.category) < 0)) {
                     continue;
                 }
 
@@ -4349,19 +4349,55 @@ var vm = new Vue({
                     ret = this.get_string('COPY_ZHOUQILUO');
                     break;
                 case 7:
-                    ret = this.get_string('TB_LIZEYAN');
+                    ret = this.get_string('BOSS');
                     break;
                 case 8:
-                    ret = this.get_string('TB_XUMO');
+                    ret = this.get_string('DECISIVENESS_LIZEYAN');
                     break;
                 case 9:
-                    ret = this.get_string('TB_ZHOUQILUO');
+                    ret = this.get_string('CREATIVITY_LIZEYAN');
                     break;
                 case 10:
-                    ret = this.get_string('TB_BAIQI');
+                    ret = this.get_string('KINDNESS_LIZEYAN');
                     break;
                 case 11:
-                    ret = this.get_string('BOSS');
+                    ret = this.get_string('ACTIVITY_LIZEYAN');
+                    break;
+                case 12:
+                    ret = this.get_string('DECISIVENESS_XUMO');
+                    break;
+                case 13:
+                    ret = this.get_string('CREATIVITY_XUMO');
+                    break;
+                case 14:
+                    ret = this.get_string('KINDNESS_XUMO');
+                    break;
+                case 15:
+                    ret = this.get_string('ACTIVITY_XUMO');
+                    break;
+                case 16:
+                    ret = this.get_string('DECISIVENESS_ZHOUQILUO');
+                    break;
+                case 17:
+                    ret = this.get_string('CREATIVITY_ZHOUQILUO');
+                    break;
+                case 18:
+                    ret = this.get_string('KINDNESS_ZHOUQILUO');
+                    break;
+                case 19:
+                    ret = this.get_string('ACTIVITY_ZHOUQILUO');
+                    break;
+                case 20:
+                    ret = this.get_string('DECISIVENESS_BAIQI');
+                    break;
+                case 21:
+                    ret = this.get_string('CREATIVITY_BAIQI');
+                    break;
+                case 22:
+                    ret = this.get_string('KINDNESS_BAIQI');
+                    break;
+                case 23:
+                    ret = this.get_string('ACTIVITY_BAIQI');
                     break;
             }
             return ret;
