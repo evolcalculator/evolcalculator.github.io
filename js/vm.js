@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.48',
+        version: '2.3.49',
         location: LANGUAGE || '',
         path: $.LS.get('path') || 'img/',
         show_path: false,
@@ -49,7 +49,14 @@ var vm = new Vue({
             decisiveness: 0,
             creativity: 0,
             kindness: 0,
-            activity: 0
+            activity: 0,
+            modified: false,
+            predict: {
+                decisiveness: 0,
+                creativity: 0,
+                kindness: 0,
+                activity: 0,
+            }
         },
         //羁绊筛选
         card_filter: {
@@ -576,18 +583,20 @@ var vm = new Vue({
         },
         'card_select.card_id': function(newVal, oldVal) {
             var card_id = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
-            if (this.my_cards.indexOf(card_id) >= 0) {
-                for (var i = 0; i < this.list.length; i++) {
-                    if (card_id == this.list[i].card_id) {
-                        this.card_select.name = this.list[i].name;
-                        this.card_select.evolved = this.list[i].evolved;
-                        this.card_select.star = this.list[i].star;
-                        this.card_select.level = this.list[i].level;
-                        this.card_select.type = this.list[i].type;
-                        this.card_select.category = this.list[i].category;
-                        break;
-                    }
-                }
+            var my_card = this.get_my_card(card_id);
+
+            if(my_card) {
+                this.card_select.name = my_card.name;
+                this.card_select.evolved = my_card.evolved;
+                this.card_select.star = my_card.star;
+                this.card_select.level = my_card.level;
+                this.card_select.type = my_card.type;
+                this.card_select.category = my_card.category;
+                // 增加羁绊属性
+                this.card_select.decisiveness = my_card.decisiveness;
+                this.card_select.creativity = my_card.creativity;
+                this.card_select.kindness = my_card.kindness;
+                this.card_select.activity = my_card.activity;
             }
 
             this.card_select.evolved = this.card_select.type < 3 ? 0 : this.card_select.evolved;
@@ -615,11 +624,19 @@ var vm = new Vue({
             this.update_card_select();
         },
         'card_select.star': function(newVal, oldVal) {
-            this.card_select.star = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            var star = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            if(!isNaN(parseInt(star, 10)) && star <= 0) {
+                star = 1;
+            }
+            this.card_select.star = star;
             this.update_card_select();
         },
         'card_select.level': function(newVal, oldVal) {
-            this.card_select.level = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            var level = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
+            if(!isNaN(parseInt(level, 10)) && level <= 0) {
+                level = 1;
+            }
+            this.card_select.level = level;
             this.update_card_select();
         },
         //过关羁绊
@@ -896,6 +913,18 @@ var vm = new Vue({
         }
     },
     methods: {
+        get_my_card: function(card_id) {
+            card_id = isNaN(parseInt(card_id, 10)) ? card_id : parseInt(card_id, 10);
+
+            if (this.my_cards.indexOf(card_id) >= 0) {
+                for (var i = 0; i < this.list.length; i++) {
+                    if (card_id == this.list[i].card_id) {
+                        return this.list[i];
+                    }
+                }
+            }
+            return null;
+        },
         get_string: function(key){
             if(typeof(strings) == 'object' && Object.keys(strings).indexOf(key) >= 0){
                 return strings[key];
@@ -3292,6 +3321,9 @@ var vm = new Vue({
                         level.count = count;
                         level.loop = loop;
                         level.half_score = Math.round((level.pass_score + level.full_score) / 2);
+                        if(level.chapter == 19 && level.role > 0) {
+                            level.level = level.level + '-' + self.get_character_tag(level.role);
+                        }
                         self.level = level.level;
                         self.levels.level = level;
 
@@ -3994,6 +4026,7 @@ var vm = new Vue({
             if (id) {
                 this.card_select.card_id = id;
             }
+            this.card_select.modified = false;
             $('#card').modal();
         },
         //更新羁绊选择
@@ -4024,11 +4057,30 @@ var vm = new Vue({
         },
         //更新羁绊选择
         update_card_select: function() {
-            var data = this.predict_card(this.card_select.card_id, this.card_select.evolved, this.card_select.star, this.card_select.level);
+            var my_card = this.get_my_card(this.card_select.card_id);
+            var data = this.predict_card(this.card_select.card_id, this.card_select.evolved, this.card_select.star || 1, this.card_select.level || 1);
             var prop = this.prop;
 
+            if(!this.card_select.modified && my_card 
+                && this.card_select.evolved == my_card.evolved 
+                && this.card_select.star == my_card.star 
+                && this.card_select.level == my_card.level) {
+
+                // for (var i = 0; i < prop.length; i++) {
+                //     this.card_select[prop[i]] = my_card[prop[i]];
+                // }
+            } else {
+                if(!this.card_select.modified) {
+                    this.card_select.modified = true;
+                }
+
+                for (var i = 0; i < prop.length; i++) {
+                    this.card_select[prop[i]] = data[prop[i]];
+                }
+            }
+
             for (var i = 0; i < prop.length; i++) {
-                this.card_select[prop[i]] = data[prop[i]];
+                this.card_select.predict[prop[i]] = data[prop[i]];
             }
         },
         //羁绊数据预测
@@ -4290,6 +4342,21 @@ var vm = new Vue({
                     break;
                 case 6:
                     ret = this.get_string('COPY_ZHOUQILUO');
+                    break;
+                case 7:
+                    ret = this.get_string('TB_XUMO');
+                    break;
+                case 8:
+                    ret = this.get_string('TB_BAIQI');
+                    break;
+                case 9:
+                    ret = this.get_string('TB_LIZEYAN');
+                    break;
+                case 10:
+                    ret = this.get_string('TB_ZHOUQILUO');
+                    break;
+                case 11:
+                    ret = this.get_string('BOSS');
                     break;
             }
             return ret;
