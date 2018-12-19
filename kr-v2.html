@@ -1,0 +1,2230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>evolcalculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="evol calculator">
+    <meta name="keywords" content="calculator">
+    <meta name="author" content="Darina">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-cal.css" />
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/cal_style.css" />
+    <style type="text/css">
+        div[v-cloak] {
+            display: none;
+        }
+        #tips, #ajax_tips {
+            padding: 15px;
+        }
+        .img-icon {
+            width: 80%;
+        }
+        span.image-load-text {
+            display: none;
+        }
+        .image-load span.image-load-text {
+            display: inline;
+            font-size: small;
+        }
+        template {display: block;}
+    </style>
+    <script type="text/javascript" src="data/v3/level-category.js"></script>
+    <script type="text/javascript" src="data/v3/cards.js"></script>
+    <script type="text/javascript" src="data/v3/levels.js"></script>
+    <script type="text/javascript" src="data/v3/challenge.js"></script>
+    <script type="text/javascript" src="data/v3/today.js"></script>
+    <script type="text/javascript" src="data/v3/ticket.js"></script>
+    <script type="text/javascript">
+        window.onerror = function(sMsg,sUrl,sLine){
+            var log = sMsg + '：' + sUrl + ':' + sLine + ';';
+            document.getElementById('tips').innerHTML += ('<br>'+log);
+        }
+
+        var LANGUAGE = 'kr';
+    </script>
+    <script type="text/javascript" src="js/strings.kr.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/storage.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/bootstrap3-typeahead.min.js"></script>
+    <!-- <script type="text/javascript" src="lib/zip.js"></script> -->
+</head>
+
+<body>
+	<template>
+		<p data-strings="html">BROWSER_NOT_SUPPORTED</p>
+	</template>
+    <div id="app" v-cloak style="display: none;">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                        <span class="sr-only">{{get_string('NAV_LEVEL')}}</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="javascript:;" class="navbar-brand nav-title"><img src="img/logo-s.png" alt="header"/></a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-menu">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li :class="{active: nav == 'level'}"><a href="javascript:;" @click="nav = 'level'">{{get_string('NAV_LEVEL')}}</a></li>
+                        <li :class="{active: nav == 'ticket'}"><a href="javascript:;" @click="nav = 'ticket'">{{get_string('NAV_TICKET')}}</a></li>
+                        <li :class="{active: nav == 'challenge'}"><a href="javascript:;" @click="nav = 'challenge'">{{get_string('NAV_CHALLENGE')}}</a></li>
+                        <li :class="{active: nav == 'double'}"><a href="javascript:;" @click="show_double()">{{get_string('NAV_DOUBLE')}}</a></li>
+                        <li :class="{active: nav == 'card'}"><a href="javascript:;" @click="nav = 'card'">{{get_string('NAV_CARD')}}</a></li>
+                        <li><a href="javascript:;" @click="show_login('user_login')" v-show="empty(user.name)">{{get_string('NAV_LOGIN')}}</a></li>
+                        <li><a href="javascript:;" @click="show_login('user_login')" v-show="!empty(user.name)">{{get_string('NAV_SWITCH')}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="item_body">
+                <!--说明-->
+                <div class="mycard">
+                    <h3>{{get_string('SUB_TITLE')}}</h3>
+                    <p>
+                        其他版本：<a href="index-v2.html" target="_blank">中文版</a>
+                        <!-- <a href="https://evolcalculator.github.io/index-v1.html">{{get_string('PREV_VERSION')}}</a> -->
+                        <br>
+                        <h4>{{get_string('HELP')}}</h4>
+                        {{get_string('TIP_HELP_FIRST')}}<a href="javascript:;" @click="nav = 'card'">{{get_string('ADD_CARD')}}</a>{{get_string('TIP_HELP_SUPPORT')}}<a href="javascript:;" @click="show_batch('import_data')">{{get_string('IMPORT')}}/{{get_string('EXPORT')}}</a>{{get_string('TIP_HELP_AND')}}<a href="javascript:;" @click="show_login('create_user')">{{get_string('DATA_PRESERVE')}}</a>{{get_string('TIP_HELP_LAST')}}
+                        <br>
+                        {{get_string('TIP_FEATURE')}}：<a href="javascript:;" @click="nav = 'level'">{{get_string('NAV_LEVEL')}}</a>、<a href="javascript:;" @click="nav = 'ticket'">{{get_string('NAV_TICKET')}}</a>、<a href="javascript:;" @click="show_double()">{{get_string('NAV_DOUBLE')}}</a>、<a href="javascript:;" @click="nav = 'challenge'">{{get_string('NAV_CHALLENGE')}}</a>。
+                        <br>
+
+                        <h4>{{get_string('SOURCE')}}</h4> {{get_string('TIP_SOURCE')}} <a href="https://weibo.com/unnamedgroup" target="_blank">{{get_string('GROUP_ACCOUNT')}}</a>
+                        <br> {{get_string('TIP_CREATOR')}}
+                    </p>
+                </div>
+                <!--说明-->
+
+                <!--公司-->
+                <div class="mycard" v-show="nav == 'card'">
+                    <h4>{{get_string('COMPANY_PROPS')}}</h4>
+                    <div class="form-group clearfix">
+                        <div class="col-xs-3 col-md-2">
+                            <label class="label-above">{{get_string('DECISIVENESS')}}</label>
+                            <input type="number" max="9000" class="form-control" v-model="company.decisiveness">
+                        </div>
+                        <div class="col-xs-3 col-md-2">
+                            <label class="label-above">{{get_string('CREATIVITY')}}</label>
+                            <input type="number" max="9000" class="form-control" v-model="company.creativity">
+                        </div>
+                        <div class="col-xs-3 col-md-2">
+                            <label class="label-above">{{get_string('KINDNESS')}}</label>
+                            <input type="number" max="9000" class="form-control" v-model="company.kindness">
+                        </div>
+                        <div class="col-xs-3 col-md-2">
+                            <label class="label-above">{{get_string('ACTIVITY')}}</label>
+                            <input type="number" max="9000" class="form-control" v-model="company.activity">
+                        </div>
+                        <div class="col-xs-3 col-sm-2 col-lg-1" v-show="!empty(user.name)">
+                            <button id="update_company" type="button" :data-loading-text="get_string('SAVING')" class="btn btn-primary form-control" autocomplete="off" @click="update_company()">{{get_string('SAVE')}}</button>
+                        </div>
+                    </div>
+                    <div v-if="!empty(user.name)">
+                        <h4>
+                            <span>{{user.name}}</span>
+                            <a href="javascript:;" @click="show_login('user_login')">{{get_string('SWITCH')}}</a>
+                            <a href="javascript:;" @click="logout()">{{get_string('LOGOUT')}}</a>
+                        </h4>
+                        <p>
+                            {{get_string('TIP_DATA_ONLINE')}}
+                        </p>
+                    </div>
+                    <div v-else>
+                        <h4>{{get_string('DATA_PRESERVE')}}</h4>
+                        <p>
+                            {{get_string('TIP_DATA_OFFLINE_FIRST')}}
+                            <a href="javascript:;" @click="show_login('create_user')">{{get_string('CREATE')}}</a>{{get_string('TIP_DATA_OFFLINE_OR')}}<a href="javascript:;" @click="show_login('user_login')">{{get_string('LOGIN')}}</a>{{get_string('TIP_DATA_OFFLINE_LAST')}}
+                        </p>
+                    </div>
+                </div>
+                <!--公司-->
+
+                <!--羁绊-->
+                <div class="mycard" v-show="nav == 'card'">
+                    <div>
+                        <h4>{{get_string('ADD_CARD')}}</h4>
+                        <div class="pd15">
+                            <label class="label-above">{{get_string('LABEL_ADD_CARD')}}</label>
+                            <input id="card_typeahead" type="text" class="typeahead form-control" data-provide="typeahead" autocomplete="off">
+                            <p class="help-block">{{get_string('HELP_ADD_CARD')}}</p>
+                        </div>
+                        <div class="form-group">
+                            <a href="javascript:;" class="btn btn-default" @click="show_batch('export_data')">{{get_string('IMPORT')}}</a>
+                            <a href="javascript:;" class="btn btn-primary" @click="show_batch('import_data')">{{get_string('EXPORT')}}</a>
+                        </div>
+                        <div class="alert alert-warning" role="alert" v-show="!empty(batch.fail)">
+                            {{get_string('TIP_IMPORT_PART_FAIL')}}：
+                            <br>
+                            <template v-for="item in batch.fail">
+                                <small style="margin: 0 5px;">{{item.name}}</small>
+                            </template>
+                            <button type="button" class="close" aria-label="Close" @click="batch.fail = []"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                    </div>
+                    <h4 style="margin-top: 50px;">{{get_string('MY_CARD')}}</h4>
+                    <p v-show="list.length > 1"><a href="javascript:;" @click="remove_all()">{{get_string('CLEAR_DATA')}}</a></p>
+                    <div class="form-group clearfix">
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">{{get_string('CHARACTOR')}}</label>
+                            <select class="form-control" v-model="card_filter.category">
+                                <option value="0">{{get_string('ALL')}}</option>
+                                <option value="1">{{get_string('LIZEYAN')}}</option>
+                                <option value="2">{{get_string('XUMO')}}</option>
+                                <option value="3">{{get_string('ZHOUQILUO')}}</option>
+                                <option value="4">{{get_string('BAIQI')}}</option>
+                                <option value="5">{{get_string('OTHER')}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">{{get_string('RARE')}}</label>
+                            <select class="form-control" v-model="card_filter.type">
+                                <option value="0">{{get_string('ALL')}}</option>
+                                <option value="5">SSR</option>
+                                <option value="4">SR</option>
+                                <option value="3">R</option>
+                                <option value="2">NH</option>
+                                <option value="1">N</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">{{get_string('FILTER')}}</label>
+                            <input type="text" class="form-control" v-model="card_filter.name">
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-hover" v-show="!empty(list)">
+                        <thead>
+                            <tr>
+                                <th>{{get_string('NAME')}}</th>
+                                <th>{{get_string('LEVEL')}}</th>
+                                <th class="hidden-xs">{{get_string('DECISIVENESS')}}</th>
+                                <th class="hidden-xs">{{get_string('CREATIVITY')}}</th>
+                                <th class="hidden-xs">{{get_string('KINDNESS')}}</th>
+                                <th class="hidden-xs">{{get_string('ACTIVITY')}}</th>
+                                <th>{{get_string('OPTIONS')}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, idx) in list_filtered" v-show="card_expand || idx < card_limit">
+                                <td>{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></td>
+                                <td>lv.{{item.level}} {{get_star_print(item.star)}} {{get_evolved_tag(item.evolved)}}</td>
+                                <td class="hidden-xs">{{item.decisiveness}}</td>
+                                <td class="hidden-xs">{{item.creativity}}</td>
+                                <td class="hidden-xs">{{item.kindness}}</td>
+                                <td class="hidden-xs">{{item.activity}}</td>
+                                <td>
+                                    <a href="javascript:;" @click="show_card(item.card_id)">{{get_string('MODIFY')}}</a>
+                                    <a href="javascript:;" @click="remove_card(item.card_id)">{{get_string('DELETE')}}</a>
+                                    <a v-show="!empty(challenges.challenge) && challenges.card_ids.indexOf(item.card_id) < 0 && item.level >= 20" href="javascript:;" @click="challenge_add_card(item.card_id)">{{get_string('ADD_TO_CHALLENGE')}}</a>
+                                </td>
+                            </tr>
+                            <tr v-show="!card_expand && list_filtered.length > card_limit">
+                                <td colspan="7"><a href="javascript:;" @click="card_expand = true">{{get_string('EXPAND')}}</a></td>
+                            </tr>
+                            <tr v-show="card_expand && list_filtered.length > card_limit">
+                                <td colspan="7"><a href="javascript:;" @click="card_expand = false">{{get_string('COLLAPSE')}}</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4 style="margin-top: 50px;">{{get_string('ALL_CARDS')}}</h4>
+                    <p><a href="javascript:;" @click="add_all_card()">{{get_string('ADD_ALL_CARD')}}</a></p>
+                    <div class="form-group clearfix">
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">{{get_string('CHARACTOR')}}</label>
+                            <select class="form-control" v-model="all_card_filter.category">
+                                <option value="0">{{get_string('ALL')}}</option>
+                                <option value="1">{{get_string('LIZEYAN')}}</option>
+                                <option value="2">{{get_string('XUMO')}}</option>
+                                <option value="3">{{get_string('ZHOUQILUO')}}</option>
+                                <option value="4">{{get_string('BAIQI')}}</option>
+                                <option value="5">{{get_string('OTHER')}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">{{get_string('RARE')}}</label>
+                            <select class="form-control" v-model="all_card_filter.type">
+                                <option value="0">{{get_string('ALL')}}</option>
+                                <option value="5">SSR</option>
+                                <option value="4">SR</option>
+                                <option value="3">R</option>
+                                <option value="2">NH</option>
+                                <option value="1">N</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">{{get_string('FILTER')}}</label>
+                            <input type="text" class="form-control" v-model="all_card_filter.name">
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-hover" v-show="!empty(all_cards)">
+                        <thead>
+                            <tr>
+                                <th>{{get_string('NAME')}}</th>
+                                <th>{{get_string('OPTIONS')}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, idx) in all_cards_filtered" v-show="all_card_expand || idx < all_card_limit">
+                                <td>
+                                    {{item.name}} <sub>{{get_type_tag(item.type)}}</sub>
+                                </td>
+                                <td v-if="my_cards.indexOf(item.card_id) >= 0">
+                                    {{get_string('ADDED')}}
+                                </td>
+                                <td v-else>
+                                    <a href="javascript:;" @click="add_my_card(item.card_id, 'evolved', true)" v-show="item.type >= 3">{{get_string('ADD_NEW_EVOLED_CARD')}}</a>
+                                    <a href="javascript:;" @click="add_my_card(item.card_id, 'evolved', false)" v-show="item.type >= 3">{{get_string('ADD_EVOLED_CARD')}}</a>
+                                    <a href="javascript:;" @click="add_my_card(item.card_id, 'normal', false)">{{get_string('ADD_NORMAL_CARD')}}</a>
+                                    <a href="javascript:;" @click="add_custom_card(item.card_id)">{{get_string('ADD_CUSTOM_CARD')}}</a>
+                                </td>
+                            </tr>
+                            <tr v-show="!all_card_expand && all_cards_filtered.length > all_card_limit">
+                                <td colspan="2"><a href="javascript:;" @click="all_card_expand = true">{{get_string('EXPAND')}}</a></td>
+                            </tr>
+                            <tr v-show="all_card_expand && all_cards_filtered.length > all_card_limit">
+                                <td colspan="2"><a href="javascript:;" @click="all_card_expand = false">{{get_string('COLLAPSE')}}</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--羁绊-->
+
+                <!-- 关卡计算 -->
+                <div class="mycard" v-show="nav == 'level'">
+                    <h4>{{get_string('NAV_LEVEL')}}</h4>
+                    <div class="form-group" v-show="list.length < 3">
+                        <a href="javascript:;" @click="nav = 'card'">{{get_string('ADD')}}</a>{{get_string('TIP_ADD')}}
+                    </div>
+                    <div class="form-group clearfix" v-if="!empty(select)">
+                        <div class="col-xs-4 col-sm-3 col-md-2">
+                            <label class="label-above">{{get_string('CATEGORY')}}</label>
+                            <select class="form-control" v-model="category">
+                                <option :value="key" v-for="(item, key) in select">{{get_category_tag(key)}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-sm-3 col-md-2">
+                            <label class="label-above">{{get_string('CHAPTER')}}</label>
+                            <select class="form-control" v-model="chapter">
+                                <option :value="key" v-for="(item, key) in select[category]">{{get_string('CHAPTER_BEFORE')}}{{key}}{{get_string('CHAPTER_AFTER')}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-sm-3 col-md-2">
+                            <label class="label-above">{{get_string('LEVELS')}}</label>
+                            <select class="form-control" v-model="level">
+                                <option value="0">{{get_string('ALL')}}</option>
+                                <option :value="key" v-for="(item, key) in select[category][chapter]">{{chapter}}-{{key}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-sm-2 col-md-1" v-show="list.length >= 3">
+                            <button id="get_levels" type="button" :data-loading-text="get_string('LOADING')" class="btn btn-primary form-control" autocomplete="off" @click="get_levels()">{{get_string('CALCULATE')}}</button>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-hover table-condensed" v-show="!empty(levels.list)">
+                        <thead>
+                            <tr>
+                                <th>{{get_string('LEVELS')}}</th>
+                                <th class="hidden-xs hidden-sm">{{get_string('DROP')}}</th>
+                                <th class="hidden-xs">{{get_string('PROP_REQUIRE')}}</th>
+                                <th class="hidden-xs">{{get_string('SPEC_REQUIRE')}}</th>
+                                <th class="hidden-xs">{{get_string('RECOMMEND')}}</th>
+                                <th>{{get_string('RECOMMEND_CARD')}}</th>
+                                <th>{{get_string('SCORE')}}</th>
+                                <th>{{get_string('RANK')}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template v-for="item in levels.list">
+                                <tr v-for="i in [1, 2, 3]">
+                                    <td rowspan="3" v-if="i == 1"><a href="javascript:;" class="link" @click="get_level(item.id)">{{item.chapter}}-{{item.level}}</a></td>
+                                    <td rowspan="3" class="hidden-xs hidden-sm" v-if="i == 1">{{item.drops}}</td>
+                                    <td rowspan="3" class="hidden-xs" v-if="i == 1">{{get_card_demand(item)}}</td>
+                                    <td class="hidden-xs">{{item['request'+i]}}</td>
+                                    <td class="hidden-xs cell" :class="{'cell-all': levels.overflow}" @click="levels.overflow = !levels.overflow">{{item['recommend'+i]}}</td>
+                                    <td>{{item.combine[i-1]}}</td>
+                                    <td rowspan="3" v-if="i == 1">{{item.score}}</td>
+                                    <td rowspan="3" v-if="i == 1">{{get_rank_tag(item, item.score)}}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                    <div v-show="!empty(levels.level)">
+                        <table class="table table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>{{get_string('GOODS')}}</th>
+                                    <th>{{get_string('PROP_REQUIRE')}}</th>
+                                    <th>{{get_string('SPEC_REQUIRE')}}</th>
+                                    <th>{{get_string('RECOMMEND')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(i, idx) in levels.level.loop">
+                                    <td :rowspan="levels.level.count" v-if="idx == 0">{{levels.level.drops}}</td>
+                                    <td :rowspan="levels.level.count" v-if="idx == 0">{{get_card_demand(levels.level)}}</td>
+                                    <td>{{levels.level['request'+i]}}</td>
+                                    <td class="cell" :class="{'cell-all': levels.overflow}" @click="levels.overflow = !levels.overflow">{{levels.level['recommend'+i]}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed">
+                            <tbody>
+                                <tr>
+                                    <th>{{get_string('COMPANY_SCORE')}}</th>
+                                    <td>
+                                        <a href="javascript:;" @click="show_special()">{{levels.company.decisiveness}} / {{levels.company.creativity}} / {{levels.company.kindness}} / {{levels.company.activity}}</a>
+                                    </td>
+                                    <td>{{get_company_score()}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('STAFF_SCORE')}}</th>
+                                    <td><a href="javascript:;" @click="show_special()">Normal * {{levels.multiple}}</a></td>
+                                    <td>{{get_special_score()}}</td>
+                                </tr>
+                                <tr v-for="(item, idx) in levels.combine">
+                                    <th rowspan="3" v-if="idx == 0">{{get_string('CARD_SCORE')}}</th>
+                                    <td v-if="item.card_id > 0">
+                                        <a href="javascript:;" @click="show_combine(idx)">
+                                            {{item.name}} <sub>{{get_type_tag(item.type)}}</sub>
+                                            <!-- <sub class="hidden-xs">（lv.{{item.level}} {{get_star_print(item.star)}} {{get_evolved_tag(item.evolved)}})</sub> -->
+                                        </a>
+                                    </td>
+                                    <td v-else><a href="javascript:;" @click="show_combine(idx)">{{get_string('NO_SETTING')}}</a></td>
+                                    <td>{{item.score}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('TOTAL_SCORE')}}</th>
+                                    <td :rowspan="levels.level.pass_score > 0 ? 2 : 1"><small style="color: #737373;">{{get_string('TIP_MODIFY')}}</small></td>
+                                    <td>{{get_total_score()}}</td>
+                                </tr>
+                                <tr v-show="levels.level.pass_score > 0">
+                                    <th>{{get_string('RANK')}}</th>
+                                    <!-- <td></td> -->
+                                    <td>{{get_rank_tag(levels.level, get_total_score())}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed" v-show="false">
+                            <thead>
+                                <tr>
+                                    <th>{{get_string('ONE_STAR')}}</th>
+                                    <th>{{get_string('TWO_STAR')}}</th>
+                                    <th>{{get_string('THREE_STAR')}}</th>
+                                    <th>{{get_string('RANK')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td :class="{'text-success': levels.level.pass_score <= get_total_score(), 'text-danger': levels.level.pass_score > get_total_score()}">{{get_pass(levels.level.pass_score, get_total_score())}}</td>
+                                    <td :class="{'text-success': levels.level.half_score <= get_total_score(), 'text-danger': levels.level.half_score > get_total_score()}">{{get_pass(levels.level.half_score, get_total_score())}}</td>
+                                    <td :class="{'text-success': levels.level.full_score <= get_total_score(), 'text-danger': levels.level.full_score > get_total_score()}">{{get_pass(levels.level.full_score, get_total_score())}}</td>
+                                    <td>{{get_rank_tag(levels.level, get_total_score())}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-group">
+                            <p class="help-block">{{get_string('HELP_LEVEL')}}</p>
+                        </div>
+                    </div>
+                    <div v-show="!empty(levels.cards)">
+                        <h4>
+                            <span>{{get_string('CARD_ANALYSE')}}</span>
+                            <a href="javascript:;" @click="levels.config = !levels.config">{{get_string('CONFIG')}}</a>
+                        </h4>
+                        <div v-show="levels.config">
+                            <div class="radio">
+                                <span>{{get_string('FILTER')}}：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.card" value="my"> {{get_string('MY_CARD')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.card" value="all"> {{get_string('ALL_CARD')}}
+                                </label>
+                            </div>
+                            <div class="radio" v-show="levels.card == 'all'">
+                                <span>R：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="hidden"> {{get_string('HIDDEN')}}
+                                </label>
+                                <label v-show="levels.card == 'my'">
+                                    <input type="radio" v-model="levels.r" value="remain"> {{get_string('NOT_CHANGE')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="ordinary">  {{get_string('NORMAL')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="evolved"> {{get_string('EVOLVED')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="evolved2"> {{get_string('NEW_EVOLVED')}}
+                                </label>
+                            </div>
+                            <div class="radio" v-show="levels.card == 'all'">
+                                <span>SR：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="hidden"> {{get_string('HIDDEN')}}
+                                </label>
+                                <label v-show="levels.card == 'my'">
+                                    <input type="radio" v-model="levels.sr" value="remain"> {{get_string('NOT_CHANGE')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="ordinary"> {{get_string('NORMAL')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="evolved"> {{get_string('EVOLVED')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="evolved2"> {{get_string('NEW_EVOLVED')}}
+                                </label>
+                            </div>
+                            <div class="radio" v-show="levels.card == 'all'">
+                                <span>SSR：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="hidden"> {{get_string('HIDDEN')}}
+                                </label>
+                                <label v-show="levels.card == 'my'">
+                                    <input type="radio" v-model="levels.ssr" value="remain"> {{get_string('NOT_CHANGE')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="ordinary"> {{get_string('NORMAL')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="evolved"> {{get_string('EVOLVED')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="evolved2"> {{get_string('NEW_EVOLVED')}}
+                                </label>
+                            </div>
+                        </div>
+                        <p class="help-block">{{get_string('HELP_CONFIG')}}<span v-show="levels.card == 'all'">{{get_string('HELP_CONFIG_ADDITION')}}</span></p>
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>{{get_string('NAME')}}</th>
+                                    <th>{{get_string('LEVEL')}}</th>
+                                    <th class="hidden-xs">{{get_string('DECISIVENESS')}}</th>
+                                    <th class="hidden-xs">{{get_string('CREATIVITY')}}</th>
+                                    <th class="hidden-xs">{{get_string('KINDNESS')}}</th>
+                                    <th class="hidden-xs">{{get_string('ACTIVITY')}}</th>
+                                    <th>{{get_string('SCORE')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in levels.cards" :class="{purple: levels.card == 'all' && my_cards.indexOf(item.card.card_id) >= 0}">
+                                    <td>{{item.card.name}} <sub>{{get_type_tag(item.card.type)}}</sub></td>
+                                    <td>lv.{{item.card.level}} {{get_star_print(item.card.star)}} {{get_evolved_tag(item.card.evolved)}}</td>
+                                    <td class="hidden-xs">{{item.card.decisiveness}}</td>
+                                    <td class="hidden-xs">{{item.card.creativity}}</td>
+                                    <td class="hidden-xs">{{item.card.kindness}}</td>
+                                    <td class="hidden-xs">{{item.card.activity}}</td>
+                                    <td>{{item.score}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--关卡计算-->
+
+                <!--今日票房-->
+                <div class="mycard" v-show="nav == 'ticket'">
+                    <h4>{{get_string('TICKET_TODAY')}}</h4>
+                    <p><a href="javascript:;" @click="show_today()">{{get_string('CONFIG')}}</a></p>
+                    <table class="table table-bordered table-hover table-condensed">
+                        <thead>
+                            <th>{{get_string('THEME')}}</th>
+                            <th>{{get_string('PROP_REQUIRE')}}</th>
+                            <th>{{get_string('GUEST')}}</th>
+                        </thead>
+                        <tbody  v-if="!empty(today)">
+                            <td>{{get_ticket_name(today.ticket_id)}}</td>
+                            <td>{{get_card_demand(get_ticket_factor(today.ticket_id))}}</td>
+                            <td>{{get_character_tag(today.category)}} {{get_star_print(today.star)}}</td>
+                        </tbody>
+                        <tbody v-else>
+                            <td colspan="3"><a href="javascript:;" @click="show_today()">{{get_string('NO_SETTING')}}</a></td>
+                        </tbody>
+                    </table>
+
+                    <table class="table table-bordered table-hover table-condensed" v-if="!empty(tickets.combine)">
+                        <tbody>
+                            <tr v-for="(item, idx) in tickets.combine">
+                                <th rowspan="3" v-if="idx == 0">{{get_string('RECOMMEND')}}</th>
+                                <td>{{item}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p><a href="javascript:;" class="btn btn-primary" @click="show_ticket()">{{get_string('WINNING_ANALYSE')}}</a></p>
+                </div>
+                <!--今日票房-->
+
+                <!--票房计算-->
+                <div class="mycard" v-show="nav == 'ticket'">
+                    <h4>{{get_string('TICKET_CALCULATE')}}</h4>
+
+                    <p v-show="list.length < 3">
+                        <a href="javascript:;" @click="nav = 'card'">{{get_string('ADD')}}</a>{{get_string('TIP_ADD')}}
+                    </p>
+
+                    <div class="form-group clearfix" v-if="!empty(ticket)">
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">{{get_string('THEME')}}</label>
+                            <select class="form-control" v-model="tickets.ticket_id">
+                                <option :value="item.id" v-for="item in ticket">{{item.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">{{get_string('GUEST')}}</label>
+                            <select class="form-control" v-model="tickets.category">
+                                <option value="1">{{get_string('LIZEYAN')}}</option>
+                                <option value="2">{{get_string('XUMO')}}</option>
+                                <option value="3">{{get_string('ZHOUQILUO')}}</option>
+                                <option value="4">{{get_string('BAIQI')}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">{{get_string('STAR')}}</label>
+                            <select class="form-control" v-model="tickets.star">
+                                <option :value="i" v-for="i in [3,4,5]">{{i}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-sm-2 col-md-1" v-show="list.length >= 3">
+                            <button id="get_levels" type="button" :data-loading-text="get_string('LOADING')" class="btn btn-primary form-control" autocomplete="off" @click="get_tickets()">{{get_string('CALCULATE')}}</button>
+                        </div>
+                    </div>
+                    <div v-show="!empty(tickets.ticket)">
+                        <table class="table table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>{{get_string('THEME')}}</th>
+                                    <th>{{get_string('PROP_REQUIRE')}}</th>
+                                    <th>{{get_string('GUEST')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{get_ticket_name(tickets.ticket.ticket_id)}}</td>
+                                    <td>{{get_card_demand(get_ticket_factor(tickets.ticket.ticket_id))}}</td>
+                                    <td>{{get_character_tag(tickets.ticket.category)}} {{get_star_print(tickets.ticket.star)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" :class="{active: tickets.option == 'my'}"><a href="javascript:;" @click="tickets.option = 'my'">{{get_string('MY_TEAM')}}</a></li>
+                            <li role="presentation" :class="{active: tickets.option == 'match'}"><a href="javascript:;" @click="tickets.option = 'match'">{{get_string('MATCH_TEAM')}}</a></li>
+                        </ul>
+                        <table class="table table-bordered table-hover table-condensed" v-show="tickets.option == 'my'">
+                            <tbody>
+                                <tr>
+                                    <th>{{get_string('COMPANY_SCORE')}}</th>
+                                    <td>
+                                        <a href="javascript:;" @click="show_ticket_company('my')">{{tickets.my_company.decisiveness}} / {{tickets.my_company.creativity}} / {{tickets.my_company.kindness}} / {{tickets.my_company.activity}}</a>
+                                    </td>
+                                    <td>{{get_ticket_company_score('my')}}</td>
+                                </tr>
+                                <tr v-for="(item, idx) in tickets.my">
+                                    <th rowspan="3" v-if="idx == 0">{{get_string('CARD_SCORE')}}</th>
+                                    <td><a href="javascript:;" @click="show_battle(idx, 'my')">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></a></td>
+                                    <td>{{item.score}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('TOTAL_SCORE')}}</th>
+                                    <td><small style="color: #737373;">{{get_string('TIP_MODIFY')}}</small></td>
+                                    <td>{{get_ticket_total_score('my')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed" v-show="tickets.option == 'match'">
+                            <tbody>
+                                <tr>
+                                    <th>{{get_string('COMPANY_SCORE')}}</th>
+                                    <td>
+                                        <a href="javascript:;" @click="show_ticket_company('match')">{{tickets.match_company.decisiveness}} / {{tickets.match_company.creativity}} / {{tickets.match_company.kindness}} / {{tickets.match_company.activity}}</a>
+                                    </td>
+                                    <td>{{get_ticket_company_score('match')}}</td>
+                                </tr>
+                                <tr v-for="(item, idx) in tickets.match">
+                                    <th rowspan="3" v-if="idx == 0">{{get_string('CARD_SCORE')}}</th>
+                                    <td v-if="item.card_id > 0"><a href="javascript:;" @click="show_battle(idx, 'match')">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></a></td>
+                                    <td v-else><a href="javascript:;" @click="show_battle(idx, 'match')">{{get_string('NO_SETTING')}}</a></td>
+                                    <td>{{item.score || 0}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('TOTAL_SCORE')}}</th>
+                                    <td><small style="color: #737373;">{{get_string('TIP_MODIFY')}}</small></td>
+                                    <td>{{get_ticket_total_score('match')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>{{get_string('PROP_COMPARE')}}</th>
+                                    <th>{{get_string('DECISIVENESS')}}</th>
+                                    <th>{{get_string('CREATIVITY')}}</th>
+                                    <th>{{get_string('KINDNESS')}}</th>
+                                    <th>{{get_string('ACTIVITY')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>{{get_string('MINE')}}</th>
+                                    <td>{{get_ticket_prop('decisiveness', 'my')}}</td>
+                                    <td>{{get_ticket_prop('creativity', 'my')}}</td>
+                                    <td>{{get_ticket_prop('kindness', 'my')}}</td>
+                                    <td>{{get_ticket_prop('activity', 'my')}}</td>
+                                </tr>
+                                <tr v-if="get_ticket_empty('match') < 0">
+                                    <th>{{get_string('MATCH')}}</th>
+                                    <td>{{get_ticket_prop('decisiveness', 'match')}}</td>
+                                    <td>{{get_ticket_prop('creativity', 'match')}}</td>
+                                    <td>{{get_ticket_prop('kindness', 'match')}}</td>
+                                    <td>{{get_ticket_prop('activity', 'match')}}</td>
+                                </tr>
+                                <tr v-else>
+                                    <th>{{get_string('MATCH')}}</th>
+                                    <td colspan="4"><a href="javascript:;" @click="set_ticket_empty('match')">{{get_string('NO_SETTING')}}</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed" v-if="get_ticket_empty('match') < 0">
+                            <thead>
+                                <tr>
+                                    <th>{{get_string('SCORE_COMPARE')}}</th>
+                                    <th>{{get_string('MINE')}}</th>
+                                    <th>{{get_string('MATCH')}}</th>
+                                    <th>{{get_string('SCORE_DIFF')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>{{get_string('DECISIVENESS')}}</th>
+                                    <td>{{get_ticket_prop_score('decisiveness', 'my')}}</td>
+                                    <td>{{get_ticket_prop_score('decisiveness', 'match')}}</td>
+                                    <td :class="{'text-success': get_ticket_prop_score_diff('decisiveness', 'my', 'match') > 0, 'text-danger': get_ticket_prop_score_diff('decisiveness', 'my', 'match') < 0}">{{get_ticket_prop_score_diff('decisiveness', 'my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('CREATIVITY')}}</th>
+                                    <td>{{get_ticket_prop_score('creativity', 'my')}}</td>
+                                    <td>{{get_ticket_prop_score('creativity', 'match')}}</td>
+                                    <td :class="{'text-success': get_ticket_prop_score_diff('creativity', 'my', 'match') > 0, 'text-danger': get_ticket_prop_score_diff('creativity', 'my', 'match') < 0}">{{get_ticket_prop_score_diff('creativity', 'my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('KINDNESS')}}</th>
+                                    <td>{{get_ticket_prop_score('kindness', 'my')}}</td>
+                                    <td>{{get_ticket_prop_score('kindness', 'match')}}</td>
+                                    <td :class="{'text-success': get_ticket_prop_score_diff('kindness', 'my', 'match') > 0, 'text-danger': get_ticket_prop_score_diff('kindness', 'my', 'match') < 0}">{{get_ticket_prop_score_diff('kindness', 'my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('ACTIVITY')}}</th>
+                                    <td>{{get_ticket_prop_score('activity', 'my')}}</td>
+                                    <td>{{get_ticket_prop_score('activity', 'match')}}</td>
+                                    <td :class="{'text-success': get_ticket_prop_score_diff('activity', 'my', 'match') > 0, 'text-danger': get_ticket_prop_score_diff('activity', 'my', 'match') < 0}">{{get_ticket_prop_score_diff('activity', 'my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('GUEST')}}</th>
+                                    <td>{{get_ticket_character_score('my')}}</td>
+                                    <td>{{get_ticket_character_score('match')}}</td>
+                                    <td :class="{'text-success': get_ticket_character_score('my', 'match') > 0, 'text-danger': get_ticket_character_score('my', 'match') < 0}">{{get_ticket_character_score_diff('my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('TOTAL_SCORE')}}</th>
+                                    <td>{{get_ticket_total_score('my')}}</td>
+                                    <td>{{get_ticket_total_score('match')}}</td>
+                                    <td style="font-weight: bold;" :class="{'text-success': get_ticket_total_score_diff('my', 'match') > 0, 'text-danger': get_ticket_total_score_diff('my', 'match') < 0}">{{get_ticket_total_score_diff('my', 'match')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-group">
+                            <p class="help-block">{{get_string('TIP_TICKET_FIRST')}}<a href="javascript:;" @click="show_reverse()">{{get_string('TIP_TICKET_LAST')}}</a>。</p>
+                        </div>
+                    </div>
+                    <div v-show="!empty(tickets.cards)">
+                        <h4>
+                            <span>{{get_string('CARD_ANALYSE')}}</span>
+                            <a href="javascript:;" @click="levels.config = !levels.config">{{get_string('CONFIG')}}</a>
+                        </h4>
+                        <div v-show="levels.config">
+                            <div class="radio">
+                                <span>{{get_string('FILTER')}}：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.card" value="my"> {{get_string('MY_CARD')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.card" value="all"> {{get_string('ALL_CARD')}}
+                                </label>
+                            </div>
+                            <div class="radio" v-show="levels.card == 'all'">
+                                <span>R：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="hidden"> {{get_string('HIDDEN')}}
+                                </label>
+                                <label v-show="levels.card == 'my'">
+                                    <input type="radio" v-model="levels.r" value="remain"> {{get_string('NOT_CHANGE')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="ordinary"> {{get_string('NORMAL')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="evolved"> {{get_string('EVOLVED')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.r" value="evolved2"> {{get_string('NEW_EVOLVED')}}
+                                </label>
+                            </div>
+                            <div class="radio" v-show="levels.card == 'all'">
+                                <span>SR：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="hidden"> {{get_string('HIDDEN')}}
+                                </label>
+                                <label v-show="levels.card == 'my'">
+                                    <input type="radio" v-model="levels.sr" value="remain"> {{get_string('NOT_CHANGE')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="ordinary"> {{get_string('NORMAL')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="evolved"> {{get_string('EVOLVED')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.sr" value="evolved2"> {{get_string('NEW_EVOLVED')}}
+                                </label>
+                            </div>
+                            <div class="radio" v-show="levels.card == 'all'">
+                                <span>SSR：</span>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="hidden"> {{get_string('HIDDEN')}}
+                                </label>
+                                <label v-show="levels.card == 'my'">
+                                    <input type="radio" v-model="levels.ssr" value="remain"> {{get_string('NOT_CHANGE')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="ordinary"> {{get_string('NORMAL')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="evolved"> {{get_string('EVOLVED')}}
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="levels.ssr" value="evolved2"> {{get_string('NEW_EVOLVED')}}
+                                </label>
+                            </div>
+                        </div>
+                        <p class="help-block">{{get_string('HELP_CONFIG')}}<span v-show="levels.card == 'all'">{{get_string('HELP_CONFIG_ADDITION')}}</span></p>
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>{{get_string('NAME')}}</th>
+                                    <th>{{get_string('LEVEL')}}</th>
+                                    <th class="hidden-xs">{{get_string('DECISIVENESS')}}</th>
+                                    <th class="hidden-xs">{{get_string('CREATIVITY')}}</th>
+                                    <th class="hidden-xs">{{get_string('KINDNESS')}}</th>
+                                    <th class="hidden-xs">{{get_string('ACTIVITY')}}</th>
+                                    <th>{{get_string('SCORE')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in tickets.cards" :class="{purple: levels.card == 'all' && my_cards.indexOf(item.card.card_id) >= 0}">
+                                    <td>{{item.card.name}} <sub>{{get_type_tag(item.card.type)}}</sub></td>
+                                    <td>lv.{{item.card.level}} {{get_star_print(item.card.star)}} {{get_evolved_tag(item.card.evolved)}}</td>
+                                    <td class="hidden-xs">{{item.card.decisiveness}}</td>
+                                    <td class="hidden-xs">{{item.card.creativity}}</td>
+                                    <td class="hidden-xs">{{item.card.kindness}}</td>
+                                    <td class="hidden-xs">{{item.card.activity}}</td>
+                                    <td>{{item.score}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- 票房计算 -->
+
+                <!--24小时挑战-->
+                <div class="mycard" v-show="nav == 'challenge'">
+                    <h4>{{get_string('NAV_CHALLENGE')}}</h4>
+
+                    <div class="form-group clearfix" v-if="!empty(ticket)">
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">{{get_string('FIRST_LEVEL')}}</label>
+                            <select class="form-control" v-model="challenge_select.library">
+                                <option :value="item.library" v-for="item in challenge" v-if="item.level == 1">{{item.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-3 col-lg-2">
+                            <label class="label-above">{{get_string('THEME')}}</label>
+                            <select class="form-control" v-model="challenge_select.level">
+                                <option :value="item.level" v-for="item in challenge" v-if="item.library == challenge_select.library">{{item.level}}. {{item.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-sm-2 col-lg-1">
+                            <button id="get_levels" type="button" :data-loading-text="get_string('LOADING')" class="btn btn-primary form-control" autocomplete="off" @click="get_challenges()">{{get_string('LEVEL_ANALYSE')}}</button>
+                        </div>
+                    </div>
+                    <div v-show="!empty(challenges.challenge)">
+                        <table class="table table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>{{get_string('THEME')}}</th>
+                                    <th>{{get_string('PROP_REQUIRE')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{challenges.challenge.name}}</td>
+                                    <td>{{get_card_demand(challenges.challenge)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" :class="{active: challenges.option == 'my'}"><a href="javascript:;" @click="challenges.option = 'my'">{{get_string('MY')}}<span class="hidden-xs">{{get_string('TEAM')}}</span></a></li>
+                            <li role="presentation" :class="{active: challenges.option == 'match'}"><a href="javascript:;" @click="challenges.option = 'match'">{{get_string('MATCH')}}<span class="hidden-xs">{{get_string('TEAM')}}</span></a></li>
+                            <li role="presentation" :class="{active: challenges.option == 'record'}" v-show="challenges.record.length > 0 || challenges.ready"><a href="javascript:;" @click="challenges.option = 'record'">{{get_string('DAMAGE')}}<span class="hidden-xs">{{get_string('RECORD')}}</span></a></li>
+                            <li role="presentation" :class="{active: challenges.option == 'history'}" v-show="challenges.history.length > 0"><a href="javascript:;" @click="challenges.option = 'history'">{{get_string('HISTORY')}}<span class="hidden-xs">{{get_string('MATCH')}}</span></a></li>
+                        </ul>
+                        <table class="table table-bordered table-hover table-condensed" v-show="challenges.option == 'history'">
+                            <thead>
+                                <tr>
+                                    <th>{{get_string('SN')}}</th>
+                                    <th>{{get_string('COMPANY_PROP')}}</th>
+                                    <th>{{get_string('CARD_PROP')}}</th>
+                                    <th>{{get_string('BUFF')}}</th>
+                                    <th>{{get_string('OPTIONS')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item,idx) in challenges.history">
+                                    <td>{{idx+1}}</td>
+                                    <td>
+                                        {{item.company_total}}
+                                    </td>
+                                    <td>
+                                        {{item.card_total}}
+                                    </td>
+                                    <td>
+                                        {{item.match_bonus}}%
+                                    </td>
+                                    <td>
+                                        <a href="javascript:;" @click="challenge_use_history(idx)">{{get_string('USE')}}</a>
+                                        <a href="javascript:;" @click="challenge_remove_history(idx)">{{get_string('DELETE')}}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5"><a href="javascript:;" @click="challenge_clear_history()">{{get_string('CLEAR_HISTORY')}}</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed" v-show="challenges.option == 'record'">
+                            <thead>
+                                <tr>
+                                    <th>{{get_string('SN')}}</th>
+                                    <th>{{get_string('CARD')}}</th>
+                                    <th>{{get_string('OPTIONS')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-show="challenges.ready" class="purple">
+                                    <td>{{get_string('CURRENT')}}</td>
+                                    <td>
+                                        <template v-for="item in challenges.my_damaged">
+                                            <small v-show="item.card_id > 0">{{item.name}}（{{get_damage_rate(item)}}）</small><br v-if="item.card_id > 0">
+                                        </template>
+                                    </td>
+                                    <td><a href="javascript:;" @click="challenge_record()">{{get_string('RECORD_DAMAGE')}}</a></td>
+                                </tr>
+                                <tr v-for="(record,idx) in challenges.record">
+                                    <td>{{record.idx}}</td>
+                                    <td>
+                                        <template v-for="item in record.my_damaged">
+                                            <small v-show="item.card_id > 0">{{item.name}}（{{get_damage_rate(item)}}）</small><br v-if="item.card_id > 0">
+                                        </template>
+                                    </td>
+                                    <td><a href="javascript:;" @click="challenge_record_retract()" v-if="idx == 0">{{get_string('RETRACT_DAMAGE')}}</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5"><a href="javascript:;" @click="challenge_reset()">{{get_string('RESET_DAMAGE')}}</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed" v-show="challenges.option == 'my'">
+                            <tbody>
+                                <tr>
+                                    <th>{{get_string('COMPANY_SCORE')}}</th>
+                                    <td>
+                                        <a href="javascript:;" @click="show_challenge_company('my')">{{challenges.my_company.decisiveness}} / {{challenges.my_company.creativity}} / {{challenges.my_company.kindness}} / {{challenges.my_company.activity}}</a>
+                                    </td>
+                                    <td>{{get_challenge_company_score('my')}}</td>
+                                </tr>
+                                <tr v-for="(item, idx) in challenges.my">
+                                    <th rowspan="3" v-if="idx == 0">{{get_string('CARD_SCORE')}}</th>
+                                    <td v-if="item.card_id > 0">
+                                        <a href="javascript:;" @click="show_challenge_card_select(idx, 'my')">{{item.name}}（{{get_damage_rate(item)}}）</a>
+                                    </td>
+                                    <td v-else><a href="javascript:;" @click="show_challenge_card_select(idx, 'my')">{{get_string('NO_SETTING')}}</a></td>
+                                    <td>{{item.score || 0}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('GUARD_SCORE')}}</th>
+                                    <td>
+                                        <select v-model="challenges.my_bonus">
+                                            <option :value="i" v-for="i in [0, 5, 10, 25, 30, 50]">{{i}}%</option>
+                                        </select>
+                                    </td>
+                                    <td>{{get_challenge_bonus_score('my')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('TOTAL_SCORE')}}</th>
+                                    <td><a href="javascript:;" @click="clear_challenge_card('my')">{{get_string('CLEAR_CARD')}}</a></td>
+                                    <td>{{get_challenge_total_score('my')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed" v-show="challenges.option == 'match'">
+                            <tbody>
+                                <tr>
+                                    <th>{{get_string('COMPANY_SCORE')}}</th>
+                                    <td>
+                                        <a href="javascript:;" @click="show_challenge_company('match')">{{challenges.match_company.decisiveness}} / {{challenges.match_company.creativity}} / {{challenges.match_company.kindness}} / {{challenges.match_company.activity}}</a>
+                                    </td>
+                                    <td>{{get_challenge_company_score('match')}}</td>
+                                </tr>
+                                <tr v-for="(item, idx) in challenges.match">
+                                    <th rowspan="3" v-if="idx == 0">{{get_string('CARD_SCORE')}}</th>
+                                    <td v-if="item.card_id > 0">
+                                        <a href="javascript:;" @click="show_challenge_card(idx, 'match')">{{item.name}}（{{get_damage_rate(item)}}）</a>
+                                    </td>
+                                    <td v-else><a href="javascript:;" @click="show_challenge_card(idx, 'match')">{{get_string('NO_SETTING')}}</a></td>
+                                    <td>{{item.score || 0}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('GUARD_SCORE')}}</th>
+                                    <td>
+                                        <select v-model="challenges.match_bonus">
+                                            <option :value="i" v-for="i in [0, 5, 10, 25, 30, 50]">{{i}}%</option>
+                                        </select>
+                                    </td>
+                                    <td>{{get_challenge_bonus_score('match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('TOTAL_SCORE')}}</th>
+                                    <td><a href="javascript:;" @click="clear_challenge_card('match')">{{get_string('CLEAR_CARD')}}</a></td>
+                                    <td>{{get_challenge_total_score('match')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p>
+                            <a href="javascript:;" :disabled="challenges.match[0].card_id == 0 && challenges.match[1].card_id == 0 && challenges.match[2].card_id == 0" class="btn btn-default" @click="challenge_recommend()">{{get_string('RECOMMEND_CARDS')}}</a>&nbsp;
+                            <a href="javascript:;" :disabled="!challenges.ready" class="btn btn-primary" @click="challenge_record()">{{get_string('RECORD_DAMAGE')}}</a>&nbsp;
+                            <a href="javascript:;" :disabled="challenge_select.next_level < 0" class="btn btn-default" @click="challenge_next()">{{get_string('NEXT_LEVEL')}}</a>
+                        </p>
+                        <p class="help-block" style="text-align: center;">{{challenges.recommend_text}} <br v-show="challenges.recommend_text != ''"> {{get_string('THRESHOLD')}}：{{challenges.threshold}}&nbsp;<a href="javascript:;" @click="show_challenge_threshold()">{{get_string('CONFIG')}}</a></p>
+
+                        <!-- <table class="table table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>{{get_string('COMPANY_COMPARE')}}</th>
+                                    <th>{{get_string('DECISIVENESS')}}</th>
+                                    <th>{{get_string('CREATIVITY')}}</th>
+                                    <th>{{get_string('KINDNESS')}}</th>
+                                    <th>{{get_string('ACTIVITY')}}</th>
+                                    <th>{{get_string('SUM')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>{{get_string('MINE')}}</th>
+                                    <td>{{challenges.my_company.decisiveness}}</td>
+                                    <td>{{challenges.my_company.creativity}}</td>
+                                    <td>{{challenges.my_company.kindness}}</td>
+                                    <td>{{challenges.my_company.activity}}</td>
+                                    <td>{{get_challenge_company_total('my')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('MATCH')}}</th>
+                                    <td>{{challenges.match_company.decisiveness}}</td>
+                                    <td>{{challenges.match_company.creativity}}</td>
+                                    <td>{{challenges.match_company.kindness}}</td>
+                                    <td>{{challenges.match_company.activity}}</td>
+                                    <td>{{get_challenge_company_total('match')}}</td>
+                                </tr>
+                            </tbody>
+                        </table> -->
+                        <table class="table table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>{{get_string('CARD_COMPARE')}}</th>
+                                    <th>{{get_string('DECISIVENESS')}}</th>
+                                    <th>{{get_string('CREATIVITY')}}</th>
+                                    <th>{{get_string('KINDNESS')}}</th>
+                                    <th>{{get_string('ACTIVITY')}}</th>
+                                    <th>{{get_string('SUM')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>{{get_string('MINE')}}</th>
+                                    <td>{{get_challenge_card('my', 'decisiveness')}}</td>
+                                    <td>{{get_challenge_card('my', 'creativity')}}</td>
+                                    <td>{{get_challenge_card('my', 'kindness')}}</td>
+                                    <td>{{get_challenge_card('my', 'activity')}}</td>
+                                    <td>{{get_challenge_card_total('my')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('MATCH')}}</th>
+                                    <td>{{get_challenge_card('match', 'decisiveness')}}</td>
+                                    <td>{{get_challenge_card('match', 'creativity')}}</td>
+                                    <td>{{get_challenge_card('match', 'kindness')}}</td>
+                                    <td>{{get_challenge_card('match', 'activity')}}</td>
+                                    <td>{{get_challenge_card_total('match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>受损</th>
+                                    <td>{{0 - get_challenge_card_loss('decisiveness', 'my', 'match')}}</td>
+                                    <td>{{0 - get_challenge_card_loss('creativity', 'my', 'match')}}</td>
+                                    <td>{{0 - get_challenge_card_loss('kindness', 'my', 'match')}}</td>
+                                    <td>{{0 - get_challenge_card_loss('activity', 'my', 'match')}}</td>
+                                    <td>{{0 - get_challenge_card_loss_total('my','match')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>{{get_string('SCORE_COMPARE')}}</th>
+                                    <th>{{get_string('MINE')}}</th>
+                                    <th>{{get_string('MATCH')}}</th>
+                                    <th>{{get_string('SCORE_DIFF')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-show="challenges.expand">
+                                    <th>{{get_string('DECISIVENESS')}}</th>
+                                    <td>{{get_challenge_prop_score('decisiveness', 'my')}}</td>
+                                    <td>{{get_challenge_prop_score('decisiveness', 'match')}}</td>
+                                    <td :class="{'text-success': get_challenge_prop_score_diff('decisiveness', 'my', 'match') > 0, 'text-danger': get_challenge_prop_score_diff('decisiveness', 'my', 'match') < 0}">{{get_challenge_prop_score_diff('decisiveness', 'my', 'match')}}</td>
+                                </tr>
+                                <tr v-show="challenges.expand">
+                                    <th>{{get_string('CREATIVITY')}}</th>
+                                    <td>{{get_challenge_prop_score('creativity', 'my')}}</td>
+                                    <td>{{get_challenge_prop_score('creativity', 'match')}}</td>
+                                    <td :class="{'text-success': get_challenge_prop_score_diff('creativity', 'my', 'match') > 0, 'text-danger': get_challenge_prop_score_diff('creativity', 'my', 'match') < 0}">{{get_challenge_prop_score_diff('creativity', 'my', 'match')}}</td>
+                                </tr v-show="challenges.expand">
+                                <tr v-show="challenges.expand">
+                                    <th>{{get_string('KINDNESS')}}</th>
+                                    <td>{{get_challenge_prop_score('kindness', 'my')}}</td>
+                                    <td>{{get_challenge_prop_score('kindness', 'match')}}</td>
+                                    <td :class="{'text-success': get_challenge_prop_score_diff('kindness', 'my', 'match') > 0, 'text-danger': get_challenge_prop_score_diff('kindness', 'my', 'match') < 0}">{{get_challenge_prop_score_diff('kindness', 'my', 'match')}}</td>
+                                </tr>
+                                <tr v-show="challenges.expand">
+                                    <th>{{get_string('ACTIVITY')}}</th>
+                                    <td>{{get_challenge_prop_score('activity', 'my')}}</td>
+                                    <td>{{get_challenge_prop_score('activity', 'match')}}</td>
+                                    <td :class="{'text-success': get_challenge_prop_score_diff('activity', 'my', 'match') > 0, 'text-danger': get_challenge_prop_score_diff('activity', 'my', 'match') < 0}">{{get_challenge_prop_score_diff('activity', 'my', 'match')}}</td>
+                                </tr>
+                                <tr v-show="challenges.expand">
+                                    <th>{{get_string('GUARD')}}</th>
+                                    <td>{{get_challenge_bonus_score('my')}}</td>
+                                    <td>{{get_challenge_bonus_score('match')}}</td>
+                                    <td :class="{'text-success': get_challenge_bonus_score_diff('my', 'match') > 0, 'text-danger': get_challenge_bonus_score_diff('my', 'match') < 0}">{{get_challenge_bonus_score_diff('my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('TOTAL_SCORE')}}</th>
+                                    <td>{{get_challenge_total_score('my')}}</td>
+                                    <td>{{get_challenge_total_score('match')}}</td>
+                                    <td style="font-weight: bold;" :class="{'text-success': get_challenge_total_score_diff('my', 'match') > 0, 'text-danger': get_challenge_total_score_diff('my', 'match') < 0}">{{get_challenge_total_score_diff('my', 'match')}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><a href="javascript:;" @click="challenges.expand = !challenges.expand">{{get_string('TOGGLE')}}</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>{{get_string('PROP_COMPARE')}}</th>
+                                    <th>{{get_string('COMPANY_PROP')}}</th>
+                                    <th>{{get_string('CARD_PROP')}}</th>
+                                    <th>总实力</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>{{get_string('MINE')}}</th>
+                                    <td>{{get_challenge_company_total('my')}}</td>
+                                    <td>{{get_challenge_card_total('my')}}</td>
+                                    <td>{{get_challenge_company_total('my') + get_challenge_card_total('my')}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{get_string('MATCH')}}</th>
+                                    <td>{{get_challenge_company_total('match')}}</td>
+                                    <td>{{get_challenge_card_total('match')}}</td>
+                                    <td>{{get_challenge_company_total('match') + get_challenge_card_total('match')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div v-show="!empty(challenges.challenge)">
+                        <h4>
+                            <span>{{get_string('MY_CARD')}}</span>
+                            <small><a href="javascript:;" @click="challenge_reset_click()">{{get_string('RESET')}}</a></small>
+                        </h4>
+                        <p><small>{{get_string('ADDED')}}：{{challenges.cards.length}}</small></p>
+                        <p v-show="challenges.cards.length < 30"><a href="javascript:;" @click="nav = 'card'">{{get_string('ADD_MORE_CARD')}}</a></p>
+                        <table class="table table-bordered table-hover" v-show="!empty(challenges.cards)">
+                            <thead>
+                                <tr>
+                                    <th>{{get_string('NAME')}}</th>
+                                    <th class="hidden-xs">{{get_string('LEVEL')}}</th>
+                                    <th class="hidden-xs">{{get_string('DECISIVENESS')}}</th>
+                                    <th class="hidden-xs">{{get_string('CREATIVITY')}}</th>
+                                    <th class="hidden-xs">{{get_string('KINDNESS')}}</th>
+                                    <th class="hidden-xs">{{get_string('ACTIVITY')}}</th>
+                                    <th>{{get_string('SCORE')}}</th>
+                                    <th>{{get_string('STATUS')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in challenges.cards">
+                                    <td><a href="javascript:;" @click="show_challenge_edit(item.card)">{{item.card.name}} <sub>（{{get_damage_rate(item.card)}}）</sub></a></td>
+                                    <td class="hidden-xs">lv.{{item.card.level}} {{get_star_print(item.card.star)}} {{get_evolved_tag(item.card.evolved)}}</td>
+                                    <td class="hidden-xs">{{item.card.decisiveness}}</td>
+                                    <td class="hidden-xs">{{item.card.creativity}}</td>
+                                    <td class="hidden-xs">{{item.card.kindness}}</td>
+                                    <td class="hidden-xs">{{item.card.activity}}</td>
+                                    <td>{{item.score}}</td>
+                                    <td v-if="challenges.field_ids.indexOf(item.card.card_id) >= 0">{{get_string('PLAYED')}}</td>
+                                    <td v-else>
+                                        <a href="javascript:;" @click="challenge_remove_card(item.card.card_id)">{{get_string('REMOVE')}}</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- 24小时挑战 -->
+
+                <!-- 卡组分析 -->
+                <div class="mycard" v-show="nav == 'double'">
+                    <h4>{{get_string('NAV_DOUBLE')}}</h4>
+                    <a href="javascript:;" @click="levels.config = !levels.config">{{get_string('CONFIG')}}</a>
+                    <div v-show="levels.config">
+                        <!-- <div class="radio">
+                            <span>{{get_string('FILTER')}}：</span>
+                            <label>
+                                <input type="radio" v-model="levels.card" value="my"> {{get_string('MY_CARD')}}
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.card" value="all"> {{get_string('ALL_CARD')}}
+                            </label>
+                        </div> -->
+                        <div class="input" v-show="false">
+                            {{get_string('WEIGHT')}}：
+                            <input type="number" v-model="levels.factor[0]">
+                            <input type="number" v-model="levels.factor[1]">
+                            <input type="number" v-model="levels.factor[2]">
+                            <input type="number" v-model="levels.factor[3]">
+                            <button @click="double_cards()">{{get_string('UPDATE')}}</button>
+                        </div>
+                        <div class="radio">
+                            <span>{{get_string('CHARACTOR')}}：</span>
+                            <label>
+                                <input type="radio" v-model="levels.category" value="0"> {{get_string('ALL')}}
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.category" value="1"> {{get_string('LIZEYAN')}}
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.category" value="2"> {{get_string('XUMO')}}
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.category" value="3"> {{get_string('ZHOUQILUO')}}
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.category" value="4"> {{get_string('BAIQI')}}
+                            </label>
+                        </div>
+                        <div class="radio" v-show="double.option == 'all'">
+                            <span>R：</span>
+                            <label>
+                                <input type="radio" v-model="levels.r" value="hidden"> {{get_string('HIDDEN')}}
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.r" value="ordinary"> {{get_string('NORMAL')}}
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.r" value="evolved"> {{get_string('EVOLVED')}}
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.r" value="evolved2"> {{get_string('NEW_EVOLVED')}}
+                            </label>
+                        </div>
+                        <div class="radio" v-show="double.option == 'all'">
+                            <span>SR：</span>
+                            <label>
+                                <input type="radio" v-model="levels.sr" value="hidden"> {{get_string('HIDDEN')}}
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.sr" value="ordinary"> {{get_string('NORMAL')}}
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.sr" value="evolved"> {{get_string('EVOLVED')}}
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.sr" value="evolved2"> {{get_string('NEW_EVOLVED')}}
+                            </label>
+                        </div>
+                        <div class="radio" v-show="double.option == 'all'">
+                            <span>SSR：</span>
+                            <label>
+                                <input type="radio" v-model="levels.ssr" value="hidden"> {{get_string('HIDDEN')}}
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.ssr" value="ordinary"> {{get_string('NORMAL')}}
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.ssr" value="evolved"> {{get_string('EVOLVED')}}
+                            </label>
+                            <label>
+                                <input type="radio" v-model="levels.ssr" value="evolved2"> {{get_string('NEW_EVOLVED')}}
+                            </label>
+                        </div>
+                        <div class="checkbox" v-show="double.option == 'all'">
+                            <span>{{get_string('SHOW')}}：</span>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="value"> {{get_string('VALUE')}}
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="rate"> {{get_string('RATE')}}
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="decisiveness"> {{get_string('DECISIVENESS_GROUP')}}
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="creativity"> {{get_string('CREATIVITY_GROUP')}}
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="kindness"> {{get_string('KINDNESS_GROUP')}}
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="activity"> {{get_string('ACTIVITY_GROUP')}}
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="levels.cols" value="gain"> {{get_string('GAIN')}}
+                            </label>
+                        </div>
+                    </div>
+                    <p class="help-block">{{get_string('HELP_DOUBLE')}}<span v-show="double.option == 'all'">{{get_string('HELP_DOUBLE_ADDITION')}}</span></p>
+
+                    <ul class="nav nav-tabs" style="margin-top: 10px;">
+                        <li role="presentation" :class="{active: double.option == 'all'}"><a href="javascript:;" @click="double.option = 'all'">{{get_string('ALL_CARDS')}}</a></li>
+                        <li role="presentation" :class="{active: double.option == 'my'}"><a href="javascript:;" @click="double.option = 'my'">{{get_string('MY_CARD')}}</a></li>
+                    </ul>
+                    <table class="table table-bordered table-hover table-score" v-show="double.option == 'all'">
+                        <thead>
+                            <tr>
+                                <th>{{get_string('NAME')}}</th>
+
+                                <th v-show="levels.cols.indexOf('value') >= 0" @click="sort_double('decisiveness')">{{get_string('DECISIVENESS')}} <span v-show="levels.sort == 'decisiveness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('value') >= 0" @click="sort_double('creativity')">{{get_string('CREATIVITY')}} <span v-show="levels.sort == 'creativity'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('value') >= 0" @click="sort_double('kindness')">{{get_string('KINDNESS')}} <span v-show="levels.sort == 'kindness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('value') >= 0" @click="sort_double('activity')">{{get_string('ACTIVITY')}} <span v-show="levels.sort == 'activity'">▼</span></th>
+
+                                <th v-show="levels.cols.indexOf('rate') >= 0" @click="sort_double('decisiveness_rate')">{{get_string('DECISIVENESS')}} <span v-show="levels.sort == 'decisiveness_rate'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('rate') >= 0" @click="sort_double('creativity_rate')">{{get_string('CREATIVITY')}} <span v-show="levels.sort == 'creativity_rate'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('rate') >= 0" @click="sort_double('kindness_rate')">{{get_string('KINDNESS')}} <span v-show="levels.sort == 'kindness_rate'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('rate') >= 0" @click="sort_double('activity_rate')">{{get_string('ACTIVITY')}} <span v-show="levels.sort == 'activity_rate'">▼</span></th>
+
+                                <th v-show="levels.cols.indexOf('decisiveness') >= 0" @click="sort_double('decisiveness_creativity')">{{get_string('DECISIVENESS')}}<br>{{get_string('CREATIVITY')}} <span v-show="levels.sort == 'decisiveness_creativity'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('decisiveness') >= 0" @click="sort_double('decisiveness_kindness')">{{get_string('DECISIVENESS')}}<br>{{get_string('KINDNESS')}} <span v-show="levels.sort == 'decisiveness_kindness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('decisiveness') >= 0" @click="sort_double('decisiveness_activity')">{{get_string('DECISIVENESS')}}<br>{{get_string('ACTIVITY')}} <span v-show="levels.sort == 'decisiveness_activity'">▼</span></th>
+
+                                <th v-show="levels.cols.indexOf('creativity') >= 0" @click="sort_double('creativity_decisiveness')">{{get_string('CREATIVITY')}}<br>{{get_string('DECISIVENESS')}} <span v-show="levels.sort == 'creativity_decisiveness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('creativity') >= 0" @click="sort_double('creativity_kindness')">{{get_string('CREATIVITY')}}<br>{{get_string('KINDNESS')}} <span v-show="levels.sort == 'creativity_kindness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('creativity') >= 0" @click="sort_double('creativity_activity')">{{get_string('CREATIVITY')}}<br>{{get_string('ACTIVITY')}} <span v-show="levels.sort == 'creativity_activity'">▼</span></th>
+                                
+                                <th v-show="levels.cols.indexOf('kindness') >= 0" @click="sort_double('kindness_decisiveness')">{{get_string('KINDNESS')}}<br>{{get_string('DECISIVENESS')}} <span v-show="levels.sort == 'kindness_decisiveness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('kindness') >= 0" @click="sort_double('kindness_creativity')">{{get_string('KINDNESS')}}<br>{{get_string('CREATIVITY')}} <span v-show="levels.sort == 'kindness_creativity'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('kindness') >= 0" @click="sort_double('kindness_activity')">{{get_string('KINDNESS')}}<br>{{get_string('ACTIVITY')}} <span v-show="levels.sort == 'kindness_activity'">▼</span></th>
+                                
+                                <th v-show="levels.cols.indexOf('activity') >= 0" @click="sort_double('activity_decisiveness')">{{get_string('ACTIVITY')}}<br>{{get_string('DECISIVENESS')}} <span v-show="levels.sort == 'activity_decisiveness'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('activity') >= 0" @click="sort_double('activity_creativity')">{{get_string('ACTIVITY')}}<br>{{get_string('CREATIVITY')}} <span v-show="levels.sort == 'activity_creativity'">▼</span></th>
+                                <th v-show="levels.cols.indexOf('activity') >= 0" @click="sort_double('activity_kindness')">{{get_string('ACTIVITY')}}<br>{{get_string('KINDNESS')}} <span v-show="levels.sort == 'activity_kindness'">▼</span></th>
+
+                                <th v-show="levels.cols.indexOf('gain') >= 0">{{get_string('GAIN')}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in double.cards" :class="{purple: my_cards.indexOf(item.card_id) >= 0}" v-show="levels.category == 0 || levels.category == item.category">
+                                <td style="min-width: 200px;">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></td>
+                                <td v-show="levels.cols.indexOf('value') >= 0">{{item.decisiveness}}</td>
+                                <td v-show="levels.cols.indexOf('value') >= 0">{{item.creativity}}</td>
+                                <td v-show="levels.cols.indexOf('value') >= 0">{{item.kindness}}</td>
+                                <td v-show="levels.cols.indexOf('value') >= 0">{{item.activity}}</td>
+
+                                <td v-show="levels.cols.indexOf('rate') >= 0">{{item.decisiveness_rate}}%</td>
+                                <td v-show="levels.cols.indexOf('rate') >= 0">{{item.creativity_rate}}%</td>
+                                <td v-show="levels.cols.indexOf('rate') >= 0">{{item.kindness_rate}}%</td>
+                                <td v-show="levels.cols.indexOf('rate') >= 0">{{item.activity_rate}}%</td>
+
+                                <td v-show="levels.cols.indexOf('decisiveness') >= 0">{{item.decisiveness_creativity}}</td>
+                                <td v-show="levels.cols.indexOf('decisiveness') >= 0">{{item.decisiveness_kindness}}</td>
+                                <td v-show="levels.cols.indexOf('decisiveness') >= 0">{{item.decisiveness_activity}}</td>
+
+                                <td v-show="levels.cols.indexOf('creativity') >= 0">{{item.creativity_decisiveness}}</td>
+                                <td v-show="levels.cols.indexOf('creativity') >= 0">{{item.creativity_kindness}}</td>
+                                <td v-show="levels.cols.indexOf('creativity') >= 0">{{item.creativity_activity}}</td>
+                                
+                                <td v-show="levels.cols.indexOf('kindness') >= 0">{{item.kindness_decisiveness}}</td>
+                                <td v-show="levels.cols.indexOf('kindness') >= 0">{{item.kindness_creativity}}</td>
+                                <td v-show="levels.cols.indexOf('kindness') >= 0">{{item.kindness_activity}}</td>
+                                
+                                <td v-show="levels.cols.indexOf('activity') >= 0">{{item.activity_decisiveness}}</td>
+                                <td v-show="levels.cols.indexOf('activity') >= 0">{{item.activity_creativity}}</td>
+                                <td v-show="levels.cols.indexOf('activity') >= 0">{{item.activity_kindness}}</td>
+
+                                <td v-show="levels.cols.indexOf('gain') >= 0">{{get_gain_tag(item.gain)}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-bordered table-hover table-score" v-show="double.option == 'my'">
+                        <thead>
+                            <tr>
+                                <th>{{get_string('PROP_COMBINE')}}</th>
+                                <th>{{get_string('CARD_COMBINE')}}</th>
+                                <th>{{get_string('SCORE')}}</th>
+                                <th @click="sort_double_total()">{{get_string('TOTAL_SCORE')}}
+                                    <span v-show="double.sort == 1">▼</span>
+                                    <span v-show="double.sort == -1">▲</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template v-for="item in double.my">
+                                <tr v-if="empty(item.top)">
+                                    <th v-html="get_double_tag(item.key)"></th>
+                                    <td>{{get_string('NA')}}</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr v-for="(card, idx) in item.top">
+                                    <th v-html="get_double_tag(item.key)" :rowspan="item.top.length" v-if="idx == 0"></th>
+                                    <td>{{card.name}} <sub>{{get_type_tag(card.type)}}</sub></td>
+                                    <td>{{card.score}}</td>
+                                    <td :rowspan="item.top.length" v-if="idx == 0">{{item.total}}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+                <!--卡组分析-->
+            </div>
+
+            <!--登录弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="company">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <ul class="nav nav-tabs">
+                                <li role="presentation" :class="{active: login.option == 'create_user'}"><a href="javascript:;" @click="login.option = 'create_user'">{{get_string('CREATE_USER')}}</a></li>
+                                <li role="presentation" :class="{active: login.option == 'user_login'}"><a href="javascript:;" @click="login.option = 'user_login'">{{get_string('LOGIN_USER')}}</a></li>
+                            </ul>
+                            <div class="modal-main clearfix">
+                                <p class="col-xs-12 help-block" style="color: #7d569a;" v-show="!empty(user.name) && login.option == 'user_login'">
+                                    {{get_string('CURRENT_ACCOUNT')}}：
+                                    {{user.name}}
+                                </p>
+                                <div class="col-xs-12 col-sm-6">
+                                    <label class="label-above">{{get_string('COMPANY_NAME')}}</label>
+                                    <input type="text" class="form-control" v-model="login.name">
+                                </div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <label class="label-above">{{get_string('PASSWORD')}} <i class="fa" :class="{'fa-eye': login.eye, 'fa-eye-slash': !login.eye}" aria-hidden="true" @click="login.eye = !login.eye"></i></label>
+                                    <input :type="login.eye ? 'text' : 'password'" class="form-control" v-model="login.code">
+                                </div>
+                                <p class="col-xs-12 help-block">{{get_string('TIP_LOGIN')}}</p>
+                                <p class="col-xs-12 help-block" v-show="!empty(login.history) && login.option == 'user_login'">
+                                    {{get_string('HISTORY_ACCOUNT')}}：
+                                    <a href="javascript:;" v-for="(item, key) in login.history" @click="login.name=key;login.code=item;">{{key}}</a>
+                                </p>
+                            </div>
+                            <div class="alert alert-warning" role="alert" v-show="login.warning">
+                                {{login.warning}}
+                                <button type="button" class="close" aria-label="Close" @click="login.warning = ''"><span aria-hidden="true">&times;</span></button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{get_string('CANCEL')}}</button>
+                            <button id="user_login" type="button" class="btn btn-primary" :data-loading-text="get_string('LOGINING')" autocomplete="off" @click="user_login()">{{get_string('CONFIRM')}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--登录弹窗-->
+
+            <!--羁绊弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="card">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">{{card_select.name}}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group clearfix">
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('EVOLVE')}}</label>
+                                    <select class="form-control" v-model="card_select.evolved">
+                                        <option value="0">{{get_string('NOT_EVOLVED')}}</option>
+                                        <option value="1">{{get_string('IS_EVOLVED')}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('STAR')}}</label>
+                                    <input type="number" class="form-control" v-model="card_select.star">
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('LEVEL')}}</label>
+                                    <input type="number" class="form-control" v-model="card_select.level">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('DECISIVENESS')}}</label>
+                                    <input type="number" class="form-control" v-model="card_select.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('CREATIVITY')}}</label>
+                                    <input type="number" class="form-control" v-model="card_select.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('KINDNESS')}}</label>
+                                    <input type="number" class="form-control" v-model="card_select.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('ACTIVITY')}}</label>
+                                    <input type="number" class="form-control" v-model="card_select.activity">
+                                </div>
+                            </div>
+                            <p class="help-block">{{get_string('TIP_CARD')}}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{get_string('CANCEL')}}</button>
+                            <button type="button" id="save_card" class="btn btn-primary" :data-loading-text="get_string('SAVING')" @click="save_card()">{{get_string('SAVE')}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--羁绊弹窗-->
+
+            <!--关卡羁绊弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="combine">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="pd15">
+                                <label class="label-above">{{get_string('CARD_NAME')}}</label>
+                                <input type="text" id="combine_typeahead" class="typeahead form-control" data-provide="typeahead" autocomplete="off">
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('EVOLVE')}}</label>
+                                    <select class="form-control" v-model="levels.select.evolved">
+                                        <option value="0">{{get_string('NOT_EVOLVED')}}</option>
+                                        <option value="1">{{get_string('IS_EVOLVED')}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('STAR')}}</label>
+                                    <input type="number" class="form-control" v-model="levels.select.star">
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('LEVEL')}}</label>
+                                    <input type="number" class="form-control" v-model="levels.select.level">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('DECISIVENESS')}}</label>
+                                    <input type="number" class="form-control" v-model="levels.select.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('CREATIVITY')}}</label>
+                                    <input type="number" class="form-control" v-model="levels.select.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('KINDNESS')}}</label>
+                                    <input type="number" class="form-control" v-model="levels.select.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('ACTIVITY')}}</label>
+                                    <input type="number" class="form-control" v-model="levels.select.activity">
+                                </div>
+                            </div>
+                            <p>{{get_string('SCORE')}}：{{levels.select.score}}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{get_string('CANCEL')}}</button>
+                            <button type="button" class="btn btn-primary" @click="save_combine()">{{get_string('SAVE')}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--关卡羁绊弹窗-->
+
+            <!--关卡公司弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="special">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('DECISIVENESS')}}</label>
+                                    <input type="number" max="9000" class="form-control" v-model="levels.company.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('CREATIVITY')}}</label>
+                                    <input type="number" max="9000" class="form-control" v-model="levels.company.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('KINDNESS')}}</label>
+                                    <input type="number" max="9000" class="form-control" v-model="levels.company.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('ACTIVITY')}}</label>
+                                    <input type="number" max="9000" class="form-control" v-model="levels.company.activity">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('MULTIPLY')}}</label>
+                                    <input type="number" class="form-control" v-model="levels.multiple">
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above" style="text-align: center;">{{get_string('COMPANY_SCORE')}}</label>
+                                    <span>{{get_company_score()}}</span>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above" style="text-align: center;">{{get_string('STAFF_SCORE')}}</label>
+                                    <span>{{get_special_score()}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">{{get_string('CONFIRM')}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--关卡公司弹窗-->
+
+            <!--24小时设置弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="threshold">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-group clearfix">
+                                <div class="col-xs-6 col-md-4">
+                                    <label class="label-above">{{get_string('THRESHOLD')}}</label>
+                                    <input type="number" class="form-control" v-model="challenges.select_threshold">
+                                </div>
+                            </div>
+                            <p class="help-block">{{get_string('TIP_THRESHOLD')}}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{get_string('CANCEL')}}</button>
+                            <button type="button" class="btn btn-primary" @click="save_challenge_threshold()">{{get_string('CONFIRM')}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--24小时公司弹窗-->
+
+            <!--24小时公司弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="challenge">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('DECISIVENESS')}}</label>
+                                    <input type="number" max="9000" class="form-control" v-model="challenges.company.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('CREATIVITY')}}</label>
+                                    <input type="number" max="9000" class="form-control" v-model="challenges.company.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('KINDNESS')}}</label>
+                                    <input type="number" max="9000" class="form-control" v-model="challenges.company.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('ACTIVITY')}}</label>
+                                    <input type="number" max="9000" class="form-control" v-model="challenges.company.activity">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix" v-show="challenges.company.option == 'match'">
+                                <div class="col-xs-6 col-md-4">
+                                    <label class="label-above">{{get_string('TOTAL_PROP')}}</label>
+                                    <input type="number" class="form-control" v-model="challenges.company.total">
+                                </div>
+                                <div class="col-xs-6 col-md-4">
+                                    <label class="label-above">&nbsp;</label>
+                                    <p style="text-align: left;"><a class="btn btn-primary" href="javascript:;" @click="split_challenge_company()">{{get_string('FILL_IN_AVRAGE')}}</a></p>
+                                </div>
+                            </div>
+                            <p class="help-block" v-show="challenges.company.option == 'match'">{{get_string('TIP_CHALLENGE')}}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{get_string('CANCEL')}}</button>
+                            <button type="button" class="btn btn-primary" @click="save_challenge_company()">{{get_string('CONFIRM')}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--24小时公司弹窗-->
+
+            <!--24小时羁绊选择-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="field">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span>{{get_string('TIP_CHOOSE_CARD')}}
+                                &nbsp;&nbsp;<a href="javascript:;" @click="save_challenge_card(true)">{{get_string('CANCEL_PLAY')}}</a></span>
+                            }
+                            }
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p style="text-align: left;">
+                                {{get_string('MODE')}}：
+                                <label><input type="radio" name="mode" v-model="challenges.mode" value="0"> {{get_string('SCORE')}}</label>&nbsp;&nbsp;
+                                <label><input type="radio" name="mode" v-model="challenges.mode" value="1"> {{get_string('HURT')}}</label>&nbsp;&nbsp;
+                                &nbsp;&nbsp;<label style="font-size: small;"><input type="checkbox" name="config" v-model="challenges.config" value="hide_weak"> {{get_string('HIDE_LOW_LEVEL')}}</label>
+                            </p>
+                            <div style="overflow-x: scroll;">
+                                <ul class="nav nav-tabs">
+                                    <li role="presentation" :class="{active: challenges.field_option == 0}"><a href="javascript:;" @click="challenges.field_option = 0">{{get_string('ALL')}}</a></li>
+                                    <li role="presentation" :class="{active: challenges.field_option == 5}"><a href="javascript:;" @click="challenges.field_option = 5">SSR</a></li>
+                                    <li role="presentation" :class="{active: challenges.field_option == 4}"><a href="javascript:;" @click="challenges.field_option = 4">SR</a></li>
+                                    <li role="presentation" :class="{active: challenges.field_option == 3}"><a href="javascript:;" @click="challenges.field_option = 3">R</a></li>
+                                </ul>
+                                <table class="table table-bordered table-hover" :style="{'min-width': challenges.mode == '0' ? '450px' : '500px'}">
+                                    <thead>
+                                        <tr>
+                                            <th>{{get_string('NAME')}}</th>
+                                            <th @click="challenge_select_sort('score')" v-show="challenges.mode == '0'">
+                                                {{get_string('SCORE')}}
+                                                <span v-show="challenges.sort == 'score' && challenges.desc == 1">▼</span>
+                                                <span v-show="challenges.sort == 'score' && challenges.desc == -1">▲</span>
+                                            </th>
+                                            <th @click="challenge_select_sort('score_reduce')" v-show="challenges.mode == '1'">
+                                                {{get_string('HURTING')}}
+                                                <span v-show="challenges.sort == 'score_reduce' && challenges.desc == 1">▼</span>
+                                                <span v-show="challenges.sort == 'score_reduce' && challenges.desc == -1">▲</span>
+                                            </th>
+                                            <th @click="challenge_select_sort('score_reduce_total')" v-show="challenges.mode == '1'">
+                                                {{get_string('SUM')}}
+                                                <span v-show="challenges.sort == 'score_reduce_total' && challenges.desc == 1">▼</span>
+                                                <span v-show="challenges.sort == 'score_reduce_total' && challenges.desc == -1">▲</span>
+                                            </th>
+                                            <th @click="challenge_select_sort('loss')">
+                                                {{get_string('DAMAGING')}}
+                                                <span v-show="challenges.sort == 'loss' && challenges.desc == 1">▼</span>
+                                                <span v-show="challenges.sort == 'loss' && challenges.desc == -1">▲</span>
+                                            </th>
+                                            <th @click="challenge_select_sort('loss_unit_score')" v-show="challenges.mode == '0'">
+                                                {{get_string('HURT_PER_DAMAGE')}}
+                                                <span v-show="challenges.sort == 'loss_unit_score' && challenges.desc == 1">▼</span>
+                                                <span v-show="challenges.sort == 'loss_unit_score' && challenges.desc == -1">▲</span>
+                                            </th>
+                                            <th @click="challenge_select_sort('loss_unit_score_reduce')" v-show="challenges.mode == '1'">
+                                                {{get_string('HURT_PER_DAMAGE')}}
+                                                <span v-show="challenges.sort == 'loss_unit_score_reduce' && challenges.desc == 1">▼</span>
+                                                <span v-show="challenges.sort == 'loss_unit_score_reduce' && challenges.desc == -1">▲</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="item in challenges.field_list" v-show="(challenges.field_ids.indexOf(item.card.card_id) >= 0 || challenges.field_ids.length < 30) && (challenges.field_option == 0 || challenges.field_option == item.card.type) && (challenges.config.indexOf('hide_weak') < 0 || challenges.recommend_choice.indexOf(item.card.card_id) >= 0)">
+                                            <td v-if="item.score > 0 && challenges.my_ids.indexOf(item.card.card_id) < 0">
+                                                <a href="javascript:;" @click="select_challenge_card(item)">
+                                                    {{item.card.name}} <sub>（{{get_damage_rate(item.card)}}）</sub>
+                                                </a>
+                                            </td>
+                                            <td v-else>{{item.card.name}} <sub>（{{get_damage_rate(item.card)}}）</sub></td>
+                                            <td v-show="challenges.mode == '0'">{{item.score}}</td>
+                                            <td v-show="challenges.mode == '1'">{{item.score_reduce}}</td>
+                                            <td v-show="challenges.mode == '1'">{{item.score_reduce_total}}</td>
+                                            <td>{{item.loss}}</td>
+                                            <td v-show="challenges.mode == '0'">{{item.loss_unit_score}}</td>
+                                            <td v-show="challenges.mode == '1'">{{item.loss_unit_score_reduce}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--24小时羁绊选择-->
+
+            <!--24小时羁绊弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="24hour">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="pd15">
+                                <label class="label-above">{{get_string('CARD_NAME')}} &nbsp;&nbsp; <a href="javascript:;" @click="challenges.select.check_head = !challenges.select.check_head" v-show="challenges.select.card_id != 0">{{get_string('VIEW_HEAD')}}</a></label>
+                                <input type="text" id="challenge_typeahead" class="typeahead form-control" data-provide="typeahead" autocomplete="off">
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('EVOLVE')}}</label>
+                                    <select class="form-control" v-model="challenges.select.evolved">
+                                        <option value="0">{{get_string('NOT_EVOLVED')}}</option>
+                                        <option value="1">{{get_string('IS_EVOLVED')}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('STAR')}}</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.star">
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('LEVEL')}}</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.level">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('DECISIVENESS')}}</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('CREATIVITY')}}</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('KINDNESS')}}</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('ACTIVITY')}}</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.activity">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix" v-if="challenges.select.card_id != 0" v-show="challenges.select.check_head">
+                                <div class="col-xs-4 col-md-3 col-lg-2 image-load" v-for="(icon,evol) in cards[challenges.select.card_id].head.split(',')">
+                                    <span class="image-load-text">{{get_string('IMAGE_LOADING')}}</span>
+                                    <a href="javascript:;" @click="use_challenge_card(0, evol)"><img :src="path + 'card/' + icon + '.png'" width="80%" @load="image_load($event)"></a>
+                                </div>
+                            </div>
+                            <p class="help-block">
+                                <a href="javascript:;" @click="challenges.select.show_head = !challenges.select.show_head">{{get_string('SHOW_HEAD')}}▼</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="javascript:;" @click="use_challenge_card(0, 2, false)" v-show="this.challenges.select.card_id != 0">{{get_string('LOW_LEVEL')}}</a>&nbsp;
+                                <a href="javascript:;" @click="use_challenge_card(0, 0, false)" v-show="this.challenges.select.card_id != 0">{{get_string('NOT_EVOLVED')}}</a>&nbsp;
+                                <a href="javascript:;" @click="use_challenge_card(0, 1, false)" v-show="this.challenges.select.card_id != 0">{{get_string('OLD_EVOLVED')}}</a>
+                                <a href="javascript:;" @click="use_challenge_card(0, 1, true)" v-show="this.challenges.select.card_id != 0">{{get_string('NEW_EVOLVED')}}</a>
+                            </p>
+                            <div v-show="challenges.select.show_head">
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-4 col-md-3 col-lg-2">
+                                        <label class="label-above">{{get_string('CHARACTOR')}}</label>
+                                        <select class="form-control" v-model="challenges.select.role">
+                                            <option value="1">{{get_string('LIZEYAN')}}</option>
+                                            <option value="2">{{get_string('XUMO')}}</option>
+                                            <option value="3">{{get_string('ZHOUQILUO')}}</option>
+                                            <option value="4">{{get_string('BAIQI')}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4 col-md-3 col-lg-2">
+                                        <label class="label-above">{{get_string('RARE')}}</label>
+                                        <select class="form-control" v-model="challenges.select.rare">
+                                            <option value="5">SSR</option>
+                                            <option value="4">SR</option>
+                                            <option value="3">R</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4 col-md-3 col-lg-2">
+                                        <label class="label-above">{{get_string('COLOR')}}</label>
+                                        <select class="form-control" v-model="challenges.select.color">
+                                            <option value="1">{{get_string('BLUE')}}</option>
+                                            <option value="2">{{get_string('ORANGE')}}</option>
+                                            <option value="3">{{get_string('PINK')}}</option>
+                                            <option value="4">{{get_string('GREEN')}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix" v-for="item in cards" v-if="item.type == challenges.select.rare && item.category == challenges.select.role && item.top == challenges.select.color">
+                                    <div class="col-xs-4 col-md-3 col-lg-2">
+                                        <a href="javascript:;" @click="use_challenge_card(item.card_id, -1)" style="font-size: small;">{{item.name}} <sub>{{get_type_tag(item.type)}}</sub></a>
+                                    </div>
+                                    <div class="col-xs-4 col-md-3 col-lg-2 image-load" v-for="(icon,evol) in item.head.split(',')">
+                                        <span class="image-load-text">{{get_string('IMAGE_LOADING')}}</span>
+                                        <a href="javascript:;" @click="use_challenge_card(item.card_id, evol)"><img :src="path + 'card/' + icon + '.png'" width="80%" @load="image_load($event)"></a>
+                                    </div>
+                                </div>
+
+                                <p style="text-align: right; font-size: small;"><a href="javascript:;" @click="show_path = !show_path">{{get_string('IMAGE_CONFIG')}}</a></p>
+                                <p v-show="show_path" style="text-align: right; font-size: small;">
+                                    <label><input type="radio" v-model="path" value="img/">{{get_string('DEFAULT')}}</label>&nbsp;&nbsp;
+                                    <label><input type="radio" v-model="path" value="https://evolcalculator.coderprepares.com/">{{get_string('CHINA_CDN')}}</label>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @click="save_challenge_card(true)" style="color: #000;">{{get_string('CLEAR')}}</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{get_string('CANCEL')}}</button>
+                            <button type="button" class="btn btn-primary" @click="save_challenge_card(false)">{{get_string('SAVE')}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--24小时羁绊弹窗-->
+
+            <!--24小时羁绊修改弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="edit">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span>修改【{{challenges.select.name}}】</span>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group clearfix">
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('EVOLVE')}}</label>
+                                    <select class="form-control" v-model="challenges.select.evolved">
+                                        <option value="0">{{get_string('NOT_EVOLVED')}}</option>
+                                        <option value="1">{{get_string('IS_EVOLVED')}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('STAR')}}</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.star">
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('LEVEL')}}</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.level">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('DECISIVENESS')}}</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('CREATIVITY')}}</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('KINDNESS')}}</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('ACTIVITY')}}</label>
+                                    <input type="number" class="form-control" v-model="challenges.select.activity">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{get_string('CANCEL')}}</button>
+                            <button type="button" class="btn btn-primary" @click="save_challenge_edit()">{{get_string('SAVE')}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--24小时羁绊修改弹窗-->
+
+            <!--票房公司弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="ticket">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('DECISIVENESS')}}</label>
+                                    <input type="number" max="9000" class="form-control" v-model="tickets.company.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('CREATIVITY')}}</label>
+                                    <input type="number" max="9000" class="form-control" v-model="tickets.company.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('KINDNESS')}}</label>
+                                    <input type="number" max="9000" class="form-control" v-model="tickets.company.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('ACTIVITY')}}</label>
+                                    <input type="number" max="9000" class="form-control" v-model="tickets.company.activity">
+                                </div>
+                            </div>
+                            <p>{{get_string('SCORE')}}：{{get_select_company_score()}}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{get_string('CLOSE')}}</button>
+                            <button type="button" class="btn btn-primary" @click="save_ticket_company()">{{get_string('CONFIRM')}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--票房公司弹窗-->
+
+            <!--票房羁绊弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="battle">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="pd15">
+                                <label class="label-above">{{get_string('CARD_NAME')}}</label>
+                                <input type="text" id="battle_typeahead" class="typeahead form-control" data-provide="typeahead" autocomplete="off">
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('EVOLVE')}}</label>
+                                    <select class="form-control" v-model="tickets.select.evolved">
+                                        <option value="0">{{get_string('NOT_EVOLVED')}}</option>
+                                        <option value="1">{{get_string('IS_EVOLVED')}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('STAR')}}</label>
+                                    <input type="number" class="form-control" v-model="tickets.select.star">
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('LEVEL')}}</label>
+                                    <input type="number" class="form-control" v-model="tickets.select.level">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('DECISIVENESS')}}</label>
+                                    <input type="number" class="form-control" v-model="tickets.select.decisiveness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('CREATIVITY')}}</label>
+                                    <input type="number" class="form-control" v-model="tickets.select.creativity">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('KINDNESS')}}</label>
+                                    <input type="number" class="form-control" v-model="tickets.select.kindness">
+                                </div>
+                                <div class="col-xs-3 col-md-2">
+                                    <label class="label-above">{{get_string('ACTIVITY')}}</label>
+                                    <input type="number" class="form-control" v-model="tickets.select.activity">
+                                </div>
+                            </div>
+                            <p>得分：{{tickets.select.score}}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{get_string('CANCEL')}}</button>
+                            <button type="button" class="btn btn-primary" @click="save_battle()">{{get_string('SAVE')}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--票房羁绊弹窗-->
+
+            <!--导入导出弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="batch">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <ul class="nav nav-tabs">
+                                <li role="presentation" :class="{active: batch.option == 'import_data'}"><a href="javascript:;" @click="show_batch('import_data')">{{get_string('BATCH_IMPORT')}}</a></li>
+                                <li role="presentation" :class="{active: batch.option == 'export_data'}"><a href="javascript:;" @click="show_batch('export_data')">{{get_string('BATCH_EXPORT')}}</a></li>
+                            </ul>
+                            <div class="modal-main">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" v-model="batch.source" value="calculator"> {{get_string('CALCULATOR')}}
+                                    </label>
+                                    <label>
+                                        <input type="radio" v-model="batch.source" value="excel"> {{get_string('EXCEL')}}
+                                    </label>
+                                    <label v-show="batch.option == 'export_data'">
+                                        <input type="radio" v-model="batch.source" value="debug"> {{get_string('DEBUG')}}
+                                    </label>
+                                </div>
+                                <textarea class="form-control" v-model="batch.data" v-show="batch.option == 'import_data'" :disabled="batch.source == 'all'"></textarea>
+                                <textarea class="form-control" v-model="batch.export" v-show="batch.option == 'export_data'"></textarea>
+                                <p class="help-block" v-show="batch.option == 'import_data' && batch.source == 'calculator'">{{get_string('TIP_CALCULATOR')}}</p>
+                                <p class="help-block" v-show="batch.option == 'import_data' && batch.source == 'excel'">{{get_string('TIP_EXCEL')}}</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer" v-show="batch.option == 'import_data'">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{get_string('CANCEL')}}</button>
+                            <button type="button" id="import_data" class="btn btn-primary" :data-loading-text="get_string('IMPORTING')" @click="import_data()">{{get_string('IMPORT')}}</button>
+                        </div>
+                        <div class="modal-footer" v-show="batch.option == 'export_data'">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{get_string('CLOSE')}}</button>
+                            <button type="button" id="export_data" class="btn btn-primary" :data-loading-text="get_string('EXPORTING')" @click="export_data()" v-show="batch.source != 'debug'">{{get_string('EXPORT')}}</button>
+                            <button type="button" id="export_data_download" class="btn btn-primary" :data-loading-text="get_string('EXPORTING')" @click="export_data_download()" v-show="batch.source == 'debug'">{{get_string('UPLOAD')}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--导入导出弹窗-->
+
+            <!--今日票房弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="today">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-group clearfix">
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('THEME')}}</label>
+                                    <select class="form-control" v-model="ticket_select.ticket_id">
+                                        <option :value="item.id" v-for="item in ticket">{{item.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('GUEST')}}</label>
+                                    <select class="form-control" v-model="ticket_select.category">
+                                        <option value="1">{{get_string('LIZEYAN')}}</option>
+                                        <option value="2">{{get_string('XUMO')}}</option>
+                                        <option value="3">{{get_string('ZHOUQILUO')}}</option>
+                                        <option value="4">{{get_string('BAIQI')}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 col-md-3 col-lg-2">
+                                    <label class="label-above">{{get_string('STAR')}}</label>
+                                    <select class="form-control" v-model="ticket_select.star">
+                                        <option :value="i" v-for="i in [3,4,5]">{{i}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{get_string('CANCEL')}}</button>
+                            <button id="save_today" type="button" class="btn btn-primary" :data-loading-text="get_string('LOADING')" @click="save_today()">{{get_string('CONFIG')}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--今日票房弹窗-->
+
+            <!--票房反推弹窗-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="reverse">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <ul class="nav nav-tabs">
+                                <li role="presentation" :class="{active: reverse.option == 'separate'}"><a href="javascript:;" @click="reverse.option = 'separate'">{{get_string('SEPARATE_SCORE')}}</a></li>
+                                <li role="presentation" :class="{active: reverse.option == 'addup'}"><a href="javascript:;" @click="reverse.option = 'addup'">{{get_string('ADDUP_SCORE')}}</a></li>
+                            </ul>
+                            <div class="modal-main">
+                                <div v-show="reverse.option == 'separate'">
+                                    <p class="help-block">{{get_string('TIP_SEPARATE')}}</p>
+
+                                    <div class="form-group clearfix">
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <label class="label-above">{{get_string('DECISIVENESS')}}</label>
+                                            <input type="number" class="form-control" v-model="reverse.separate.decisiveness">
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <label class="label-above">{{get_string('CREATIVITY')}}</label>
+                                            <input type="number" class="form-control" v-model="reverse.separate.creativity">
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <label class="label-above">{{get_string('KINDNESS')}}</label>
+                                            <input type="number" class="form-control" v-model="reverse.separate.kindness">
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <label class="label-above">{{get_string('ACTIVITY')}}</label>
+                                            <input type="number" class="form-control" v-model="reverse.separate.activity">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-show="reverse.option == 'addup'">
+                                    <p class="help-block">{{get_string('TIP_ADDUP')}}</p>
+
+                                    <div class="form-group clearfix">
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <label class="label-above">{{get_string('DECISIVENESS')}}</label>
+                                            <input type="number" class="form-control" v-model="reverse.addup.decisiveness">
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <label class="label-above">{{get_string('CREATIVITY')}}</label>
+                                            <input type="number" class="form-control" v-model="reverse.addup.creativity">
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <label class="label-above">{{get_string('KINDNESS')}}</label>
+                                            <input type="number" class="form-control" v-model="reverse.addup.kindness">
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <label class="label-above">{{get_string('ACTIVITY')}}</label>
+                                            <input type="number" class="form-control" v-model="reverse.addup.activity">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-3 col-md-2">
+                                        <a href="javascript:;" class="btn btn-default" @click="reset_reverse()">{{get_string('RESET')}}</a>
+                                    </div>
+                                </div>
+                                <p v-show="has_reverse_scores()">{{get_string('COMPANY_PROPS')}}：{{reverse.scores.decisiveness}} / {{reverse.scores.creativity}} / {{reverse.scores.kindness}} / {{reverse.scores.activity}}</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{get_string('CLOSE')}}</button>
+                            <button type="button" class="btn btn-primary" :disabled="!has_reverse_scores()" @click="add_to_table()">{{get_string('ADD_TO_TABLE')}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--票房反推弹窗-->
+        </div>
+    </div>
+    <p id="tips" data-strings="text">LOADING</p>
+    <p id="ajax_tips" style="display: none;" data-strings="text">LOADING</p>
+    <script type='text/javascript' src='js/vue.min.js'></script>
+    <script type="text/javascript" src="js/vm-v2.js?v=2.3.45"></script>
+    <script type="text/javascript">
+    	$(document).ready(function(){
+            $('[data-strings]').each(function(){
+                var arr = $(this).attr('data-strings').split(',');
+                for(var i = 0; i < arr.length; i++){
+                    var attr = arr[i];
+                    if(attr == 'text'){
+                        var key = $(this).text();
+                        if(typeof(strings) == 'object' && Object.keys(strings).indexOf(key) >= 0){
+                            $(this).text(strings[key]);
+                        }
+                    } else if (attr == 'html') {
+                        var key = $(this).html();
+                        if(typeof(strings) == 'object' && Object.keys(strings).indexOf(key) >= 0){
+                            $(this).html(strings[key]);
+                        }
+                    } else {
+                        var key = $(this).attr(attr);
+                        if(typeof(strings) == 'object' && Object.keys(strings).indexOf(key) >= 0){
+                            $(this).attr(attr, strings[key]);
+                        }
+                    }
+                }
+            });
+
+            var key = 'BROWER_NOT_SUPPORTED';
+            if(typeof(strings) == 'object' && Object.keys(strings).indexOf(key) >= 0){
+                $('#tips').html(strings[key]);
+            }
+    	});
+
+        var key = 'TITLE';
+        if(typeof(strings) == 'object' && Object.keys(strings).indexOf(key) >= 0){
+            $(document).attr('title', strings[key]);
+        }
+    </script>
+</body>
+
+</html>
