@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.54',
+        version: '2.3.55',
         location: LANGUAGE || '',
         path: $.LS.get('path') || 'img/',
         show_path: false,
@@ -503,7 +503,7 @@ var vm = new Vue({
             $.LS.set('my_cards', JSON.stringify(newVal));
         },
         'company.decisiveness': function(newVal, oldVal) {
-            var max = 9000;
+            var max = 99999;
             var val = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             if (val && val > max) {
                 val = max;
@@ -513,7 +513,7 @@ var vm = new Vue({
             $.LS.set('company', JSON.stringify(this.company));
         },
         'company.creativity': function(newVal, oldVal) {
-            var max = 9000;
+            var max = 99999;
             var val = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             if (val && val > max) {
                 val = max;
@@ -522,7 +522,7 @@ var vm = new Vue({
             $.LS.set('company', JSON.stringify(this.company));
         },
         'company.kindness': function(newVal, oldVal) {
-            var max = 9000;
+            var max = 99999;
             var val = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             if (val && val > max) {
                 val = max;
@@ -531,7 +531,7 @@ var vm = new Vue({
             $.LS.set('company', JSON.stringify(this.company));
         },
         'company.activity': function(newVal, oldVal) {
-            var max = 9000;
+            var max = 99999;
             var val = isNaN(parseInt(newVal, 10)) ? newVal : parseInt(newVal, 10);
             if (val && val > max) {
                 val = max;
@@ -3899,13 +3899,13 @@ var vm = new Vue({
             $('#save_card').button('loading');
 
             var user_correct = 0;
-            var data = self.predict_card(self.card_select.card_id, self.card_select.evolved, self.card_select.star, self.card_select.level);
+            // var data = self.predict_card(self.card_select.card_id, self.card_select.evolved, self.card_select.star, self.card_select.level);
             var prop = self.prop;
-            for (var i = 0; i < prop.length; i++) {
-                if (data[prop[i]] != self.card_select[prop[i]]) {
-                    user_correct = 1;
-                }
-            }
+            // for (var i = 0; i < prop.length; i++) {
+            //     if (data[prop[i]] != self.card_select[prop[i]]) {
+            //         user_correct = 1;
+            //     }
+            // }
 
             $.ajax({
                 url: self.base_url + 'save_card',
@@ -4021,17 +4021,31 @@ var vm = new Vue({
                 });
             }
         },
+        // 重置羁绊选择数据
+        restore_card: function(){
+            var my_card = this.get_my_card(this.card_select.card_id);
+            if(my_card) {
+                this.card_select.star = my_card.star;
+                this.card_select.level = my_card.level;
+                this.card_select.evolved = my_card.evolved;
+
+                var prop = this.prop;
+                for (var i = 0; i < prop.length; i++) {
+                    this.card_select[prop[i]] = my_card[prop[i]];
+                }
+            }
+            this.card_select.modified = false;
+        },
         //显示羁绊选择
         show_card: function(id) {
             if (id) {
                 this.card_select.card_id = id;
             }
-            this.card_select.modified = false;
 
             var self = this;
             Vue.nextTick(function(){
                 $('#card').modal();
-                self.update_card_select();
+                self.restore_card();
             });
         },
         //更新羁绊选择
