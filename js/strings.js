@@ -184,6 +184,7 @@ var strings = {
 	'PASSWORD': '密码保护',
 	'TIP_LOGIN': '公司名称不能重复，密码保护可为空，设置密码可防止数据被他人修改',
 	'HISTORY_ACCOUNT': '历史记录',
+	'RESTORE': '复原',
 	'CANCEL': '取消',
 	'CONFIRM': '确定',
 	'LOGINING': '登录中...',
