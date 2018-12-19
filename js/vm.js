@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.51',
+        version: '2.3.52',
         location: LANGUAGE || '',
         path: $.LS.get('path') || 'img/',
         show_path: false,
@@ -3225,8 +3225,8 @@ var vm = new Vue({
                                 var score = 0;
                                 var card = self.list[j];
 
-                                if (([3].indexOf(item.category) >=0 && [2, 5].indexOf(card.category) < 0) ||
-                                    ([4,8].indexOf(item.category) >= 0 && [4, 5].indexOf(card.category) < 0) ||
+                                if (([3,8].indexOf(item.category) >=0 && [2, 5].indexOf(card.category) < 0) ||
+                                    ([4,10].indexOf(item.category) >= 0 && [4, 5].indexOf(card.category) < 0) ||
                                     ([5,7].indexOf(item.category) >=0 && [1, 5].indexOf(card.category) < 0) ||
                                     ([6,9].indexOf(item.category) >= 0 && [3, 5].indexOf(card.category) < 0)) {
                                     continue;
@@ -3371,8 +3371,8 @@ var vm = new Vue({
                 var card = list[i];
                 var prop = self.prop;
 
-                if (([3].indexOf(self.levels.level.category) >= 0 && [2, 5].indexOf(card.category) < 0) ||
-                    ([4,8].indexOf(self.levels.level.category) >= 0 && [4, 5].indexOf(card.category) < 0) ||
+                if (([3,8].indexOf(self.levels.level.category) >= 0 && [2, 5].indexOf(card.category) < 0) ||
+                    ([4,10].indexOf(self.levels.level.category) >= 0 && [4, 5].indexOf(card.category) < 0) ||
                     ([5,7].indexOf(self.levels.level.category) >= 0 && [1, 5].indexOf(card.category) < 0) ||
                     ([6,9].indexOf(self.levels.level.category) >= 0 && [3, 5].indexOf(card.category) < 0)) {
                     continue;
