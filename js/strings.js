@@ -247,10 +247,15 @@ var strings = {
 	'TIP_BAD_PASSWORD': '公司名称不存在或密码不匹配',
 	'DAY': '普通',
 	'NIGHT': '精英',
+	'BOSS': 'BOSS',
 	'COPY_XUMO': '副本-许墨',
 	'COPY_BAIQI': '副本-白起',
 	'COPY_LIZEYAN': '副本-李泽言',
 	'COPY_ZHOUQILUO': '副本-周棋洛',
+	'TB_XUMO': '试炼-许墨',
+	'TB_BAIQI': '试炼-白起',
+	'TB_LIZEYAN': '试炼-李泽言',
+	'TB_ZHOUQILUO': '试炼-周棋洛',
 	'COPY': '副本',
 	'PAY': '充值',
 	'CHECKIN': '签到',
@@ -262,5 +267,5 @@ var strings = {
 	'LIMITED': '限定',
 	'TICKET': '票房',
 	'EXCHANGE': '交易所',
-	'UPLOAD_FAIL': '上传失败',
+	'UPLOAD_FAIL': '上传失败'
 };

@@ -38,7 +38,7 @@
 
         var LANGUAGE = '';
     </script>
-    <script type="text/javascript" src="js/strings.js"></script>
+    <script type="text/javascript" src="js/strings.js?v=2.3.49"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/storage.js"></script>
     <script type="text/javascript" src="js/bootstrap.js"></script>
@@ -337,7 +337,7 @@
                         <tbody>
                             <template v-for="item in levels.list">
                                 <tr v-for="i in [1, 2, 3]">
-                                    <td rowspan="3" v-if="i == 1"><a href="javascript:;" class="link" @click="get_level(item.id)">{{item.chapter}}-{{item.level}}</a></td>
+                                    <td rowspan="3" v-if="i == 1"><a href="javascript:;" class="link" @click="get_level(item.id)">{{item.chapter}}-{{item.level}}<span v-if="item.chapter == 19 && item.role > 0">-{{get_character_tag(item.role)}}</span></a></td>
                                     <td rowspan="3" class="hidden-xs hidden-sm" v-if="i == 1">{{item.drops}}</td>
                                     <td rowspan="3" class="hidden-xs" v-if="i == 1">{{get_card_demand(item)}}</td>
                                     <td class="hidden-xs">{{item['request'+i]}}</td>
@@ -2182,7 +2182,7 @@
     <p id="tips" data-strings="text">LOADING</p>
     <p id="ajax_tips" style="display: none;" data-strings="text">LOADING</p>
     <script type='text/javascript' src='js/vue.min.js'></script>
-    <script type="text/javascript" src="js/vm.js?v=2.3.48"></script>
+    <script type="text/javascript" src="js/vm.js?v=2.3.49"></script>
     <script type="text/javascript">
     	$(document).ready(function(){
             $('[data-strings]').each(function(){
