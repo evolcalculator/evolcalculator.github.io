@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.50',
+        version: '2.3.51',
         location: LANGUAGE || '',
         path: $.LS.get('path') || 'img/',
         show_path: false,
@@ -4349,16 +4349,16 @@ var vm = new Vue({
                     ret = this.get_string('COPY_ZHOUQILUO');
                     break;
                 case 7:
-                    ret = this.get_string('TB_XUMO');
-                    break;
-                case 8:
-                    ret = this.get_string('TB_BAIQI');
-                    break;
-                case 9:
                     ret = this.get_string('TB_LIZEYAN');
                     break;
-                case 10:
+                case 8:
+                    ret = this.get_string('TB_XUMO');
+                    break;
+                case 9:
                     ret = this.get_string('TB_ZHOUQILUO');
+                    break;
+                case 10:
+                    ret = this.get_string('TB_BAIQI');
                     break;
                 case 11:
                     ret = this.get_string('BOSS');
