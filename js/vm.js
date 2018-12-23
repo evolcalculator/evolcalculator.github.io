@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: "#app",
     data: {
-        version: '2.3.55',
+        version: '2.3.56',
         location: LANGUAGE || '',
         path: $.LS.get('path') || 'img/',
         show_path: false,
@@ -4412,6 +4412,9 @@ var vm = new Vue({
                     break;
                 case 23:
                     ret = this.get_string('ACTIVITY_BAIQI');
+                    break;
+                case 24:
+                    ret = this.get_string('MAZE');
                     break;
             }
             return ret;
